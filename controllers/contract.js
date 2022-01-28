@@ -1,5 +1,6 @@
-const req = require("express/lib/request");
 const Contract = require("../models/contract");
+const QRCode = require("qrcode");
+const { json } = require("express/lib/response");
 
 const getAllContracts = async (req, res) => {
   try {
@@ -52,6 +53,43 @@ const updateContract = async (req, res) => {
   }
 };
 
+const generateQR = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const contract = await Contract.find({ _id: id });
+    const num = contract[0].contractNo;
+    let data = {
+      number: contract[0].contractNo,
+      name: contract[0].service,
+      url: `api/contracts/${id}`,
+    };
+    let stringdata = JSON.stringify(data);
+    console.log(stringdata);
+    // QRCode.toString(
+    //   `url: http://localhost:5000/api/contracts/${id}, num: ${num}`,
+    //   { type: "terminal" },
+    //   function (err, QRcode) {
+    //     if (err) return console.log("error occurred");
+    //     console.log(QRcode);
+    //   }
+    // );
+    QRCode.toDataURL(
+      `num: ${num},
+      
+      url: http://localhost:5000/api/contracts/${id}`,
+      function (err, code) {
+        if (err) return console.log("error occurred");
+
+        // Printing the code
+        console.log(code);
+        res.status(200).json(code);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const deleteContract = async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,4 +110,5 @@ module.exports = {
   getContract,
   deleteContract,
   updateContract,
+  generateQR,
 };
