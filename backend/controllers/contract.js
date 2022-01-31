@@ -6,6 +6,7 @@ const getAllContracts = async (req, res) => {
   try {
     const contracts = await Contract.find({}, { __v: 0 });
     res.status(200).json({ contracts, len: contracts.length });
+    
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
@@ -14,7 +15,7 @@ const getAllContracts = async (req, res) => {
 
 const createContract = async (req, res) => {
   try {
-    const contract = await Contract.create(req.body);
+    const contract = await Contract.create({ ...req.body });
     res.status(201).json({ contract });
   } catch (error) {
     res.status(500).json({ msg: error });
@@ -57,34 +58,32 @@ const generateQR = async (req, res) => {
   try {
     const { id } = req.params;
     const contract = await Contract.find({ _id: id });
-    const num = contract[0].contractNo;
-    let data = {
-      number: contract[0].contractNo,
-      name: contract[0].service,
-      url: `api/contracts/${id}`,
-    };
-    let stringdata = JSON.stringify(data);
-    console.log(stringdata);
-    // QRCode.toString(
-    //   `url: http://localhost:5000/api/contracts/${id}, num: ${num}`,
-    //   { type: "terminal" },
-    //   function (err, QRcode) {
+    const stringdata = `Contract Number: ${contract[0].contractNo},
+
+     url: http://localhost:5000/api/contracts/${id}`;
+
+    // QRCode.toDataURL(
+    //   `num: ${num},
+
+    //   url: http://localhost:5000/api/contracts/${id}`,
+    //   function (err, code) {
     //     if (err) return console.log("error occurred");
-    //     console.log(QRcode);
+
+    //     // Printing the code
+    //     console.log(code);
+    //     res.status(200).json(code);
     //   }
     // );
-    QRCode.toDataURL(
-      `num: ${num},
-      
-      url: http://localhost:5000/api/contracts/${id}`,
-      function (err, code) {
-        if (err) return console.log("error occurred");
 
-        // Printing the code
-        console.log(code);
-        res.status(200).json(code);
+    const generateQR = async (text) => {
+      try {
+        await QRCode.toFile("./test.png", text);
+      } catch (err) {
+        console.error(err);
       }
-    );
+    };
+    generateQR(stringdata);
+    res.status(200).json({ msg: "success" });
   } catch (error) {
     console.log(error);
   }
