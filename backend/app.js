@@ -6,10 +6,12 @@ const app = express();
 const mongoose = require("mongoose");
 
 const contractRouter = require('./routes/contract')
+const serviceRouter = require('./routes/service')
 
 app.use(express.json())
 
 app.use('/api/contracts', contractRouter)
+app.use('/api/service', serviceRouter)
 
 const start = async () => {
   try {
