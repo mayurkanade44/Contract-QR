@@ -33,8 +33,6 @@ const createDoc = async (isValidContract, services) => {
     "binary"
   );
 
-  console.log(shipToContact);
-
   const zip = new PizZip(content);
 
   const doc = new Docxtemplater(zip, {

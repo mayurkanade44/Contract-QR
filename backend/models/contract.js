@@ -38,7 +38,6 @@ const ContractSchema = new mongoose.Schema(
     },
     endDate: {
       type: Date,
-      required: [true, "Date is required"],
     },
     billingFrequency: {
       type: String,
@@ -51,6 +50,21 @@ const ContractSchema = new mongoose.Schema(
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+ContractSchema.pre("save", async function () {
+  const salt = await this.startDate;
+  let lastDate = new Date(
+    salt.getFullYear(),
+    salt.getMonth(),
+    salt.getUTCDate()
+  );
+
+  this.endDate = await new Date(
+    lastDate.getFullYear() + 1,
+    lastDate.getMonth(),
+    1
+  );
+});
 
 ContractSchema.virtual("services", {
   ref: "Service",
