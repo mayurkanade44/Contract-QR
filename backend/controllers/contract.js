@@ -1,6 +1,6 @@
 const Contract = require("../models/contract");
 const QRCode = require("qrcode");
-const { json } = require("express/lib/response");
+
 
 const getAllContracts = async (req, res) => {
   try {
@@ -29,7 +29,8 @@ const getContract = async (req, res) => {
     if (!contract) {
       return res.status(400).json({ msg: "no contract found" });
     }
-    res.status(200).json({ contract });
+    
+    res.status(200).json({ contract, len: contract.services.length });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
@@ -59,7 +60,7 @@ const generateQR = async (req, res) => {
     const contract = await Contract.find({ _id: id });
     const stringdata = `Contract Number: ${contract[0].contractNo},
 
-     url: http://localhost:5000/api/contracts/${id}`;
+    url: http://localhost:5000/api/contracts/${id}`;
 
     // QRCode.toDataURL(
     //   `num: ${num},
