@@ -17,15 +17,23 @@ const getAllService = async (req, res) => {
 };
 
 const createDoc = async (isValidContract, services) => {
-  const { contractNo, startDate, endDate, billingFrequency, shipToAddress } =
-    isValidContract;
+  const {
+    contractNo,
+    startDate,
+    endDate,
+    billingFrequency,
+    shipToAddress,
+    shipToContact,
+  } = isValidContract;
   const { name, address, nearBy, pincode } = shipToAddress[0];
-  const {frequency, area, service, specialInstruction, preferred} = services
-  const { day, time } = preferred[0]
+  const { frequency, area, service, specialInstruction, preferred } = services;
+  const { day, time } = preferred[0];
   const content = fs.readFileSync(
     path.resolve(__dirname, "test.docx"),
     "binary"
   );
+
+  console.log(shipToContact);
 
   const zip = new PizZip(content);
 
@@ -35,8 +43,19 @@ const createDoc = async (isValidContract, services) => {
   });
 
   doc.render({
-    contractNo: 123,
-    service: "GS",
+    contractNo: contractNo,
+    day: day,
+    time: time,
+    name: name,
+    address: address,
+    nearBy: nearBy,
+    pincode: pincode,
+    shipToContact: shipToContact,
+    service: service,
+    frequency: frequency,
+    area: area,
+    billingFrequency: billingFrequency,
+    specialInstruction: specialInstruction,
   });
 
   const buf = await doc.getZip().generate({
@@ -62,13 +81,12 @@ const createService = async (req, res) => {
       const serviceId = await services._id;
       const contractNo = isValidContract.contractNo;
       const name = `${contractNo}${services.frequency}`;
-      console.log(services.preferred);
 
       const stringdata = `Contract Number: ${contractNo},
 
       url: http://localhost:5000/api/contracts/${serviceId}`;
       await QRCode.toFile(`./${name}.png`, stringdata);
-      // createDoc();
+      createDoc(isValidContract, services);
     }
     res.status(201).json({ services });
   } catch (error) {
