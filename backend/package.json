@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "docxtemplater": "^3.28.6",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "mongoose": "^6.1.8",
+    "pizzip": "^3.1.1",
     "qrcode": "^1.5.0"
   },
   "devDependencies": {
