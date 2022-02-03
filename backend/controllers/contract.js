@@ -6,7 +6,6 @@ const getAllContracts = async (req, res) => {
   try {
     const contracts = await Contract.find({}, { __v: 0 });
     res.status(200).json({ contracts, len: contracts.length });
-    
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
@@ -26,7 +25,7 @@ const createContract = async (req, res) => {
 const getContract = async (req, res) => {
   try {
     const { id } = req.params;
-    const contract = await Contract.findOne({ _id: id });
+    const contract = await Contract.findOne({ _id: id }).populate('services');
     if (!contract) {
       return res.status(400).json({ msg: "no contract found" });
     }
