@@ -5,6 +5,7 @@ const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 const fs = require("fs");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
 
 const getAllService = async (req, res) => {
   try {
@@ -109,7 +110,7 @@ const singleService = async (req, res) => {
   } catch (error) {}
 };
 
-const uploadCard = async (req, res) => {
+const updateCard = async (req, res) => {
   const {
     params: { id: serviceId },
     body: { image, comments },
@@ -126,9 +127,23 @@ const uploadCard = async (req, res) => {
   }
 };
 
+const uploadImage = async (req, res) => {
+  const result = await cloudinary.uploader.upload(
+    req.files.image.tempFilePath,
+    {
+      use_filename: true,
+      folder: "contract",
+      quality: 50,
+    }
+  );
+  fs.unlinkSync(req.files.image.tempFilePath);
+  return res.status(200).json({ image: result.secure_url });
+};
+
 module.exports = {
   getAllService,
   createService,
-  uploadCard,
+  updateCard,
   singleService,
+  uploadImage,
 };
