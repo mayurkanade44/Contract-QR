@@ -29,6 +29,7 @@ const createDoc = async (isValidContract, services) => {
   const { name, address, nearBy, pincode } = shipToAddress[0];
   const { frequency, area, service, specialInstruction, preferred } = services;
   const { day, time } = preferred[0];
+
   const content = fs.readFileSync(
     path.resolve(__dirname, "test.docx"),
     "binary"
@@ -66,6 +67,19 @@ const createDoc = async (isValidContract, services) => {
   fs.writeFileSync(path.resolve(__dirname, "output.docx"), buf);
 };
 
+const generateQr = async (isValidContract, services) => {
+  try {
+    const serviceId = await services._id;
+    const contractNo = isValidContract.contractNo;
+    const name = `${contractNo}${services.frequency}`;
+
+    const stringdata = `Contract Number: ${contractNo},
+
+    url: http://localhost:5000/api/service/${serviceId}`;
+    await QRCode.toFile(`./${name}.png`, stringdata);
+  } catch (error) {}
+};
+
 const createService = async (req, res) => {
   const { contract: contractId } = req.body;
   const isValidContract = await Contract.findOne({ _id: contractId });
@@ -75,14 +89,7 @@ const createService = async (req, res) => {
     }
     const services = await Service.create(req.body);
     if (services) {
-      const serviceId = await services._id;
-      const contractNo = isValidContract.contractNo;
-      const name = `${contractNo}${services.frequency}`;
-
-      const stringdata = `Contract Number: ${contractNo},
-
-      url: http://localhost:5000/api/contracts/${serviceId}`;
-      await QRCode.toFile(`./${name}.png`, stringdata);
+      generateQr(isValidContract, services);
       createDoc(isValidContract, services);
     }
     res.status(201).json({ services });
@@ -92,20 +99,13 @@ const createService = async (req, res) => {
   }
 };
 
-const generateQr = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const service = Service.find({ _id: id });
-    const stringdata = `Contract Number: ${service[0].contractNo},
-
-    url: http://localhost:5000/api/contracts/${id}`;
-  } catch (error) {}
-};
-
 const singleService = async (req, res) => {
   const { id } = req.params;
   try {
-    const service = await Service.find({ _id: id });
+    const service = await Service.find({ _id: id }).populate({
+      path: "contract",
+      select: "contractNo billToAddress.name",
+    });
     res.status(200).json({ service });
   } catch (error) {}
 };
