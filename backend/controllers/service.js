@@ -58,8 +58,6 @@ const createDoc = async (isValidContract, services) => {
 
   const buf = await doc.getZip().generate({
     type: "nodebuffer",
-    // compression: DEFLATE adds a compression step.
-    // For a 50MB output document, expect 500ms additional CPU time
     compression: "DEFLATE",
   });
 
@@ -103,7 +101,34 @@ const generateQr = async (req, res) => {
   } catch (error) {}
 };
 
+const singleService = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const service = await Service.find({ _id: id });
+    res.status(200).json({ service });
+  } catch (error) {}
+};
+
+const uploadCard = async (req, res) => {
+  const {
+    params: { id: serviceId },
+    body: { image, comments },
+  } = req;
+  try {
+    const service = await Service.findByIdAndUpdate(
+      { _id: serviceId },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    res.status(200).json({ service });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
+  uploadCard,
+  singleService,
 };

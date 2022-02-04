@@ -35,6 +35,9 @@ const ServiceSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please provide area sqft"],
   },
+  image: {
+    type: String,
+  },
   comments: {
     type: String,
   },
