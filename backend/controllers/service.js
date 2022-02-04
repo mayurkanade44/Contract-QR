@@ -6,6 +6,7 @@ const Docxtemplater = require("docxtemplater");
 const fs = require("fs");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
+const sgMail = require("@sendgrid/mail");
 
 const getAllService = async (req, res) => {
   try {
@@ -67,6 +68,18 @@ const createDoc = async (isValidContract, services) => {
   fs.writeFileSync(path.resolve(__dirname, "output.docx"), buf);
 };
 
+const sendEmail = async (req, res) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: "sm.agarbati@gmail.com", // Change to your recipient
+    from: "exteam.epcorn@gmail.com", // Change to your verified sender
+    subject: "Sending with SendGrid is Fun",
+    text: "and easy to do anywhere, even with Node.js",
+    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+  };
+  const info = await sgMail.send(msg);
+};
+
 const generateQr = async (isValidContract, services) => {
   try {
     const serviceId = await services._id;
@@ -121,6 +134,9 @@ const updateCard = async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
+    if (service) {
+      sendEmail();
+    }
     res.status(200).json({ service });
   } catch (error) {
     console.log(error);

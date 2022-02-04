@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.6.0",
     "cloudinary": "^1.28.1",
     "docxtemplater": "^3.28.6",
     "dotenv": "^14.3.2",
