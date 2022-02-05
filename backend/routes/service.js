@@ -7,6 +7,7 @@ const {
   singleService,
   uploadImage,
   updateCard,
+  createDoc,
 } = require("../controllers/service");
 
 router.route("/").post(createService);

@@ -7,6 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const sgMail = require("@sendgrid/mail");
+const request = require("request");
 
 const getAllService = async (req, res) => {
   try {
@@ -65,19 +66,37 @@ const createDoc = async (isValidContract, services) => {
   });
 
   // buf is a nodejs Buffer, you can either write it to a file or res.send it with express for example.
-  fs.writeFileSync(path.resolve(__dirname, "output.docx"), buf);
+  fs.writeFileSync(
+    path.resolve(__dirname, `${contractNo}${frequency}.docx`),
+    buf
+  );
 };
 
-const sendEmail = async (req, res) => {
+const sendEmail = async (emails) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: "sm.agarbati@gmail.com", // Change to your recipient
-    from: "exteam.epcorn@gmail.com", // Change to your verified sender
-    subject: "Sending with SendGrid is Fun",
-    text: "and easy to do anywhere, even with Node.js",
-    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-  };
-  const info = await sgMail.send(msg);
+  request.get(
+    "https://res.cloudinary.com/epcorn/image/upload/v1643971158/contract/tmp-1-1643971156215_aowlcj.jpg",
+    { encoding: null },
+    (err, res) => {
+      const base64File = Buffer.from(res.body).toString("base64");
+      const msg = {
+        to: emails,
+        from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
+        subject: "Sending with SendGrid is Fun",
+        text: "and easy to do anywhere, even with Node.js",
+        html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+        attachments: [
+          {
+            content: base64File,
+            filename: "attachment.jpg",
+            type: "application/jpg",
+            disposition: "attachment",
+          },
+        ],
+      };
+      sgMail.send(msg);
+    }
+  );
 };
 
 const generateQr = async (isValidContract, services) => {
@@ -133,9 +152,14 @@ const updateCard = async (req, res) => {
       { _id: serviceId },
       req.body,
       { new: true, runValidators: true }
-    );
+    ).populate({ path: "contract", select: "billToContact" });
     if (service) {
-      sendEmail();
+      const list = service.contract.billToContact;
+      const emails = list.map((list) => {
+        return list.email;
+      });
+
+      sendEmail(emails);
     }
     res.status(200).json({ service });
   } catch (error) {
