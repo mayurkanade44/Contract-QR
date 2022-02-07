@@ -1,4 +1,4 @@
-import { LOADING, FETCH_CONTRACTS } from "./action";
+import { LOADING, FETCH_CONTRACTS, FETCH_CONTRACT } from "./action";
 
 const data_reducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +13,13 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contracts: action.payload,
+      };
+    }
+    case FETCH_CONTRACT: {
+      return {
+        ...state,
+        loading:false,
+        contract: action.payload,
       };
     }
     default:

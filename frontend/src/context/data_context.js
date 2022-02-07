@@ -2,13 +2,14 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "./data_reducer";
 
-import { LOADING, FETCH_CONTRACTS } from "./action";
+import { LOADING, FETCH_CONTRACTS, FETCH_CONTRACT } from "./action";
 
 const DataContext = createContext();
 
 const intialState = {
   loading: false,
   contracts: [],
+  contract: [],
 };
 
 export const DataProvider = ({ children }) => {
@@ -26,12 +27,26 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const fetchSingleContract = async (id) => {
+    try {
+      const res = await axios.get(`/contracts/${id}`);
+      dispatch({
+        type: FETCH_CONTRACT,
+        payload: res.data.contract,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchContracts();
   }, []);
 
   return (
-    <DataContext.Provider value={{ ...state }}>{children}</DataContext.Provider>
+    <DataContext.Provider value={{ ...state, fetchSingleContract }}>
+      {children}
+    </DataContext.Provider>
   );
 };
 

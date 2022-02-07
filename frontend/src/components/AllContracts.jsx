@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { useDataContext } from "../context/data_context";
+import { Link } from "react-router-dom";
 
 const AllContracts = () => {
   const { contracts } = useDataContext();
@@ -19,14 +20,8 @@ const AllContracts = () => {
         <tbody>
           {contracts &&
             contracts.map((contracts) => {
-              const {
-                contractNo,
-                billingFrequency,
-                _id,
-                startDate,
-                endDate,
-                shipToAddress,
-              } = contracts;
+              const { contractNo, _id, startDate, endDate, shipToAddress } =
+                contracts;
               const { name } = shipToAddress[0];
               return (
                 <tr key={_id}>
@@ -35,7 +30,9 @@ const AllContracts = () => {
                   <td>{moment(startDate).format("DD/MM/YYYY")}</td>
                   <td>{moment(endDate).format("DD/MM/YYYY")}</td>
                   <td className="text-center">
-                    <button className="btn btn-info">Details</button>
+                    <Link to={`/contract/${_id}`}>
+                      <button className="btn btn-info">Details</button>
+                    </Link>
                   </td>
                 </tr>
               );

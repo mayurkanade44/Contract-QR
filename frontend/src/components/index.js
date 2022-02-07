@@ -1,3 +1,5 @@
+import AllCards from "./AllCards";
 import AllContracts from "./AllContracts";
+import ClientDetails from "./ClientDetails";
 
-export { AllContracts };
+export { AllContracts, ClientDetails, AllCards };
