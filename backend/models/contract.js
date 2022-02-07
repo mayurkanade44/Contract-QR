@@ -62,7 +62,7 @@ ContractSchema.pre("save", async function () {
   this.endDate = await new Date(
     lastDate.getFullYear() + 1,
     lastDate.getMonth(),
-    1
+    0
   );
 });
 
