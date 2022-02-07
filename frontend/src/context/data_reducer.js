@@ -1,4 +1,4 @@
-import { LOADING, FETCH_CONTRACTS, FETCH_CONTRACT } from "./action";
+import { LOADING, FETCH_CONTRACTS, FETCH_CONTRACT, FETCH_CARD } from "./action";
 
 const data_reducer = (state, action) => {
   switch (action.type) {
@@ -21,6 +21,13 @@ const data_reducer = (state, action) => {
         loading:false,
         contract: action.payload,
       };
+    }
+    case FETCH_CARD: {
+      return {
+        ...state,
+        loading: false,
+        card: action.payload
+      }
     }
     default:
       throw new Error(`No Matching "${action.type}" - action type`);

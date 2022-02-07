@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const AllCards = ({ data }) => {
   return (
@@ -16,7 +17,7 @@ const AllCards = ({ data }) => {
         </thead>
         <tbody>
           {data.map((data, index) => {
-            const { frequency, area, service, preferred } = data;
+            const { frequency, area, service, preferred, _id } = data;
             return (
               <tr key={index}>
                 <td>{index + 1}</td>
@@ -25,7 +26,9 @@ const AllCards = ({ data }) => {
                 <td>{area}</td>
                 <td>{`${preferred[0].day} / ${preferred[0].time}`}</td>
                 <td>
-                  <button className="btn btn-primary">Update</button>
+                  <Link to={`/service/${_id}`}>
+                    <button className="btn btn-primary">Update</button>
+                  </Link>
                 </td>
               </tr>
             );
