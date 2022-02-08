@@ -1,19 +1,22 @@
 import React from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow } from "../components";
+import { InputRow, ClientAddress } from ".";
 
 const AddContract = () => {
-  const {
-    contractNo,
-    billingFrequency,
-    billToAddress: { name, address, nearBy, city, pincode },
-  } = useDataContext();
+  const { contractNo, billingFrequency, startDate, createContract } =
+    useDataContext();
+  const { name, email, contact } = "";
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createContract();
+  };
 
   return (
     <div>
       <form>
         <div className="row">
-          <div className="col-md-7 my-3">
+          <div className="col-md-4 my-3">
             <InputRow
               label="Contract Number"
               type="text"
@@ -21,37 +24,102 @@ const AddContract = () => {
               value={contractNo}
             />
           </div>
-          <h4>Bill To Details:</h4>
-          <div className="col-md-6 my-3">
+          <div className="col-md-4 my-3">
+            <InputRow
+              label="Start Date"
+              type="date"
+              name="startDate"
+              value={startDate}
+            />
+          </div>
+          <div className="col-md-4 my-3">
+            <InputRow
+              label="Billing"
+              type="text"
+              name="billingFrequency"
+              value={billingFrequency}
+            />
+          </div>
+          <hr />
+          <h4 className="text-info">Bill To Details:</h4>
+          <div className="col-md-12 my-3">
+            <ClientAddress id="billToAddress" />
+          </div>
+          <hr />
+          <h4 className="text-info">Ship To Details:</h4>
+          <div className="col-md-12 my-3">
+            <ClientAddress id="shipToAddress" />
+          </div>
+          <hr />
+          <h4>Bill To Contacts</h4>
+          <div className="col-md-3">
             <InputRow
               label="Name"
-              id="billToAddress"
+              id="billToContact"
               type="text"
               name="name"
               value={name}
             />
+          </div>
+          <div className="col-md-4">
             <InputRow
-              label="Address"
-              id="billToAddress"
+              label="Contact No"
               type="text"
-              name="address"
-              value={address}
-            />
-            <InputRow
-              label="Near By"
-              id="billToAddress"
-              type="text"
-              name="nearBy"
-              value={nearBy}
-            />
-            <InputRow
-              label="City"
-              id="billToAddress"
-              type="text"
-              name="city"
-              value={city}
+              id="billToContact"
+              name="contact"
+              value={contact}
             />
           </div>
+          <div className="col-md-4">
+            <InputRow
+              label="Email Id"
+              type="text"
+              id="billToContact"
+              name="email"
+              value={email}
+            />
+          </div>
+          <div className="col-md-1 align-items-center">
+            <button className="btn btn-primary">Add</button>
+          </div>
+          <h4>Ship To Contacts</h4>
+          <div className="col-md-3">
+            <InputRow
+              label="Name"
+              id="shipToContact"
+              type="text"
+              name="name"
+              value={name}
+            />
+          </div>
+          <div className="col-md-4">
+            <InputRow
+              label="Contact No"
+              type="text"
+              id="shipToContact"
+              name="contact"
+              value={contact}
+            />
+          </div>
+          <div className="col-md-4">
+            <InputRow
+              label="Email Id"
+              type="text"
+              id="shipToContact"
+              name="email"
+              value={email}
+            />
+          </div>
+          {/* <div className="col-md-1 align-items-center">
+            <button className="btn btn-primary">Add</button>
+          </div> */}
+          <button
+            className="btn btn-primary my-3"
+            type="submit"
+            onClick={handleSubmit}
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>

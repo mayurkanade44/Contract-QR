@@ -8,6 +8,7 @@ import {
   FETCH_CONTRACT,
   FETCH_CARD,
   HANDLE_CHANGE,
+  CREATE_CONTRACT,
 } from "./action";
 
 const DataContext = createContext();
@@ -32,15 +33,14 @@ const intialState = {
       email: "",
     },
   ],
-  shipToAddress: [
-    {
-      name: "",
-      address: "",
-      nearBy: "",
-      city: "",
-      pincode: "",
-    },
-  ],
+  shipToAddress: {
+    name: "",
+    address: "",
+    nearBy: "",
+    city: "",
+    pincode: "",
+  },
+
   shipToContact: [
     {
       name: "",
@@ -92,11 +92,39 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const createContract = async () => {
+    try {
+      const {
+        contractNo,
+        billToAddress,
+        shipToAddress,
+        shipToContact,
+        billToContact,
+        startDate,
+        billingFrequency,
+      } = state;
+      const res = await axios.post("/contracts", {
+        contractNo,
+        billToAddress,
+        billToContact,
+        shipToAddress,
+        shipToContact,
+        startDate,
+        billingFrequency,
+      });
+      dispatch({
+        type: CREATE_CONTRACT,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    const id = e.target.id
-  
+    const id = e.target.id;
+
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
   };
 
@@ -106,7 +134,13 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider
-      value={{ ...state, fetchSingleContract, fetchSingleCard, handleChange }}
+      value={{
+        ...state,
+        fetchSingleContract,
+        fetchSingleCard,
+        handleChange,
+        createContract,
+      }}
     >
       {children}
     </DataContext.Provider>
