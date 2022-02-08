@@ -11,6 +11,7 @@ const ContractSchema = new mongoose.Schema(
         name: String,
         address: String,
         nearBy: String,
+        city: String,
         pincode: Number,
       },
     ],
@@ -23,7 +24,13 @@ const ContractSchema = new mongoose.Schema(
       },
     ],
     shipToAddress: [
-      { name: String, address: String, nearBy: String, pincode: Number },
+      {
+        name: String,
+        address: String,
+        nearBy: String,
+        city: String,
+        pincode: Number,
+      },
     ],
     shipToContact: [
       {
