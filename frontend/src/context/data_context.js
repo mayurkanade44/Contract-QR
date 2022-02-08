@@ -2,7 +2,13 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "./data_reducer";
 
-import { LOADING, FETCH_CONTRACTS, FETCH_CONTRACT, FETCH_CARD } from "./action";
+import {
+  LOADING,
+  FETCH_CONTRACTS,
+  FETCH_CONTRACT,
+  FETCH_CARD,
+  HANDLE_CHANGE,
+} from "./action";
 
 const DataContext = createContext();
 
@@ -11,6 +17,39 @@ const intialState = {
   contracts: [],
   contract: [],
   card: [],
+  contractNo: "",
+  billToAddress: {
+    name: "",
+    address: "",
+    nearBy: "",
+    city: "",
+    pincode: "",
+  },
+  billToContact: [
+    {
+      name: "",
+      contact: "",
+      email: "",
+    },
+  ],
+  shipToAddress: [
+    {
+      name: "",
+      address: "",
+      nearBy: "",
+      city: "",
+      pincode: "",
+    },
+  ],
+  shipToContact: [
+    {
+      name: "",
+      contact: "",
+      email: "",
+    },
+  ],
+  startDate: "",
+  billingFrequency: "",
 };
 
 export const DataProvider = ({ children }) => {
@@ -53,13 +92,21 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    const id = e.target.id
+  
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
+  };
+
   useEffect(() => {
     fetchContracts();
   }, []);
 
   return (
     <DataContext.Provider
-      value={{ ...state, fetchSingleContract, fetchSingleCard }}
+      value={{ ...state, fetchSingleContract, fetchSingleCard, handleChange }}
     >
       {children}
     </DataContext.Provider>
