@@ -22,12 +22,11 @@ const ServiceSchema = new mongoose.Schema({
     type: [String],
     required: [true, "Please provide service name"],
   },
-  preferred: [
-    {
-      day: String,
-      time: String,
-    },
-  ],
+  preferred: {
+    day: String,
+    time: String,
+  },
+
   specialInstruction: {
     type: String,
   },
