@@ -24,12 +24,15 @@ const createDoc = async (isValidContract, services) => {
     contractNo,
     startDate,
     endDate,
+    numberOfCards,
     billingFrequency,
     shipToAddress,
     shipToContact,
   } = isValidContract;
-  const { name, address, nearBy, pincode } = shipToAddress[0];
+  const { name, address1, address2, address3, nearBy, city, pincode } =
+    shipToAddress;
   const { frequency, area, service, specialInstruction, preferred } = services;
+  const card = 1;
   const { day, time } = preferred;
 
   const content = fs.readFileSync(
@@ -48,8 +51,13 @@ const createDoc = async (isValidContract, services) => {
     contractNo: contractNo,
     day: day,
     time: time,
+    card: card,
+    noCards: numberOfCards,
     name: name,
-    address: address,
+    address1: address1,
+    address2: address2,
+    address3: address3,
+    city: city,
     nearBy: nearBy,
     pincode: pincode,
     shipToContact: shipToContact,

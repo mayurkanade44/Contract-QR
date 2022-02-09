@@ -6,15 +6,15 @@ const ContractSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Service contract number is required"],
     },
-    billToAddress: [
-      {
-        name: String,
-        address: String,
-        nearBy: String,
-        city: String,
-        pincode: Number,
-      },
-    ],
+    billToAddress: {
+      name: String,
+      address1: String,
+      address2: String,
+      address3: String,
+      nearBy: String,
+      city: String,
+      pincode: Number,
+    },
 
     billToContact: [
       {
@@ -23,15 +23,16 @@ const ContractSchema = new mongoose.Schema(
         email: String,
       },
     ],
-    shipToAddress: [
-      {
-        name: String,
-        address: String,
-        nearBy: String,
-        city: String,
-        pincode: Number,
-      },
-    ],
+    shipToAddress: {
+      name: String,
+      address1: String,
+      address2: String,
+      address3: String,
+      nearBy: String,
+      city: String,
+      pincode: Number,
+    },
+
     shipToContact: [
       {
         name: String,
@@ -45,6 +46,10 @@ const ContractSchema = new mongoose.Schema(
     },
     endDate: {
       type: Date,
+    },
+    numberOfCards: {
+      type: Number,
+      required: true,
     },
     billingFrequency: {
       type: String,
