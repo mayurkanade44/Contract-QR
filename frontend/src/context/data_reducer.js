@@ -26,7 +26,7 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        contract: action.payload,
+        singleContract: action.payload,
       };
     }
     case FETCH_CARD: {
@@ -60,6 +60,12 @@ const data_reducer = (state, action) => {
         return {
           ...state,
           shipToContact: { ...state.shipToContact, [name]: value },
+        };
+      }
+      if (id === "preferred") {
+        return {
+          ...state,
+          preferred: { ...state.preferred, [name]: value },
         };
       }
       return { ...state, [name]: value };

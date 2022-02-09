@@ -16,7 +16,7 @@ const DataContext = createContext();
 const intialState = {
   loading: false,
   contracts: [],
-  contract: [],
+  singleContract: [],
   card: [],
   contractNo: "",
   billToAddress: {
@@ -50,6 +50,26 @@ const intialState = {
   ],
   startDate: "",
   billingFrequency: "",
+  frequency:'Daily',
+  frequencyList: [
+    "Daily",
+    "Thrice A Week",
+    "Twice A Week",
+    "Weekly",
+    "Thrice A Month",
+    "Fortnightly",
+    "Monthly",
+    "Quarterly",
+    "Thrice A Year",
+    "Twice A Year",
+    "Yearly",
+  ],
+  service: [],
+  preferred: { day: "", time: "" },
+  specialInstruction: '',
+  area:'',
+  comments:'',
+  contract: ''
 };
 
 export const DataProvider = ({ children }) => {
@@ -115,10 +135,19 @@ export const DataProvider = ({ children }) => {
       dispatch({
         type: CREATE_CONTRACT,
       });
+      console.log(res.data.contract);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const createCard = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
 
   const handleChange = (e) => {
     const name = e.target.name;
