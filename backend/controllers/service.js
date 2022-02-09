@@ -30,7 +30,7 @@ const createDoc = async (isValidContract, services) => {
   } = isValidContract;
   const { name, address, nearBy, pincode } = shipToAddress[0];
   const { frequency, area, service, specialInstruction, preferred } = services;
-  const { day, time } = preferred[0];
+  const { day, time } = preferred;
 
   const content = fs.readFileSync(
     path.resolve(__dirname, "test.docx"),
