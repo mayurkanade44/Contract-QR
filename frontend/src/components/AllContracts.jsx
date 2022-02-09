@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const AllContracts = () => {
   const { contracts } = useDataContext();
-  console.log(contracts);
+  
   return (
     <div className="container">
       <table className="table table-bordered">

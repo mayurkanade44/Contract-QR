@@ -9,6 +9,8 @@ import {
   FETCH_CARD,
   HANDLE_CHANGE,
   CREATE_CONTRACT,
+  SET_CONTRACTID,
+  CREATE_CARD,
 } from "./action";
 
 const DataContext = createContext();
@@ -50,7 +52,7 @@ const intialState = {
   ],
   startDate: "",
   billingFrequency: "",
-  frequency:'Daily',
+  frequency: "Daily",
   frequencyList: [
     "Daily",
     "Thrice A Week",
@@ -66,10 +68,10 @@ const intialState = {
   ],
   service: [],
   preferred: { day: "", time: "" },
-  specialInstruction: '',
-  area:'',
-  comments:'',
-  contract: ''
+  specialInstruction: "",
+  area: "",
+  comments: "",
+  contract: "",
 };
 
 export const DataProvider = ({ children }) => {
@@ -89,6 +91,8 @@ export const DataProvider = ({ children }) => {
 
   const fetchSingleContract = async (id) => {
     try {
+      const contractId = id;
+      dispatch({ type: SET_CONTRACTID, payload: { contractId } });
       const res = await axios.get(`/contracts/${id}`);
       dispatch({
         type: FETCH_CONTRACT,
@@ -141,13 +145,29 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const createCard = async () => {
+  const createCard = async (id) => {
     try {
-      
+      const {
+        frequency,
+        service,
+        preferred,
+        specialInstruction,
+        area,
+        contract,
+      } = state;
+      const res = await axios.post("/service", {
+        frequency,
+        service,
+        preferred,
+        contract,
+        specialInstruction,
+        area,
+      });
+      dispatch({ type: CREATE_CARD });
     } catch (error) {
-      
+      console.log(error);
     }
-  }
+  };
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -169,6 +189,7 @@ export const DataProvider = ({ children }) => {
         fetchSingleCard,
         handleChange,
         createContract,
+        createCard,
       }}
     >
       {children}

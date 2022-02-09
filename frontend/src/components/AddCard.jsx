@@ -14,6 +14,7 @@ const AddCard = () => {
     specialInstruction,
     fetchSingleContract,
     singleContract,
+    createCard,
   } = useDataContext();
   const { day, time } = preferred;
   const { contractNo, startDate, endDate } = singleContract;
@@ -31,7 +32,11 @@ const AddCard = () => {
   useEffect(() => {
     fetchSingleContract(id);
   }, [id]);
-  console.log(singleContract);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createCard(id);
+  };
 
   return (
     <div className="container my-3">
@@ -98,6 +103,15 @@ const AddCard = () => {
               name="specialInstruction"
               value={specialInstruction}
             />
+          </div>
+          <div className="col-md-4">
+            <button
+              className="btn btn-dark"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Save
+            </button>
           </div>
         </div>
       </form>

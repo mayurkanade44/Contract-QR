@@ -7,7 +7,7 @@ const ClientDetails = ({ data, contacts }) => {
         return (
           <div key={data._id}>
             <h5>{`Name: ${data.name}`}</h5>
-            <h5>{`Address: ${data.address} ${data.nearBy} ${data.pincode}`}</h5>
+            <h5>{`Address: ${data.address} ${data.nearBy} ${data.city} ${data.pincode}`}</h5>
           </div>
         );
       })}

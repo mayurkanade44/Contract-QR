@@ -79,6 +79,33 @@ const AddContract = () => {
               value={email}
             />
           </div>
+          <div className="col-md-3">
+            <InputRow
+              label="Name"
+              id="billToContact"
+              type="text"
+              name="name"
+              value={name}
+            />
+          </div>
+          <div className="col-md-4">
+            <InputRow
+              label="Contact No"
+              type="text"
+              id="billToContact"
+              name="contact"
+              value={contact}
+            />
+          </div>
+          <div className="col-md-4">
+            <InputRow
+              label="Email Id"
+              type="text"
+              id="billToContact"
+              name="email"
+              value={email}
+            />
+          </div>
           <div className="col-md-1 align-items-center">
             <button className="btn btn-primary">Add</button>
           </div>

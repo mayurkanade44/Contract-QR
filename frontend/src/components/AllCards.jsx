@@ -24,7 +24,7 @@ const AllCards = ({ data }) => {
                 <td>{service}</td>
                 <td>{frequency}</td>
                 <td>{area}</td>
-                <td>{`${preferred[0].day} / ${preferred[0].time}`}</td>
+                <td>{`${preferred.day} / ${preferred.time}`}</td>
                 <td>
                   <Link to={`/service/${_id}`}>
                     <button className="btn btn-primary">Update</button>

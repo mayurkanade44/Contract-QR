@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import { ClientDetails, AllCards } from "../components";
 import { useDataContext } from "../context/data_context";
 
+
 const SingleContract = () => {
-  const { fetchSingleContract, contract } = useDataContext();
+  const { fetchSingleContract, singleContract } = useDataContext();
   const {
     contractNo,
     billToAddress,
@@ -12,13 +13,12 @@ const SingleContract = () => {
     shipToAddress,
     shipToContact,
     services,
-  } = contract;
+  } = singleContract;
   const { id } = useParams();
 
   useEffect(() => {
     fetchSingleContract(id);
   }, [id]);
-  console.log(contract);
 
   return (
     <div className="container">
