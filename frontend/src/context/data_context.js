@@ -178,7 +178,6 @@ export const DataProvider = ({ children }) => {
         area,
       });
       dispatch({ type: CREATE_CARD });
-      console.log(serv);
     } catch (error) {
       console.log(error);
     }
