@@ -1,19 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDataContext } from "../context/data_context";
 
-const ContactsTable = () => {
-    const {
-      temp1name,
-      temp2name,
-      temp3name,
-      temp1contact,
-      temp2contact,
-      temp3contact,
-      temp1email,
-      temp2email,
-      temp3email,
-    } = "";
-   const {handleChange}= useDataContext()
+const ContactsTable = ({ id }) => {
+  const { handleChange } = useDataContext();
+  const { name, email, contact } = "";
   return (
     <div>
       <table className="table">
@@ -27,35 +17,89 @@ const ContactsTable = () => {
         <tbody>
           <tr>
             <td>
-              <input type="text" name="temp1name" value={temp1name} />
+              <input
+                type="text"
+                name="name"
+                id={id}
+                value={name}
+                onChange={handleChange}
+              />
             </td>
             <td>
-              <input type="text" />
+              <input
+                type="number"
+                id={id}
+                name="contact"
+                value={contact}
+                onChange={handleChange}
+              />
             </td>
             <td>
-              <input type="text" />
+              <input
+                type="text"
+                id={id}
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
             </td>
           </tr>
           <tr>
             <td>
-              <input type="text" name="temp" />
+              <input
+                type="text"
+                name="name"
+                id={id}
+                value={name}
+                onChange={handleChange}
+              />
             </td>
             <td>
-              <input type="text" />
+              <input
+                type="number"
+                id={id}
+                name="contact"
+                value={contact}
+                onChange={handleChange}
+              />
             </td>
             <td>
-              <input type="text" />
+              <input
+                type="text"
+                id={id}
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
             </td>
           </tr>
           <tr>
             <td>
-              <input type="text" name="temp" />
+              <input
+                type="text"
+                name="name"
+                id={id}
+                value={name}
+                onChange={handleChange}
+              />
             </td>
             <td>
-              <input type="text" />
+              <input
+                type="number"
+                id={id}
+                name="contact"
+                value={contact}
+                onChange={handleChange}
+              />
             </td>
             <td>
-              <input type="text" />
+              <input
+                type="text"
+                id={id}
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
             </td>
           </tr>
         </tbody>

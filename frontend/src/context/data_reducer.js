@@ -5,7 +5,6 @@ import {
   FETCH_CARD,
   HANDLE_CHANGE,
   CREATE_CONTRACT,
-  SET_CONTRACTID,
   CREATE_CARD,
 } from "./action";
 
@@ -28,7 +27,8 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        singleContract: action.payload,
+        singleContract: action.payload.contract,
+        contract: action.payload.id,
       };
     }
     case FETCH_CARD: {
@@ -77,11 +77,6 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contractCreated: true,
-      };
-    }
-    case SET_CONTRACTID: {
-      return {
-        ...state,
         contract: action.payload.contractId,
       };
     }

@@ -12,6 +12,7 @@ const AddContract = () => {
     createContract,
     contractCreated,
     numberOfCards,
+    contract,
   } = useDataContext();
 
   const handleSubmit = (e) => {
@@ -22,7 +23,7 @@ const AddContract = () => {
   useEffect(() => {
     if (contractCreated) {
       setTimeout(() => {
-        navigate("/create");
+        navigate(`/addcard/${contract}`);
       }, 3000);
     }
   }, [contractCreated, navigate]);
@@ -59,12 +60,12 @@ const AddContract = () => {
           <div className="col-md-6 ">
             <h4 className="text-info text-center">Bill To Details:</h4>
             <ClientAddress id="billToAddress" />
-            <ContactsTable />
+            <ContactsTable id="billToContact" />
           </div>
           <div className="col-md-6 ">
             <h4 className="text-info text-center">Ship To Details:</h4>
             <ClientAddress id="shipToAddress" />
-            <ContactsTable />
+            <ContactsTable id="shipToContact" />
           </div>
           <div className="col-md-4">
             <InputRow

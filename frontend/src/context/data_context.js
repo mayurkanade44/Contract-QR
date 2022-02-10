@@ -9,7 +9,6 @@ import {
   FETCH_CARD,
   HANDLE_CHANGE,
   CREATE_CONTRACT,
-  SET_CONTRACTID,
   CREATE_CARD,
 } from "./action";
 
@@ -97,12 +96,11 @@ export const DataProvider = ({ children }) => {
 
   const fetchSingleContract = async (id) => {
     try {
-      const contractId = id;
-      dispatch({ type: SET_CONTRACTID, payload: { contractId } });
       const res = await axios.get(`/contracts/${id}`);
+      const contract = res.data.contract;
       dispatch({
         type: FETCH_CONTRACT,
-        payload: res.data.contract,
+        payload: { contract, id },
       });
     } catch (error) {
       console.log(error);
@@ -132,6 +130,7 @@ export const DataProvider = ({ children }) => {
         billToContact,
         startDate,
         billingFrequency,
+        numberOfCards,
       } = state;
       const res = await axios.post("/contracts", {
         contractNo,
@@ -141,11 +140,13 @@ export const DataProvider = ({ children }) => {
         shipToContact,
         startDate,
         billingFrequency,
+        numberOfCards,
       });
+      const contractId = res.data.contract._id;
       dispatch({
         type: CREATE_CONTRACT,
+        payload: { contractId },
       });
-      console.log(res.data.contract);
     } catch (error) {
       console.log(error);
     }
@@ -175,7 +176,7 @@ export const DataProvider = ({ children }) => {
         area,
       });
       dispatch({ type: CREATE_CARD });
-      console.log(serv)
+      console.log(serv);
     } catch (error) {
       console.log(error);
     }
