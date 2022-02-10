@@ -31,7 +31,7 @@ const createDoc = async (isValidContract, services) => {
   } = isValidContract;
   const { name, address1, address2, address3, nearBy, city, pincode } =
     shipToAddress;
-  const { frequency, area, service, specialInstruction, preferred } = services;
+  const { frequency, area, service, specialInstruction, preferred, serviceDue } = services;
   const card = 1;
   const { day, time } = preferred;
 
@@ -61,6 +61,7 @@ const createDoc = async (isValidContract, services) => {
     nearBy: nearBy,
     pincode: pincode,
     shipToContact: shipToContact,
+    serviceDue: serviceDue,
     service: service,
     frequency: frequency,
     area: area,

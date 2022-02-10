@@ -4,29 +4,16 @@ const ServiceSchema = new mongoose.Schema({
   frequency: {
     type: String,
     required: [true, "Please select frequency"],
-    enum: [
-      "Daily",
-      "Thrice A Week",
-      "Twice A Week",
-      "Weekly",
-      "Thrice A Month",
-      "Fortnightly",
-      "Monthly",
-      "Quarterly",
-      "Thrice A Year",
-      "Twice A Year",
-      "Yearly",
-    ],
   },
   service: {
     type: [String],
     required: [true, "Please provide service name"],
   },
+  serviceDue: [String],
   preferred: {
     day: String,
     time: String,
   },
-
   specialInstruction: {
     type: String,
   },
