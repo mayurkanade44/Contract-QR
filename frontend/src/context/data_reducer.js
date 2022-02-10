@@ -76,6 +76,7 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
+        contractCreated: true,
       };
     }
     case SET_CONTRACTID: {
@@ -87,7 +88,8 @@ const data_reducer = (state, action) => {
     case CREATE_CARD: {
       return {
         ...state,
-        loading:false
+        loading: false,
+        contractCreated: false,
       };
     }
 

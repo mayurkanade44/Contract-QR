@@ -20,10 +20,13 @@ const intialState = {
   contracts: [],
   singleContract: [],
   card: [],
+  contractCreated: false,
   contractNo: "",
   billToAddress: {
     name: "",
-    address: "",
+    address1: "",
+    address2: "",
+    address3: "",
     nearBy: "",
     city: "",
     pincode: "",
@@ -37,7 +40,9 @@ const intialState = {
   ],
   shipToAddress: {
     name: "",
-    address: "",
+    address1: "",
+    address2: "",
+    address3: "",
     nearBy: "",
     city: "",
     pincode: "",
@@ -52,6 +57,7 @@ const intialState = {
   ],
   startDate: "",
   billingFrequency: "",
+  numberOfCards: "",
   frequency: "Daily",
   frequencyList: [
     "Daily",
@@ -145,7 +151,8 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const createCard = async (id) => {
+  const createCard = async (dueMonths) => {
+    const serv = [];
     try {
       const {
         frequency,
@@ -155,15 +162,20 @@ export const DataProvider = ({ children }) => {
         area,
         contract,
       } = state;
+      service.split(",").map((ser) => {
+        return serv.push(ser);
+      });
       const res = await axios.post("/service", {
+        serviceDue: dueMonths,
         frequency,
-        service,
+        service: serv,
         preferred,
         contract,
         specialInstruction,
         area,
       });
       dispatch({ type: CREATE_CARD });
+      console.log(serv)
     } catch (error) {
       console.log(error);
     }
