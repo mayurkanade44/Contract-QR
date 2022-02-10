@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 
 const AllContracts = () => {
   const { contracts } = useDataContext();
-  
+
   return (
     <div className="container">
+      <Link to="/create">
+        <button className="btn btn-secondary my-3">Create Contract</button>
+      </Link>
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -22,7 +25,7 @@ const AllContracts = () => {
             contracts.map((contracts) => {
               const { contractNo, _id, startDate, endDate, shipToAddress } =
                 contracts;
-              const { name } = shipToAddress[0];
+              const { name } = shipToAddress;
               return (
                 <tr key={_id}>
                   <td>{contractNo}</td>

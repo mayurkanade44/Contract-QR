@@ -1,16 +1,31 @@
-import React from "react";
+import { useEffect } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, ClientAddress } from ".";
+import { InputRow, ClientAddress, ContactsTable } from ".";
+import { useNavigate } from "react-router-dom";
 
 const AddContract = () => {
-  const { contractNo, billingFrequency, startDate, createContract } =
-    useDataContext();
-  const { name, email, contact } = "";
+  const navigate = useNavigate();
+  const {
+    contractNo,
+    billingFrequency,
+    startDate,
+    createContract,
+    contractCreated,
+    numberOfCards,
+  } = useDataContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createContract();
   };
+
+  useEffect(() => {
+    if (contractCreated) {
+      setTimeout(() => {
+        navigate("/create");
+      }, 3000);
+    }
+  }, [contractCreated, navigate]);
 
   return (
     <div>
@@ -41,112 +56,33 @@ const AddContract = () => {
             />
           </div>
           <hr />
-          <h4 className="text-info">Bill To Details:</h4>
-          <div className="col-md-12 my-3">
+          <div className="col-md-6 ">
+            <h4 className="text-info text-center">Bill To Details:</h4>
             <ClientAddress id="billToAddress" />
+            <ContactsTable />
           </div>
-          <hr />
-          <h4 className="text-info">Ship To Details:</h4>
-          <div className="col-md-12 my-3">
+          <div className="col-md-6 ">
+            <h4 className="text-info text-center">Ship To Details:</h4>
             <ClientAddress id="shipToAddress" />
-          </div>
-          <hr />
-          <h4>Bill To Contacts</h4>
-          <div className="col-md-3">
-            <InputRow
-              label="Name"
-              id="billToContact"
-              type="text"
-              name="name"
-              value={name}
-            />
+            <ContactsTable />
           </div>
           <div className="col-md-4">
             <InputRow
-              label="Contact No"
-              type="text"
-              id="billToContact"
-              name="contact"
-              value={contact}
+              label="Number Of Cards"
+              type="number"
+              name="numberOfCards"
+              value={numberOfCards}
             />
           </div>
-          <div className="col-md-4">
-            <InputRow
-              label="Email Id"
-              type="text"
-              id="billToContact"
-              name="email"
-              value={email}
-            />
+          <div className="col-md-2">
+            <button
+              className="btn btn-primary btn-lg"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Save
+            </button>
           </div>
-          <div className="col-md-3">
-            <InputRow
-              label="Name"
-              id="billToContact"
-              type="text"
-              name="name"
-              value={name}
-            />
-          </div>
-          <div className="col-md-4">
-            <InputRow
-              label="Contact No"
-              type="text"
-              id="billToContact"
-              name="contact"
-              value={contact}
-            />
-          </div>
-          <div className="col-md-4">
-            <InputRow
-              label="Email Id"
-              type="text"
-              id="billToContact"
-              name="email"
-              value={email}
-            />
-          </div>
-          <div className="col-md-1 align-items-center">
-            <button className="btn btn-primary">Add</button>
-          </div>
-          <h4>Ship To Contacts</h4>
-          <div className="col-md-3">
-            <InputRow
-              label="Name"
-              id="shipToContact"
-              type="text"
-              name="name"
-              value={name}
-            />
-          </div>
-          <div className="col-md-4">
-            <InputRow
-              label="Contact No"
-              type="text"
-              id="shipToContact"
-              name="contact"
-              value={contact}
-            />
-          </div>
-          <div className="col-md-4">
-            <InputRow
-              label="Email Id"
-              type="text"
-              id="shipToContact"
-              name="email"
-              value={email}
-            />
-          </div>
-          {/* <div className="col-md-1 align-items-center">
-            <button className="btn btn-primary">Add</button>
-          </div> */}
-          <button
-            className="btn btn-primary my-3"
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Save
-          </button>
         </div>
       </form>
     </div>

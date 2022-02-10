@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
 import { InputRow, InputSelect } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
 const AddCard = () => {
+  const [dueMonths, setDueMonths] = useState([]);
   const {
     frequency,
     frequencyList,
@@ -29,13 +30,56 @@ const AddCard = () => {
 
   const { id } = useParams();
 
+  const dueRange = (startDate, endDate) => {
+    const startMonth = startDate.split("T")[0];
+    const endMonth = endDate.split("T")[0];
+
+    var start = moment(startMonth);
+    var end = moment(endMonth);
+
+    var months = [start.format("MMMM YY")];
+    end.subtract(1, "month"); //Substract one month to exclude endDate itself
+
+    var month = moment(start); //clone the startDate
+    while (month < end) {
+      month.add(1, "month");
+      months.push(month.format("MMMM YY"));
+    }
+    const due = [];
+    months.map((date, index) => {
+      if (frequency && frequency === "Thrice A Year" && index % 4 === 0) {
+        return due.push(date);
+      } else if (frequency && frequency === "Quarterly" && index % 3 === 0) {
+        return due.push(date);
+      } else if (frequency && frequency === "Twice A Year" && index % 6 === 0) {
+        return due.push(date);
+      } else if (
+        frequency &&
+        (frequency === "Daily" ||
+          frequency === "Weekly" ||
+          frequency === "Twice A Week" ||
+          frequency === "Thrice A Week" ||
+          frequency === "Thrice A Month" ||
+          frequency === "Fortnightly" ||
+          frequency === "Monthly") &&
+        index % 1 === 0
+      ) {
+        return due.push(date);
+      }
+    });
+    setDueMonths(due);
+  };
+
   useEffect(() => {
     fetchSingleContract(id);
-  }, [id]);
+    if ((startDate, endDate)) {
+      dueRange(startDate, endDate);
+    }
+  }, [id, startDate, frequency]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createCard(id);
+    createCard(dueMonths);
   };
 
   return (
