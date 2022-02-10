@@ -3,14 +3,9 @@ import React from "react";
 const ClientDetails = ({ data, contacts }) => {
   return (
     <div>
-      {data.map((data) => {
-        return (
-          <div key={data._id}>
-            <h5>{`Name: ${data.name}`}</h5>
-            <h5>{`Address: ${data.address} ${data.nearBy} ${data.city} ${data.pincode}`}</h5>
-          </div>
-        );
-      })}
+      <h5>{`Name: ${data.name}`}</h5>
+      <h5>{`Address: ${data.address1}, ${data.city}-${data.pincode}`}</h5>
+
       <h5>Contact Details:-</h5>
       <table className="table table-sm table-bordered">
         <thead>
