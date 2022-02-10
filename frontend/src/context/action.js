@@ -7,4 +7,4 @@ export const HANDLE_CHANGE = "HANDLE_CHANGE";
 export const SET_CONTRACTID = "SET_CONTRACTID";
 export const CREATE_CARD = "CREATE_CARD";
 export const SET_DUE = "SET_DUE";
-
+export const IMAGE_UPLOADED = "IMAGE_UPLOADED";

@@ -10,6 +10,7 @@ import {
   HANDLE_CHANGE,
   CREATE_CONTRACT,
   CREATE_CARD,
+  IMAGE_UPLOADED,
 } from "./action";
 
 const DataContext = createContext();
@@ -76,6 +77,7 @@ const intialState = {
   specialInstruction: "",
   area: "",
   comments: "",
+  image: "",
   contract: "",
 };
 
@@ -182,6 +184,40 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+
+    const form = new FormData();
+    form.append("image", file);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const res = await axios.post("/service/upload", form, config);
+      dispatch({ type: IMAGE_UPLOADED, payload: res.data.image });
+      console.log(res.data.image);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateCard = async (id) => {
+    try {
+      const { comments, image } = state;
+      const res = await axios.patch(`/service/${id}`, {
+        comments,
+        image,
+      });
+      console.log("success");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -203,6 +239,8 @@ export const DataProvider = ({ children }) => {
         handleChange,
         createContract,
         createCard,
+        handleImage,
+        updateCard,
       }}
     >
       {children}

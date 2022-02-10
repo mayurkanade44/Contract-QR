@@ -7,6 +7,7 @@ import InputRow from "./InputRow";
 import AddCard from "./AddCard";
 import InputSelect from "./InputSelect";
 import ContactsTable from "./ContactsTable";
+import UpdateCard from "./UpdateCard";
 
 export {
   AllContracts,
@@ -18,4 +19,5 @@ export {
   AddCard,
   InputSelect,
   ContactsTable,
+  UpdateCard,
 };

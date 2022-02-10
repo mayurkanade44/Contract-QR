@@ -6,6 +6,7 @@ import {
   HANDLE_CHANGE,
   CREATE_CONTRACT,
   CREATE_CARD,
+  IMAGE_UPLOADED
 } from "./action";
 
 const data_reducer = (state, action) => {
@@ -86,6 +87,13 @@ const data_reducer = (state, action) => {
         loading: false,
         contractCreated: false,
       };
+    }
+    case IMAGE_UPLOADED: {
+      return {
+        ...state,
+        loading: false,
+        image: action.payload
+      }
     }
 
     default:

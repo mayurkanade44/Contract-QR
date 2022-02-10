@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { UpdateCard } from "../components";
 import { useDataContext } from "../context/data_context";
+
 
 const SingleCard = () => {
   const { card, fetchSingleCard } = useDataContext();
   const { id } = useParams();
-  console.log(card);
 
   useEffect(() => {
     fetchSingleCard(id);
@@ -22,6 +23,7 @@ const SingleCard = () => {
             </div>
           );
         })}
+        <UpdateCard id={id}/>
       </div>
     </div>
   );
