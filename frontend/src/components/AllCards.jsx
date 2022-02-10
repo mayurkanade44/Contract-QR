@@ -21,7 +21,7 @@ const AllCards = ({ data }) => {
             return (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{service}</td>
+                <td>{`${service}`}</td>
                 <td>{frequency}</td>
                 <td>{area}</td>
                 <td>{`${preferred.day} / ${preferred.time}`}</td>
