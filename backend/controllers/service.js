@@ -81,10 +81,9 @@ const createDoc = async (isValidContract, services) => {
   );
 };
 
-const sendEmail = async (emails) => {
+const sendEmail = async (emails, image) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  request.get(
-    "https://res.cloudinary.com/epcorn/image/upload/v1643971158/contract/tmp-1-1643971156215_aowlcj.jpg",
+  request.get(image,
     { encoding: null },
     (err, res) => {
       const base64File = Buffer.from(res.body).toString("base64");
@@ -168,7 +167,7 @@ const updateCard = async (req, res) => {
         return list.email;
       });
 
-      sendEmail(emails);
+      sendEmail(emails, image);
     }
     res.status(200).json({ service });
   } catch (error) {
