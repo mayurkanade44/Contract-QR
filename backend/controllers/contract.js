@@ -1,7 +1,6 @@
 const Contract = require("../models/contract");
 const QRCode = require("qrcode");
 
-
 const getAllContracts = async (req, res) => {
   try {
     const contracts = await Contract.find({}, { __v: 0 });
@@ -25,11 +24,11 @@ const createContract = async (req, res) => {
 const getContract = async (req, res) => {
   try {
     const { id } = req.params;
-    const contract = await Contract.findOne({ _id: id }).populate('services');
+    const contract = await Contract.findOne({ _id: id }).populate("services");
     if (!contract) {
       return res.status(400).json({ msg: "no contract found" });
     }
-    
+
     res.status(200).json({ contract, len: contract.services.length });
   } catch (error) {
     res.status(500).json({ msg: error });

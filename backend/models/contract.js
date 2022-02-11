@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ContractSchema = new mongoose.Schema(
   {
     contractNo: {
-      type: Number,
+      type: String,
       required: [true, "Service contract number is required"],
     },
     billToAddress: {

@@ -160,14 +160,20 @@ const updateCard = async (req, res) => {
       { _id: serviceId },
       req.body,
       { new: true, runValidators: true }
-    ).populate({ path: "contract", select: "billToContact" });
+    ).populate({ path: "contract", select: "billToContact, shipToContact" });
     if (service) {
+      const emails = []
       const list = service.contract.billToContact;
-      const emails = list.map((list) => {
-        return list.email;
+      const list1 = service.contract.shipToContact;
+      list.map((list) => {
+        return emails.push(list.email);
       });
+      list1.map((list) => {
+        return emails.push(list.email);
+      });
+      console.log(emails)
 
-      sendEmail(emails, image);
+      // sendEmail(emails, image);
     }
     res.status(200).json({ service });
   } catch (error) {
