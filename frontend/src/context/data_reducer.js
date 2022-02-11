@@ -6,7 +6,8 @@ import {
   HANDLE_CHANGE,
   CREATE_CONTRACT,
   CREATE_CARD,
-  IMAGE_UPLOADED
+  IMAGE_UPLOADED,
+  SAME_DETAILS,
 } from "./action";
 
 const data_reducer = (state, action) => {
@@ -73,6 +74,14 @@ const data_reducer = (state, action) => {
       }
       return { ...state, [name]: value };
     }
+    case SAME_DETAILS: {
+      return {
+        ...state,
+        loading: false,
+        shipToAddress: state.billToAddress,
+        shipToContact: state.billToContact,
+      };
+    }
     case CREATE_CONTRACT: {
       return {
         ...state,
@@ -92,8 +101,8 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        image: action.payload
-      }
+        image: action.payload,
+      };
     }
 
     default:

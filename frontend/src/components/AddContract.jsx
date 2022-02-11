@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
 import { InputRow, ClientAddress, ContactsTable } from ".";
 import { useNavigate } from "react-router-dom";
 
 const AddContract = () => {
   const navigate = useNavigate();
+  const [same, setSame] = useState(false);
   const {
     contractNo,
     billingFrequency,
@@ -13,11 +14,18 @@ const AddContract = () => {
     contractCreated,
     numberOfCards,
     contract,
+    sameDetails,
   } = useDataContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createContract();
+  };
+
+  const handleSame = (e) => {
+    e.preventDefault();
+    sameDetails();
+    setSame(true);
   };
 
   useEffect(() => {
@@ -63,8 +71,14 @@ const AddContract = () => {
             <ContactsTable id="billToContact" />
           </div>
           <div className="col-md-6 ">
-            <h4 className="text-info text-center">Ship To Details:</h4>
-            <ClientAddress id="shipToAddress" />
+            <h4 className="text-info d-inline ms-5">Ship To Details:</h4>
+            <button
+              onClick={handleSame}
+              className="btn btn-primary ms-5 d-inline"
+            >
+              Same As Billing Details
+            </button>
+            <ClientAddress id="shipToAddress" same={same} />
             <ContactsTable id="shipToContact" />
           </div>
           <div className="col-md-4">

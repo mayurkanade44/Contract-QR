@@ -11,6 +11,7 @@ import {
   CREATE_CONTRACT,
   CREATE_CARD,
   IMAGE_UPLOADED,
+  SAME_DETAILS,
 } from "./action";
 
 const DataContext = createContext();
@@ -67,13 +68,14 @@ const intialState = {
     "Thrice A Month",
     "Fortnightly",
     "Monthly",
+    "Alternate Monthly",
     "Quarterly",
     "Thrice A Year",
     "Twice A Year",
     "Yearly",
   ],
   service: [],
-  preferred: { day: "", time: "" },
+  preferred: { day: "", time: "10 am - 12 pm" },
   specialInstruction: "",
   area: "",
   comments: "",
@@ -120,6 +122,10 @@ export const DataProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const sameDetails = () => {
+    dispatch({ type: SAME_DETAILS });
   };
 
   const createContract = async () => {
@@ -240,6 +246,7 @@ export const DataProvider = ({ children }) => {
         createCard,
         handleImage,
         updateCard,
+        sameDetails,
       }}
     >
       {children}

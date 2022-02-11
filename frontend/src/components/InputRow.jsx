@@ -1,7 +1,7 @@
 import React from "react";
 import { useDataContext } from "../context/data_context";
 
-const InputRow = ({ label, type, name, value, id }) => {
+const InputRow = ({ label, type, name, value, id, placeholder }) => {
   const { handleChange } = useDataContext();
   return (
     <div className="row g-3 align-items-center">
@@ -15,6 +15,7 @@ const InputRow = ({ label, type, name, value, id }) => {
           className="form-control"
           type={type}
           id={id}
+          placeholder={placeholder}
           name={name}
           value={value}
           onChange={handleChange}

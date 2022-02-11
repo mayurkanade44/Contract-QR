@@ -55,6 +55,12 @@ const AddCard = () => {
         return due.push(date);
       } else if (
         frequency &&
+        frequency === "Alternate Monthly" &&
+        index % 2 === 0
+      ) {
+        return due.push(date);
+      } else if (
+        frequency &&
         (frequency === "Daily" ||
           frequency === "Weekly" ||
           frequency === "Twice A Week" ||
