@@ -78,6 +78,10 @@ ContractSchema.pre("save", async function () {
   );
 });
 
+ContractSchema.pre("remove", async function () {
+  await this.model("Service").deleteMany({ contract: this._id });
+});
+
 ContractSchema.virtual("services", {
   ref: "Service",
   localField: "_id",

@@ -91,11 +91,12 @@ const generateQR = async (req, res) => {
 const deleteContract = async (req, res) => {
   try {
     const { id } = req.params;
-    const contract = await Contract.findByIdAndDelete({ _id: id });
+    const contract = await Contract.findOne({ _id: id });
     if (!contract) {
       return res.status(400).json({ msg: "no contract found" });
     }
-    res.status(200).json({ contract });
+    await contract.remove();
+    res.status(200).json({ msg: "Success! Contract removed." });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
