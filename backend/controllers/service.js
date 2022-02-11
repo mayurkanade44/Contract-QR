@@ -95,7 +95,7 @@ const sendEmail = async (emails, image) => {
     const msg = {
       to: emails,
       from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
-      subject: "Sending with SendGrid is Fun",
+      subject: "Service completed report card",
       text: "and easy to do anywhere, even with Node.js",
       html: "<strong>and easy to do anywhere, even with Node.js</strong>",
       attachments: [

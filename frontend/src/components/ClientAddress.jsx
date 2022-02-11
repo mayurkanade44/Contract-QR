@@ -49,7 +49,7 @@ const ClientAddress = ({ id, same }) => {
             name="nearBy"
             value={shipToAddress.nearBy}
           />
-          <InputRow label="City" id={id} type="text" name="city" value={city} />
+          <InputRow label="City" id={id} type="text" name="city" value={shipToAddress.city} />
           <InputRow
             label="Pincode"
             id={id}

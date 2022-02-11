@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 import { useDataContext } from "../context/data_context";
 import { Link } from "react-router-dom";
 
 const AllContracts = () => {
-  const { contracts } = useDataContext();
+  const { contracts, contract, fetchContracts } = useDataContext();
+
+  useEffect(() => {
+    fetchContracts();
+    // eslint-disable-next-line
+  }, [contract]);
 
   return (
     <div className="container">

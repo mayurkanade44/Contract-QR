@@ -1,9 +1,8 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 import reducer from "./data_reducer";
 
 import {
-  LOADING,
   FETCH_CONTRACTS,
   FETCH_CONTRACT,
   FETCH_CARD,
@@ -12,6 +11,7 @@ import {
   CREATE_CARD,
   IMAGE_UPLOADED,
   SAME_DETAILS,
+  DELETE_CONTRACT,
 } from "./action";
 
 const DataContext = createContext();
@@ -124,6 +124,16 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const deleteContract = async (id) => {
+    try {
+      const res = await axios.delete(`/contracts/${id}`);
+      console.log(res.data.msg);
+      dispatch({ type: DELETE_CONTRACT });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const sameDetails = () => {
     dispatch({ type: SAME_DETAILS });
   };
@@ -231,14 +241,11 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
   };
 
-  useEffect(() => {
-    fetchContracts();
-  }, []);
-
   return (
     <DataContext.Provider
       value={{
         ...state,
+        fetchContracts,
         fetchSingleContract,
         fetchSingleCard,
         handleChange,
@@ -247,6 +254,7 @@ export const DataProvider = ({ children }) => {
         handleImage,
         updateCard,
         sameDetails,
+        deleteContract,
       }}
     >
       {children}

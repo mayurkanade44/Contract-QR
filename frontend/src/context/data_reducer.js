@@ -8,6 +8,7 @@ import {
   CREATE_CARD,
   IMAGE_UPLOADED,
   SAME_DETAILS,
+  DELETE_CONTRACT,
 } from "./action";
 
 const data_reducer = (state, action) => {
@@ -88,6 +89,13 @@ const data_reducer = (state, action) => {
         loading: false,
         contractCreated: true,
         contract: action.payload.contractId,
+      };
+    }
+    case DELETE_CONTRACT: {
+      return {
+        ...state,
+        loading: false,
+        contract: 1,
       };
     }
     case CREATE_CARD: {
