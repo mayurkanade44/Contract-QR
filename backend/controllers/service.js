@@ -31,7 +31,14 @@ const createDoc = async (isValidContract, services) => {
   } = isValidContract;
   const { name, address1, address2, address3, nearBy, city, pincode } =
     shipToAddress;
-  const { frequency, area, service, specialInstruction, preferred, serviceDue } = services;
+  const {
+    frequency,
+    area,
+    service,
+    specialInstruction,
+    preferred,
+    serviceDue,
+  } = services;
   const card = 1;
   const { day, time } = preferred;
 
@@ -83,28 +90,25 @@ const createDoc = async (isValidContract, services) => {
 
 const sendEmail = async (emails, image) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  request.get(image,
-    { encoding: null },
-    (err, res) => {
-      const base64File = Buffer.from(res.body).toString("base64");
-      const msg = {
-        to: emails,
-        from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
-        subject: "Sending with SendGrid is Fun",
-        text: "and easy to do anywhere, even with Node.js",
-        html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-        attachments: [
-          {
-            content: base64File,
-            filename: "attachment.jpg",
-            type: "application/jpg",
-            disposition: "attachment",
-          },
-        ],
-      };
-      sgMail.send(msg);
-    }
-  );
+  request.get(image, { encoding: null }, (err, res) => {
+    const base64File = Buffer.from(res.body).toString("base64");
+    const msg = {
+      to: emails,
+      from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
+      subject: "Sending with SendGrid is Fun",
+      text: "and easy to do anywhere, even with Node.js",
+      html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+      attachments: [
+        {
+          content: base64File,
+          filename: "attachment.jpg",
+          type: "application/jpg",
+          disposition: "attachment",
+        },
+      ],
+    };
+    sgMail.send(msg);
+  });
 };
 
 const generateQr = async (isValidContract, services) => {
@@ -160,20 +164,19 @@ const updateCard = async (req, res) => {
       { _id: serviceId },
       req.body,
       { new: true, runValidators: true }
-    ).populate({ path: "contract", select: "billToContact, shipToContact" });
+    ).populate({ path: "contract", select: "billToContact shipToContact" });
     if (service) {
-      const emails = []
+      const temails = new Set();
       const list = service.contract.billToContact;
       const list1 = service.contract.shipToContact;
       list.map((list) => {
-        return emails.push(list.email);
+        return temails.add(list.email);
       });
       list1.map((list) => {
-        return emails.push(list.email);
+        return temails.add(list.email);
       });
-      console.log(emails)
-
-      // sendEmail(emails, image);
+      const emails = [...temails];
+      sendEmail(emails, image);
     }
     res.status(200).json({ service });
   } catch (error) {
