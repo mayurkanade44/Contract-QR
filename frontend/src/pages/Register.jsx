@@ -5,12 +5,12 @@ import { useDataContext } from "../context/data_context";
 const Register = () => {
   const { showAlert, loading, displayAlert } = useDataContext();
   const [values, setValues] = useState({
-    username: "",
+    name: "",
     password: "",
     role: "Sales",
   });
 
-  const roles = ["Sales", "Oprator"];
+  const roles = ["Sales", "Operator"];
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -18,8 +18,8 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { username, password } = values;
-    if (!username || !password) {
+    const { name, password } = values;
+    if (!name || !password) {
       displayAlert();
       return;
     }
@@ -32,12 +32,12 @@ const Register = () => {
       <div className="d-flex justify-content-center">
         <form onSubmit={onSubmit}>
           <div className="mb-3">
-            <label className="form-label">Username</label>
+            <label className="form-label">Name</label>
             <input
-              type="username"
+              type="name"
               className="form-control"
-              name="username"
-              value={values.username}
+              name="name"
+              value={values.name}
               onChange={handleChange}
               required
             />
