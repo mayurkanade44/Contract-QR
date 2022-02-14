@@ -9,6 +9,8 @@ import {
   IMAGE_UPLOADED,
   SAME_DETAILS,
   DELETE_CONTRACT,
+  DISPLAY_ALERT,
+  CLEAR_ALERT
 } from "./action";
 
 const data_reducer = (state, action) => {
@@ -17,6 +19,24 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: true,
+      };
+    }
+    case CLEAR_ALERT: {
+      return {
+        ...state,
+        loading: false,
+        showAlert: false,
+        alertText: "",
+        alertType: "",
+      };
+    }
+    case DISPLAY_ALERT: {
+      return {
+        ...state,
+        loading: false,
+        showAlert: true,
+        alertText: "provide name",
+        alertType: "danger",
       };
     }
     case FETCH_CONTRACTS: {

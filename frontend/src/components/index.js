@@ -8,6 +8,7 @@ import AddCard from "./AddCard";
 import InputSelect from "./InputSelect";
 import ContactsTable from "./ContactsTable";
 import UpdateCard from "./UpdateCard";
+import Alert from "./Alert";
 
 export {
   AllContracts,
@@ -20,4 +21,5 @@ export {
   InputSelect,
   ContactsTable,
   UpdateCard,
+  Alert,
 };

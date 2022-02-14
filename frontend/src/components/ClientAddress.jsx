@@ -49,7 +49,13 @@ const ClientAddress = ({ id, same }) => {
             name="nearBy"
             value={shipToAddress.nearBy}
           />
-          <InputRow label="City" id={id} type="text" name="city" value={shipToAddress.city} />
+          <InputRow
+            label="City"
+            id={id}
+            type="text"
+            name="city"
+            value={shipToAddress.city}
+          />
           <InputRow
             label="Pincode"
             id={id}
@@ -60,14 +66,27 @@ const ClientAddress = ({ id, same }) => {
         </div>
       ) : (
         <div>
-          <InputRow
-            label="Name"
-            id={id}
-            placeholder="Full Name"
-            type="text"
-            name="name"
-            value={name}
-          />
+          <div className="input-group mb-3">
+            <h4>Name:-</h4>
+            <button
+              className="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Mr
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <a className="dropdown-item">Ms</a>
+              </li>
+            </ul>
+            <input
+              type="text"
+              className="form-control"
+              aria-label="Text input with dropdown button"
+            />
+          </div>
           <InputRow
             label="Address1"
             id={id}

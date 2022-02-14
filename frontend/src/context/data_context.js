@@ -12,12 +12,17 @@ import {
   IMAGE_UPLOADED,
   SAME_DETAILS,
   DELETE_CONTRACT,
+  DISPLAY_ALERT,
+  CLEAR_ALERT,
 } from "./action";
 
 const DataContext = createContext();
 
 const intialState = {
   loading: false,
+  showAlert: false,
+  alertText: "",
+  alertType: "",
   contracts: [],
   singleContract: [],
   card: [],
@@ -85,6 +90,17 @@ const intialState = {
 
 export const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState);
+
+  const displayAlert = () => {
+    dispatch({ type: DISPLAY_ALERT });
+    clearAlert();
+  };
+
+  const clearAlert = () => {
+    setTimeout(() => {
+      dispatch({ type: CLEAR_ALERT });
+    }, 3000);
+  };
 
   const fetchContracts = async () => {
     try {
@@ -255,6 +271,7 @@ export const DataProvider = ({ children }) => {
         updateCard,
         sameDetails,
         deleteContract,
+        displayAlert,
       }}
     >
       {children}

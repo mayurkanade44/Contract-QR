@@ -1,4 +1,6 @@
 export const LOADING = "LOADING";
+export const DISPLAY_ALERT = "DISPLAY_ALERT";
+export const CLEAR_ALERT = "CLEAR_ALERT";
 export const FETCH_CONTRACTS = "FETCH_CONTRACTS";
 export const FETCH_CONTRACT = "FETCH_CONTRACT";
 export const CREATE_CONTRACT = "CREATE_CONTRACT";
