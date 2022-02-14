@@ -82,8 +82,10 @@ const createDoc = async (isValidContract, services) => {
   });
 
   // buf is a nodejs Buffer, you can either write it to a file or res.send it with express for example.
+  const contractName = contractNo.replace("/", "");
+  console.log(contractName);
   fs.writeFileSync(
-    path.resolve(__dirname, `${contractNo}${frequency}.docx`),
+    path.resolve(__dirname, `${contractName} ${frequency}.docx`),
     buf
   );
 };
@@ -115,7 +117,8 @@ const generateQr = async (isValidContract, services) => {
   try {
     const serviceId = await services._id;
     const contractNo = isValidContract.contractNo;
-    const name = `${contractNo}${services.frequency}`;
+    const contractName = contractNo.replace("/", "");
+    const name = `${contractName} ${services.frequency}`;
 
     const stringdata = `Contract Number: ${contractNo},
 
