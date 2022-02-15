@@ -4,6 +4,8 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
+const morgan = require("morgan");
+
 const mongoose = require("mongoose");
 
 const cloudinary = require("cloudinary").v2;
@@ -22,6 +24,9 @@ cloudinary.config({
   api_secret: process.env.CLOUD_SECRET,
 });
 
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("dev"));
+}
 app.use(express.static("./public"));
 app.use(express.json());
 app.use(uploadImage({ useTempFiles: true }));
