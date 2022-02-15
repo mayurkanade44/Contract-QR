@@ -10,7 +10,9 @@ import {
   SAME_DETAILS,
   DELETE_CONTRACT,
   DISPLAY_ALERT,
-  CLEAR_ALERT
+  CLEAR_ALERT,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
 } from "./action";
 
 const data_reducer = (state, action) => {
@@ -37,6 +39,26 @@ const data_reducer = (state, action) => {
         showAlert: true,
         alertText: "provide name",
         alertType: "danger",
+      };
+    }
+    case REGISTER_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        token: action.payload.token,
+        user: action.payload.name,
+        alertText: action.payload.msg,
+        alertType: "success",
+        showAlert: "true",
+      };
+    }
+    case REGISTER_FAIL:{
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
+        alertType: "danger",
+        showAlert: "true",
       };
     }
     case FETCH_CONTRACTS: {

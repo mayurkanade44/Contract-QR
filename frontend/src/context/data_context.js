@@ -3,6 +3,7 @@ import axios from "axios";
 import reducer from "./data_reducer";
 
 import {
+  LOADING,
   FETCH_CONTRACTS,
   FETCH_CONTRACT,
   FETCH_CARD,
@@ -14,15 +15,23 @@ import {
   DELETE_CONTRACT,
   DISPLAY_ALERT,
   CLEAR_ALERT,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
 } from "./action";
+import { useNavigate } from "react-router-dom";
 
 const DataContext = createContext();
+
+const user = localStorage.getItem("user");
+const token = localStorage.getItem("token");
 
 const intialState = {
   loading: false,
   showAlert: false,
   alertText: "",
   alertType: "",
+  user: user || null,
+  token: token || null,
   contracts: [],
   singleContract: [],
   card: [],
@@ -100,6 +109,33 @@ export const DataProvider = ({ children }) => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
     }, 3000);
+  };
+
+  const addLocalStorage = ({ name, token }) => {
+    localStorage.setItem("user", name);
+    localStorage.setItem("token", token);
+  };
+
+  const removeLocalStorage = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
+
+  const registerUser = async (currentUser) => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await axios.post("/register", currentUser);
+      console.log(res);
+      const { name, token, msg } = res.data;
+      dispatch({ type: REGISTER_SUCCESS, payload: { name, token, msg } });
+      addLocalStorage({ name, token });
+    } catch (error) {
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
   };
 
   const fetchContracts = async () => {
@@ -272,6 +308,7 @@ export const DataProvider = ({ children }) => {
         sameDetails,
         deleteContract,
         displayAlert,
+        registerUser,
       }}
     >
       {children}

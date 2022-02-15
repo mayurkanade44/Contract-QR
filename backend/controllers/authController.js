@@ -10,7 +10,7 @@ const register = async (req, res) => {
   const token = user.createJWT();
   res
     .status(201)
-    .json({ name: user.name, token, msg: "User successfully created" });
+    .json({ name: user.name, token, msg: "User successfully created." });
 };
 
 const login = (req, res) => {
