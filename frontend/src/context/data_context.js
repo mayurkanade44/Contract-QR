@@ -19,6 +19,7 @@ import {
   REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  LOGOUT,
 } from "./action";
 
 const DataContext = createContext();
@@ -26,7 +27,7 @@ const DataContext = createContext();
 const user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
 
-const intialState = {
+export const initialState = {
   loading: false,
   showAlert: false,
   alertText: "",
@@ -99,7 +100,7 @@ const intialState = {
 };
 
 export const DataProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, intialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
@@ -152,6 +153,11 @@ export const DataProvider = ({ children }) => {
       });
     }
     clearAlert();
+  };
+
+  const logout = async () => {
+    dispatch({ type: LOGOUT });
+    removeLocalStorage();
   };
 
   const fetchContracts = async () => {
@@ -326,6 +332,7 @@ export const DataProvider = ({ children }) => {
         displayAlert,
         registerUser,
         loginUser,
+        logout,
       }}
     >
       {children}

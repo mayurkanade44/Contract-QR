@@ -15,7 +15,10 @@ import {
   REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  LOGOUT,
 } from "./action";
+
+import { initialState } from "./data_context";
 
 const data_reducer = (state, action) => {
   switch (action.type) {
@@ -69,6 +72,7 @@ const data_reducer = (state, action) => {
         loading: false,
         token: action.payload.token,
         user: action.payload.name,
+        alertText: "Redirecting to home page",
         alertType: "success",
         showAlert: "true",
       };
@@ -80,6 +84,14 @@ const data_reducer = (state, action) => {
         alertText: action.payload.msg,
         alertType: "danger",
         showAlert: "true",
+      };
+    }
+    case LOGOUT: {
+      return {
+        ...initialState,
+        loading: false,
+        user: null,
+        token: null,
       };
     }
     case FETCH_CONTRACTS: {

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AddCard } from "./components";
+import { AddCard, Navbar } from "./components";
 import {
   Home,
   SingleContract,
@@ -14,6 +14,7 @@ import {
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/register" element={<Register></Register>} />
         <Route path="/login" element={<Login></Login>} />

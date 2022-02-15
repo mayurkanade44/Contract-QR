@@ -9,6 +9,7 @@ import InputSelect from "./InputSelect";
 import ContactsTable from "./ContactsTable";
 import UpdateCard from "./UpdateCard";
 import Alert from "./Alert";
+import Navbar from "./Navbar";
 
 export {
   AllContracts,
@@ -22,4 +23,5 @@ export {
   ContactsTable,
   UpdateCard,
   Alert,
+  Navbar,
 };
