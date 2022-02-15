@@ -17,8 +17,9 @@ import {
   CLEAR_ALERT,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
 } from "./action";
-import { useNavigate } from "react-router-dom";
 
 const DataContext = createContext();
 
@@ -108,7 +109,7 @@ export const DataProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 3000);
+    }, 2000);
   };
 
   const addLocalStorage = ({ name, token }) => {
@@ -125,13 +126,28 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const res = await axios.post("/register", currentUser);
-      console.log(res);
       const { name, token, msg } = res.data;
       dispatch({ type: REGISTER_SUCCESS, payload: { name, token, msg } });
       addLocalStorage({ name, token });
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const loginUser = async (currentUser) => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await axios.post("/login", currentUser);
+      const { name, token } = res.data;
+      dispatch({ type: LOGIN_SUCCESS, payload: { name, token } });
+      addLocalStorage({ name, token });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_FAIL,
         payload: { msg: error.response.data.msg },
       });
     }
@@ -309,6 +325,7 @@ export const DataProvider = ({ children }) => {
         deleteContract,
         displayAlert,
         registerUser,
+        loginUser,
       }}
     >
       {children}

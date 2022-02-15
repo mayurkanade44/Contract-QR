@@ -13,6 +13,8 @@ import {
   CLEAR_ALERT,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
 } from "./action";
 
 const data_reducer = (state, action) => {
@@ -52,7 +54,26 @@ const data_reducer = (state, action) => {
         showAlert: "true",
       };
     }
-    case REGISTER_FAIL:{
+    case REGISTER_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
+        alertType: "danger",
+        showAlert: "true",
+      };
+    }
+    case LOGIN_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        token: action.payload.token,
+        user: action.payload.name,
+        alertType: "success",
+        showAlert: "true",
+      };
+    }
+    case LOGIN_FAIL: {
       return {
         ...state,
         loading: false,

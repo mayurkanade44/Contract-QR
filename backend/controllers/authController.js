@@ -30,7 +30,7 @@ const login = async (req, res) => {
     throw new UnAuthenticated("Invalid Password");
   }
   const token = await user.createJWT();
-  res.status(200).json({ user: user.name, token });
+  res.status(200).json({ name: user.name, token });
 };
 
 module.exports = { register, login };

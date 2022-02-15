@@ -7,6 +7,8 @@ import {
   CreateContract,
   NotFound,
   Register,
+  Login,
+  ProtectedRoute,
 } from "./pages";
 
 function App() {
@@ -14,8 +16,23 @@ function App() {
     <Router>
       <Routes>
         <Route path="/register" element={<Register></Register>} />
-        <Route path="/" element={<Home></Home>} />
-        <Route path="/create" element={<CreateContract></CreateContract>} />
+        <Route path="/login" element={<Login></Login>} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create"
+          element={
+            <ProtectedRoute>
+              <CreateContract />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/addcard/:id" element={<AddCard></AddCard>} />
         <Route
           path="/contract/:id"
