@@ -1,10 +1,20 @@
 import React from "react";
-import { InputRow } from ".";
+import { InputRow, InputSelect } from ".";
 import { useDataContext } from "../context/data_context";
 
 const ClientAddress = ({ id, same }) => {
-  const { name, address1, address2, address3, address4, nearBy, city, pincode } = "";
+  const {
+    name,
+    address1,
+    address2,
+    address3,
+    address4,
+    nearBy,
+    city,
+    pincode,
+  } = "";
   const { shipToAddress } = useDataContext();
+  const data = ["Mr", "Ms"];
   return (
     <>
       {same && shipToAddress ? (
@@ -74,27 +84,14 @@ const ClientAddress = ({ id, same }) => {
         </div>
       ) : (
         <div>
-          <div className="input-group mb-3">
-            <h4>Name:-</h4>
-            <button
-              className="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Mr
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <a className="dropdown-item">Ms</a>
-              </li>
-            </ul>
-            <input
-              type="text"
-              className="form-control"
-              aria-label="Text input with dropdown button"
-            />
-          </div>
+          <InputRow
+            id={id}
+            label="Name"
+            placeholder="Full Name"
+            type="text"
+            name="name"
+            value={name}
+          />
           <InputRow
             label="Address1"
             id={id}
