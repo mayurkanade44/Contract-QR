@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const AddContract = () => {
   const navigate = useNavigate();
   const [same, setSame] = useState(false);
-  const [card, setCard] = useState(false)
+  const [card, setCard] = useState(false);
   const {
     contractNo,
     billingFrequency,
@@ -21,7 +21,7 @@ const AddContract = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createContract();
-    setCard(true)
+    setCard(true);
   };
 
   const handleSame = (e) => {
@@ -34,7 +34,7 @@ const AddContract = () => {
     if (card) {
       setTimeout(() => {
         navigate(`/addcard/${contract}`);
-        setCard(false)
+        setCard(false);
       }, 3000);
     }
   }, [contractCreated]);

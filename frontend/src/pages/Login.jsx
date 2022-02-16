@@ -26,7 +26,7 @@ const Login = () => {
       displayAlert();
       return;
     }
-    loginUser(values)
+    loginUser(values);
   };
 
   useEffect(() => {
@@ -66,28 +66,6 @@ const Login = () => {
               minLength="5"
             />
             <span className="form-text">Must be 5 characters long.</span>
-          </div>
-          <div className="row mt-2">
-            <div className="col-md-4">
-              <h4>Role</h4>
-            </div>
-            <div className="col-md-7">
-              <select
-                className="form-select"
-                aria-label="Default select example"
-                name="role"
-                value={values.role}
-                onChange={handleChange}
-              >
-                {roles.map((data) => {
-                  return (
-                    <option value={data} key={data}>
-                      {data}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
           </div>
           <button type="submit" className="btn btn-primary mt-2">
             {loading ? "loading...." : "Login"}

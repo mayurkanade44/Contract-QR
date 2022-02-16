@@ -17,6 +17,7 @@ const authRouter = require("./routes/authRoutes");
 
 const notFound = require("./middleware/not-found");
 const errorHandler = require("./middleware/error-handler");
+const authenticateUser = require("./middleware/auth");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,

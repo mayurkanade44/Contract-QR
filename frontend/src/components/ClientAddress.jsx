@@ -3,7 +3,7 @@ import { InputRow } from ".";
 import { useDataContext } from "../context/data_context";
 
 const ClientAddress = ({ id, same }) => {
-  const { name, address1, address2, address3, nearBy, city, pincode } = "";
+  const { name, address1, address2, address3, address4, nearBy, city, pincode } = "";
   const { shipToAddress } = useDataContext();
   return (
     <>
@@ -22,14 +22,14 @@ const ClientAddress = ({ id, same }) => {
             id={id}
             type="text"
             name="address1"
-            placeholder="Flat/Ofiice No & Building Name"
+            placeholder="Building/Office Name"
             value={shipToAddress.address1}
           />
           <InputRow
             label="Address2"
             id={id}
             type="text"
-            placeholder="Road/Lane Name"
+            placeholder="Flat/Office No"
             name="address2"
             value={shipToAddress.address2}
           />
@@ -37,9 +37,17 @@ const ClientAddress = ({ id, same }) => {
             label="Address3"
             id={id}
             type="text"
-            placeholder="Location"
+            placeholder="Road/Lane Name"
             name="address3"
             value={shipToAddress.address3}
+          />
+          <InputRow
+            label="Address4"
+            id={id}
+            type="text"
+            placeholder="Location"
+            name="address4"
+            value={shipToAddress.address4}
           />
           <InputRow
             label="Near By"
@@ -92,14 +100,14 @@ const ClientAddress = ({ id, same }) => {
             id={id}
             type="text"
             name="address1"
-            placeholder="Flat/Ofiice No & Building Name"
+            placeholder="Building/Office Name"
             value={address1}
           />
           <InputRow
             label="Address2"
             id={id}
             type="text"
-            placeholder="Road/Lane Name"
+            placeholder="Flat/Office No"
             name="address2"
             value={address2}
           />
@@ -107,9 +115,17 @@ const ClientAddress = ({ id, same }) => {
             label="Address3"
             id={id}
             type="text"
-            placeholder="Location"
+            placeholder="Road/Lane Name"
             name="address3"
             value={address3}
+          />
+          <InputRow
+            label="Address4"
+            id={id}
+            type="text"
+            placeholder="Location"
+            name="address4"
+            value={address4}
           />
           <InputRow
             label="Near By"

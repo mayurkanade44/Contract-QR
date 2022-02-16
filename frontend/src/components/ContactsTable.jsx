@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDataContext } from "../context/data_context";
 
-const ContactsTable = ({ id }) => {
-  const { handleChange } = useDataContext();
+const ContactsTable = ({ id, same }) => {
+  const { handleChange, shipToContact } = useDataContext();
   const { name, email, contact } = "";
+
   return (
     <div>
       <table className="table">

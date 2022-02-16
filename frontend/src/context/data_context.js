@@ -72,7 +72,7 @@ export const initialState = {
       email: "",
     },
   ],
-  startDate: "",
+  startDate: new Date().toISOString().slice(0, 10),
   billingFrequency: "",
   numberOfCards: "",
   frequency: "Daily",
@@ -163,6 +163,8 @@ export const DataProvider = ({ children }) => {
   const fetchContracts = async () => {
     try {
       const res = await axios.get("/contracts");
+      const date = new Date().toISOString();
+      console.log(date);
       dispatch({
         type: FETCH_CONTRACTS,
         payload: res.data.contracts,
