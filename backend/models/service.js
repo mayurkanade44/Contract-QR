@@ -10,17 +10,6 @@ const ServiceSchema = new mongoose.Schema({
     required: [true, "Please provide service name"],
   },
   serviceDue: [String],
-  preferred: {
-    day: String,
-    time: String,
-  },
-  specialInstruction: {
-    type: String,
-  },
-  area: {
-    type: Number,
-    required: [true, "Please provide area sqft"],
-  },
   image: {
     type: String,
   },

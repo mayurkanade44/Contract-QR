@@ -13,5 +13,6 @@ const {
 router.route("/").post(createService);
 router.route("/:id").get(singleService).patch(updateCard);
 router.route("/upload").post(uploadImage);
+router.route("/create/:id").get(createDoc);
 
 module.exports = router;

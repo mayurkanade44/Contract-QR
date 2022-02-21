@@ -49,13 +49,20 @@ const ContractSchema = new mongoose.Schema(
     endDate: {
       type: Date,
     },
-    numberOfCards: {
-      type: Number,
-      required: true,
-    },
     billingFrequency: {
       type: String,
       required: [true, "Please provide billing frequency"],
+    },
+    area: {
+      type: Number,
+      required: [true, "Please provide area"],
+    },
+    specialInstruction: {
+      type: String,
+    },
+    preferred: {
+      day: String,
+      time: String,
     },
     createdAt: {
       type: Date,

@@ -19,76 +19,89 @@ const getAllService = async (req, res) => {
   }
 };
 
-const createDoc = async (isValidContract, services) => {
+const createDoc = async (req, res) => {
+  const { id } = req.params;
+  const isValidContract = await Contract.findOne({ _id: id }).populate(
+    "services"
+  );
   const {
     contractNo,
     startDate,
     endDate,
-    numberOfCards,
     billingFrequency,
     shipToAddress,
     shipToContact,
-  } = isValidContract;
-  const { name, address1, address2, address3, address4, nearBy, city, pincode } =
-    shipToAddress;
-  const {
-    frequency,
-    area,
-    service,
-    specialInstruction,
+    services,
     preferred,
-    serviceDue,
-  } = services;
-  const card = 1;
+    specialInstruction,
+    area,
+  } = isValidContract;
+  const {
+    name,
+    address1,
+    address2,
+    address3,
+    address4,
+    nearBy,
+    city,
+    pincode,
+  } = shipToAddress;
+
   const { day, time } = preferred;
 
-  const content = fs.readFileSync(
-    path.resolve(__dirname, "test.docx"),
-    "binary"
-  );
+  try {
+    services.forEach((element, index) => {
+      const content = fs.readFileSync(
+        path.resolve(__dirname, "test.docx"),
+        "binary"
+      );
 
-  const zip = new PizZip(content);
+      const zip = new PizZip(content);
 
-  const doc = new Docxtemplater(zip, {
-    paragraphLoop: true,
-    linebreaks: true,
-  });
+      const doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
 
-  doc.render({
-    contractNo: contractNo,
-    day: day,
-    time: time,
-    card: card,
-    noCards: numberOfCards,
-    name: name,
-    address1: address1,
-    address2: address2,
-    address3: address3,
-    address4: address4,
-    city: city,
-    nearBy: nearBy,
-    pincode: pincode,
-    shipToContact: shipToContact,
-    serviceDue: serviceDue,
-    service: service,
-    frequency: frequency,
-    area: area,
-    billingFrequency: billingFrequency,
-    specialInstruction: specialInstruction,
-  });
+      doc.render({
+        contractNo: contractNo,
+        day: day,
+        time: time,
+        card: index + 1,
+        noCards: services.length,
+        name: name,
+        address1: address1,
+        address2: address2,
+        address3: address3,
+        address4: address4,
+        city: city,
+        nearBy: nearBy,
+        pincode: pincode,
+        shipToContact: shipToContact,
+        serviceDue: element.serviceDue,
+        service: element.service,
+        frequency: element.frequency,
+        area: area,
+        billingFrequency: billingFrequency,
+        specialInstruction: specialInstruction,
+      });
 
-  const buf = await doc.getZip().generate({
-    type: "nodebuffer",
-    compression: "DEFLATE",
-  });
+      const buf = doc.getZip().generate({
+        type: "nodebuffer",
+        compression: "DEFLATE",
+      });
 
-  // buf is a nodejs Buffer, you can either write it to a file or res.send it with express for example.
-  const contractName = contractNo.replace("/", "");
-  console.log(contractName);
-  fs.writeFileSync(
-    path.resolve(__dirname, `${contractName} ${frequency}.docx`),
-    buf
-  );
+      // buf is a nodejs Buffer, you can either write it to a file or res.send it with express for example.
+      const contractName = contractNo.replace("/", "");
+      fs.writeFileSync(
+        path.resolve(__dirname, `${contractName} ${element.frequency}.docx`),
+        buf
+      );
+    });
+    res.send({ msg: "Documents created successfully" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const sendEmail = async (emails, image) => {
@@ -138,7 +151,7 @@ const createService = async (req, res) => {
     const services = await Service.create(req.body);
     if (services) {
       generateQr(isValidContract, services);
-      createDoc(isValidContract, services);
+      // createDoc(isValidContract, services);
     }
     res.status(201).json({ services });
   } catch (error) {
@@ -207,4 +220,5 @@ module.exports = {
   updateCard,
   singleService,
   uploadImage,
+  createDoc,
 };
