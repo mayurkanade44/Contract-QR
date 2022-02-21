@@ -93,6 +93,7 @@ export const initialState = {
     "Yearly",
   ],
   service: [],
+  endContract: "1 Month (30 Days)",
   preferred: { day: "", time: "10 am - 12 pm" },
   specialInstruction: "",
   area: "",
@@ -165,8 +166,6 @@ export const DataProvider = ({ children }) => {
   const fetchContracts = async () => {
     try {
       const res = await axios.get("/contracts");
-      const date = new Date().toISOString();
-      console.log(date);
       dispatch({
         type: FETCH_CONTRACTS,
         payload: res.data.contracts,
@@ -216,7 +215,7 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: SAME_DETAILS });
   };
 
-  const createContract = async () => {
+  const createContract = async (last) => {
     try {
       const {
         contractNo,
@@ -237,6 +236,7 @@ export const DataProvider = ({ children }) => {
         shipToAddress,
         shipToContact,
         startDate,
+        endDate: last,
         billingFrequency,
         preferred,
         specialInstruction,
@@ -255,11 +255,7 @@ export const DataProvider = ({ children }) => {
   const createCard = async (dueMonths) => {
     const serv = [];
     try {
-      const {
-        frequency,
-        service,
-        contract,
-      } = state;
+      const { frequency, service, contract } = state;
       service.split(",").map((ser) => {
         return serv.push(ser);
       });
@@ -285,8 +281,7 @@ export const DataProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-
-  }
+  };
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
@@ -348,7 +343,7 @@ export const DataProvider = ({ children }) => {
         registerUser,
         loginUser,
         logout,
-        createCards
+        createCards,
       }}
     >
       {children}

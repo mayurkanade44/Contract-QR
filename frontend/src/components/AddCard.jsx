@@ -6,7 +6,7 @@ import moment from "moment";
 
 const AddCard = () => {
   const [dueMonths, setDueMonths] = useState([]);
-  const [add, setAdd] = useState(true)
+  const [add, setAdd] = useState(true);
   const {
     frequency,
     frequencyList,
@@ -77,7 +77,7 @@ const AddCard = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createCard(dueMonths);
-    setAdd(!add)
+    setAdd(!add);
   };
 
   const generateCards = (e) => {
@@ -108,16 +108,17 @@ const AddCard = () => {
               </tr>
             </thead>
             <tbody>
-              {services && services.map((data, index) => {
-                const { frequency, service, _id } = data;
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{`${service}`}</td>
-                    <td>{frequency}</td>
-                  </tr>
-                );
-              })}
+              {services &&
+                services.map((data, index) => {
+                  const { frequency, service, _id } = data;
+                  return (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{`${service}`}</td>
+                      <td>{frequency}</td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
           <div className="col-md-4">

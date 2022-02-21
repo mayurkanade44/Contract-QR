@@ -7,6 +7,7 @@ const AddContract = () => {
   const navigate = useNavigate();
   const [same, setSame] = useState(false);
   const [card, setCard] = useState(false);
+  const [endDate, setEndDate] = useState(null);
   const {
     contractNo,
     billingFrequency,
@@ -18,6 +19,7 @@ const AddContract = () => {
     area,
     specialInstruction,
     contractCreated,
+    endContract,
   } = useDataContext();
   const timeList = [
     "10 am - 12 pm",
@@ -27,11 +29,46 @@ const AddContract = () => {
     "6 pm - 8 pm",
     "Night",
   ];
+  const endDateList = [
+    "1 Month (30 Days)",
+    "2 Months (60 Days)",
+    "3 Months (90 Days)",
+    "6 Months (180 Days)",
+    "1 Year",
+  ];
+  const lastDate = async (startDate) => {
+    const date = new Date(startDate);
+    if (endContract && endContract === "1 Year") {
+      let ss = await new Date(date.getFullYear() + 1, date.getMonth(), 0);
+      return setEndDate(ss)
+    } else if (endContract && endContract === "3 Months (90 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 3, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "6 Months (180 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 6, 0);
+      return setEndDate(ss);
+    } else if (
+      endContract &&
+      (endContract === "1 Month (30 Days)" ||
+        endContract === "2 Months (60 Days)")
+    ) {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 2, 0);
+      return setEndDate(ss);
+    }
+  };
+
+
+  useEffect(() => {
+    if (startDate) {
+      lastDate(startDate);
+    }
+  }, [startDate, endContract]);
+
   const { day, time } = preferred;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createContract();
+    createContract(endDate);
     setCard(true);
   };
 
@@ -55,7 +92,7 @@ const AddContract = () => {
     <div>
       <form>
         <div className="row">
-          <div className="col-md-4 my-3">
+          <div className="col-md-4">
             <InputRow
               label="Contract Number"
               type="text"
@@ -63,7 +100,7 @@ const AddContract = () => {
               value={contractNo}
             />
           </div>
-          <div className="col-md-4 my-3">
+          <div className="col-md-4">
             <InputRow
               label="Start Date"
               type="date"
@@ -71,7 +108,15 @@ const AddContract = () => {
               value={startDate}
             />
           </div>
-          <hr />
+          <div className="col-md-4">
+            <InputSelect
+              label="End Date:"
+              name="endContract"
+              value={endContract}
+              data={endDateList}
+            />
+          </div>
+          <hr className="mt-3" />
           <div className="col-md-4">
             <InputRow
               label="Day"
