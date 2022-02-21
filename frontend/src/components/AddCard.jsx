@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, InputSelect } from ".";
+import { InputRow, InputSelect, AllCards } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
 const AddCard = () => {
   const [dueMonths, setDueMonths] = useState([]);
+  const [add, setAdd] = useState(true)
   const {
     frequency,
     frequencyList,
     service,
-    specialInstruction,
     fetchSingleContract,
     singleContract,
     createCard,
     createCards,
   } = useDataContext();
 
-  const { contractNo, startDate, endDate } = singleContract;
+  const { contractNo, startDate, endDate, services } = singleContract;
 
   const { id } = useParams();
 
@@ -72,11 +72,12 @@ const AddCard = () => {
     if ((startDate, endDate)) {
       dueRange(startDate, endDate);
     }
-  }, [id, startDate, frequency]);
+  }, [id, startDate, frequency, add]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createCard(dueMonths);
+    setAdd(!add)
   };
 
   const generateCards = (e) => {
@@ -98,6 +99,27 @@ const AddCard = () => {
             <h4>{`End Date: ${moment(endDate).format("DD/MM/YYYY")}`}</h4>
           </div>
           <hr />
+          <table className="table table-striped table-bordered border-dark ">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Services</th>
+                <th>Frequency</th>
+              </tr>
+            </thead>
+            <tbody>
+              {services && services.map((data, index) => {
+                const { frequency, service, _id } = data;
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{`${service}`}</td>
+                    <td>{frequency}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
           <div className="col-md-4">
             <InputSelect
               label="Frequency"

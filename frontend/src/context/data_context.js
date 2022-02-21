@@ -21,6 +21,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CREATE_CARDS,
+  CLEAR_VALUES,
 } from "./action";
 
 const DataContext = createContext();
@@ -269,6 +270,7 @@ export const DataProvider = ({ children }) => {
         contract,
       });
       dispatch({ type: CREATE_CARD });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }

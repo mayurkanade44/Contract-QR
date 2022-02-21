@@ -18,3 +18,4 @@ export const IMAGE_UPLOADED = "IMAGE_UPLOADED";
 export const SAME_DETAILS = "SAME_DETAILS";
 export const DELETE_CONTRACT = "DELETE_CONTRACT";
 export const CREATE_CARDS = "CREATE_CARDS";
+export const CLEAR_VALUES = "CLEAR_VALUES";

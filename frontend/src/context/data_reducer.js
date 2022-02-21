@@ -17,6 +17,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CREATE_CARDS,
+  CLEAR_VALUES,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -186,6 +187,15 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false
       }
+    }
+
+    case CLEAR_VALUES: {
+      return {
+        ...state,
+        loading: false,
+        frequency: "Daily",
+        service: [],
+      };
     }
     case IMAGE_UPLOADED: {
       return {
