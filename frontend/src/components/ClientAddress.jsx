@@ -1,5 +1,5 @@
 import React from "react";
-import { InputRow, InputSelect } from ".";
+import { InputRow} from ".";
 import { useDataContext } from "../context/data_context";
 
 const ClientAddress = ({ id, same }) => {

@@ -10,23 +10,14 @@ const AddCard = () => {
     frequency,
     frequencyList,
     service,
-    area,
-    preferred,
     specialInstruction,
     fetchSingleContract,
     singleContract,
     createCard,
+    createCards,
   } = useDataContext();
-  const { day, time } = preferred;
+
   const { contractNo, startDate, endDate } = singleContract;
-  const timeList = [
-    "10 am - 12 pm",
-    "12 pm - 2 pm",
-    "2 pm - 4 pm",
-    "4 pm - 6 pm",
-    "6 pm - 8 pm",
-    "Night",
-  ];
 
   const { id } = useParams();
 
@@ -88,6 +79,11 @@ const AddCard = () => {
     createCard(dueMonths);
   };
 
+  const generateCards = (e) => {
+    e.preventDefault();
+    createCards(id);
+  };
+
   return (
     <div className="container my-3">
       <form>
@@ -119,48 +115,21 @@ const AddCard = () => {
             />
           </div>
           <div className="col-md-4">
-            <InputRow label="Area" type="number" name="area" value={area} />
-          </div>
-          <div className="col-md-6">
-            <div className="row">
-              <div className="col-md-12">
-                <h4 className="text-center">Preferred</h4>
-              </div>
-              <div className="col-md-6">
-                <InputRow
-                  label="Day"
-                  id="preferred"
-                  type="text"
-                  name="day"
-                  value={day}
-                />
-              </div>
-              <div className="col-md-6">
-                <InputSelect
-                  label="Time"
-                  id="preferred"
-                  name="time"
-                  value={time}
-                  data={timeList}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 mt-5">
-            <InputRow
-              label="Instructions"
-              type="text"
-              name="specialInstruction"
-              value={specialInstruction}
-            />
-          </div>
-          <div className="col-md-4">
             <button
               className="btn btn-dark"
               type="submit"
               onClick={handleSubmit}
             >
               Save
+            </button>
+          </div>
+          <div className="col-md-4">
+            <button
+              className="btn btn-dark"
+              type="submit"
+              onClick={generateCards}
+            >
+              Create Cards
             </button>
           </div>
         </div>

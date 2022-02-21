@@ -16,6 +16,8 @@ const SingleContract = () => {
     shipToAddress,
     shipToContact,
     services,
+    area,
+    preferred,
   } = singleContract;
   const { id } = useParams();
 
@@ -35,7 +37,7 @@ const SingleContract = () => {
           </Link>
         </div>
         <div className="col-md-2 my-3">
-          <Link to='/'>
+          <Link to="/">
             <button
               onClick={() => deleteContract(id)}
               className="btn btn-danger"
@@ -57,7 +59,7 @@ const SingleContract = () => {
           )}
         </div>
         <h2 className="text-center">Service Cards</h2>
-        {services && <AllCards data={services} />}
+        {services && <AllCards data={services} area={area} preferred={preferred} />}
       </div>
     </div>
   );

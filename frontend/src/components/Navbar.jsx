@@ -1,10 +1,10 @@
 import React from "react";
-import { FaUserCircle} from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDataContext } from "../context/data_context";
 
 const Navbar = () => {
-    const {user, logout} = useDataContext()
+  const { user, logout } = useDataContext();
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -23,9 +23,9 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <p className="nav-link active" aria-current="page">
-                  <h4>Contract</h4>
-                </p>
+                <span className="nav-link active" aria-current="page">
+                  <h4>Contract`</h4>
+                </span>
               </li>
             </ul>
             {user && (

@@ -16,6 +16,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CREATE_CARDS,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -179,6 +180,12 @@ const data_reducer = (state, action) => {
         loading: false,
         contractCreated: false,
       };
+    }
+    case CREATE_CARDS: {
+      return {
+        ...state,
+        loading: false
+      }
     }
     case IMAGE_UPLOADED: {
       return {

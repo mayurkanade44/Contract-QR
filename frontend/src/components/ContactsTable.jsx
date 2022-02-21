@@ -1,8 +1,7 @@
-import React, { useState } from "react";
 import { useDataContext } from "../context/data_context";
 
 const ContactsTable = ({ id, same }) => {
-  const { handleChange, shipToContact } = useDataContext();
+  const { handleChange } = useDataContext();
   const { name, email, contact } = "";
 
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AllCards = ({ data }) => {
+const AllCards = ({ data, area, preferred }) => {
   return (
     <div>
       <table className="table table-striped table-bordered border-dark ">
@@ -11,13 +11,13 @@ const AllCards = ({ data }) => {
             <th>Services</th>
             <th>Frequency</th>
             <th>Area</th>
-            <th>Preferred</th>
+            <th>Day &amp; Time</th>
             <th>Update</th>
           </tr>
         </thead>
         <tbody>
           {data.map((data, index) => {
-            const { frequency, area, service, preferred, _id } = data;
+            const { frequency, service, _id } = data;
             return (
               <tr key={index}>
                 <td>{index + 1}</td>

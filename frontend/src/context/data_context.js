@@ -20,6 +20,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CREATE_CARDS,
 } from "./action";
 
 const DataContext = createContext();
@@ -224,7 +225,9 @@ export const DataProvider = ({ children }) => {
         billToContact,
         startDate,
         billingFrequency,
-        numberOfCards,
+        preferred,
+        specialInstruction,
+        area,
       } = state;
       const res = await axios.post("/contracts", {
         contractNo,
@@ -234,7 +237,9 @@ export const DataProvider = ({ children }) => {
         shipToContact,
         startDate,
         billingFrequency,
-        numberOfCards,
+        preferred,
+        specialInstruction,
+        area,
       });
       const contractId = res.data.contract._id;
       dispatch({
@@ -252,9 +257,6 @@ export const DataProvider = ({ children }) => {
       const {
         frequency,
         service,
-        preferred,
-        specialInstruction,
-        area,
         contract,
       } = state;
       service.split(",").map((ser) => {
@@ -264,16 +266,25 @@ export const DataProvider = ({ children }) => {
         serviceDue: dueMonths,
         frequency,
         service: serv,
-        preferred,
         contract,
-        specialInstruction,
-        area,
       });
       dispatch({ type: CREATE_CARD });
     } catch (error) {
       console.log(error);
     }
   };
+
+  const createCards = async (id) => {
+    try {
+      const res = await axios.get(`/service/create/${id}`);
+      dispatch({
+        type: CREATE_CARDS,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
@@ -335,6 +346,7 @@ export const DataProvider = ({ children }) => {
         registerUser,
         loginUser,
         logout,
+        createCards
       }}
     >
       {children}
