@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, InputSelect, AllCards } from ".";
+import { InputRow, InputSelect} from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -37,7 +37,7 @@ const AddCard = () => {
       months.push(month.format("MMMM YY"));
     }
     const due = [];
-    months.map((date, index) => {
+    months.forEach((date, index) => {
       if (frequency && frequency === "Thrice A Year" && index % 4 === 0) {
         return due.push(date);
       } else if (frequency && frequency === "Quarterly" && index % 3 === 0) {
@@ -63,6 +63,7 @@ const AddCard = () => {
       ) {
         return due.push(date);
       }
+    
     });
     setDueMonths(due);
   };
@@ -72,6 +73,7 @@ const AddCard = () => {
     if ((startDate, endDate)) {
       dueRange(startDate, endDate);
     }
+    // eslint-disable-next-line
   }, [id, startDate, frequency, add]);
 
   const handleSubmit = (e) => {
@@ -110,7 +112,7 @@ const AddCard = () => {
             <tbody>
               {services &&
                 services.map((data, index) => {
-                  const { frequency, service, _id } = data;
+                  const { frequency, service } = data;
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>

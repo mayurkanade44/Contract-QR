@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ClientDetails, AllCards } from "../components";
 import { useDataContext } from "../context/data_context";
-import { useNavigate } from "react-router-dom";
 
 const SingleContract = () => {
-  const navigate = useNavigate();
-  const [home, setHome] = useState(false);
-  const { fetchSingleContract, singleContract, deleteContract, contract } =
+  
+
+  const { fetchSingleContract, singleContract, deleteContract,} =
     useDataContext();
   const {
     contractNo,
@@ -23,6 +22,7 @@ const SingleContract = () => {
 
   useEffect(() => {
     fetchSingleContract(id);
+    // eslint-disable-next-line
   }, [id]);
 
   return (

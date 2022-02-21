@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const AddContract = () => {
   const navigate = useNavigate();
   const [same, setSame] = useState(false);
-  const [card, setCard] = useState(false);
   const [endDate, setEndDate] = useState(null);
   const {
     contractNo,
@@ -57,11 +56,11 @@ const AddContract = () => {
     }
   };
 
-
   useEffect(() => {
     if (startDate) {
       lastDate(startDate);
     }
+    // eslint-disable-next-line
   }, [startDate, endContract]);
 
   const { day, time } = preferred;
@@ -69,7 +68,6 @@ const AddContract = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createContract(endDate);
-    setCard(true);
   };
 
   const handleSame = (e) => {
@@ -82,7 +80,6 @@ const AddContract = () => {
     if (contractCreated) {
       setTimeout(() => {
         navigate(`/addcard/${contract}`);
-        setCard(false);
       }, 3000);
     }
     // eslint-disable-next-line
