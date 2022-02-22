@@ -42,7 +42,7 @@ export const initialState = {
   contractCreated: false,
   contractNo: "",
   billToAddress: {
-    prefix: "",
+    prefix: "Mr",
     name: "",
     address1: "",
     address2: "",
@@ -59,7 +59,7 @@ export const initialState = {
     },
   ],
   shipToAddress: {
-    prefix: "",
+    prefix: "Mr",
     name: "",
     address1: "",
     address2: "",

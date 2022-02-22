@@ -31,7 +31,7 @@ const ClientAddress = ({ id, same }) => {
                 data={prefixList}
               />
             </div>
-            <div className="col-md-8">
+            <div className="col-md-8 mt-2">
               <InputRow
                 id={id}
                 placeholder="Full Name"
