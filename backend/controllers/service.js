@@ -37,6 +37,7 @@ const createDoc = async (req, res) => {
     area,
   } = isValidContract;
   const {
+    prefix,
     name,
     address1,
     address2,
@@ -48,6 +49,13 @@ const createDoc = async (req, res) => {
   } = shipToAddress;
 
   const { day, time } = preferred;
+
+  var pre = "";
+  if (prefix === "Other") {
+    var pre = "";
+  } else {
+    var pre = prefix;
+  }
 
   try {
     services.forEach((element, index) => {
@@ -69,6 +77,7 @@ const createDoc = async (req, res) => {
         time: time,
         card: index + 1,
         noCards: services.length,
+        prefix: pre,
         name: name,
         address1: address1,
         address2: address2,

@@ -7,7 +7,7 @@ const InputRow = ({ label, type, name, value, id, placeholder }) => {
     <div className="row g-3 align-items-center">
       <div className="col-auto ">
         <label className="col-form-label">
-          <h4>{label}:</h4>
+          <h4>{label}</h4>
         </label>
       </div>
       <div className="col">

@@ -1,9 +1,10 @@
 import React from "react";
-import { InputRow} from ".";
+import { InputRow, InputSelect } from ".";
 import { useDataContext } from "../context/data_context";
 
 const ClientAddress = ({ id, same }) => {
   const {
+    prefix,
     name,
     address1,
     address2,
@@ -13,20 +14,34 @@ const ClientAddress = ({ id, same }) => {
     city,
     pincode,
   } = "";
-  const { shipToAddress } = useDataContext();
-  const data = ["Mr", "Ms"];
+  const { shipToAddress, handleChange } = useDataContext();
+  const prefixList = ["Mr", "Mrs", "Ms", "Other"];
   return (
     <>
       {same && shipToAddress ? (
         <div>
-          <InputRow
-            label="Name"
-            id={id}
-            placeholder="Full Name"
-            type="text"
-            name="name"
-            value={shipToAddress.name}
-          />
+          <div className="row">
+            <div className="col-md-4">
+              <InputSelect
+                label="Name"
+                id={id}
+                name="prefix"
+                type="text"
+                value={shipToAddress.prefix}
+                data={prefixList}
+              />
+            </div>
+            <div className="col-md-8">
+              <InputRow
+                id={id}
+                placeholder="Full Name"
+                type="text"
+                name="name"
+                value={shipToAddress.name}
+              />
+            </div>
+          </div>
+
           <InputRow
             label="Address1"
             id={id}
@@ -84,14 +99,43 @@ const ClientAddress = ({ id, same }) => {
         </div>
       ) : (
         <div>
-          <InputRow
-            id={id}
-            label="Name"
-            placeholder="Full Name"
-            type="text"
-            name="name"
-            value={name}
-          />
+          <div className="row my-2">
+            <div className="col-md-2">
+              <label htmlFor="">
+                <h4>Name:</h4>
+              </label>
+            </div>
+            <div className="col-md-2">
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                id={id}
+                name="prefix"
+                value={prefix}
+                onChange={handleChange}
+              >
+                {prefixList.map((data) => {
+                  return (
+                    <option value={data} key={data}>
+                      {data}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="col">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Full Name"
+                id={id}
+                name="name"
+                value={name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
           <InputRow
             label="Address1"
             id={id}

@@ -7,6 +7,7 @@ const ContractSchema = new mongoose.Schema(
       required: [true, "Service contract number is required"],
     },
     billToAddress: {
+      prefix: String,
       name: String,
       address1: String,
       address2: String,
@@ -25,6 +26,7 @@ const ContractSchema = new mongoose.Schema(
       },
     ],
     shipToAddress: {
+      prefix: String,
       name: String,
       address1: String,
       address2: String,
