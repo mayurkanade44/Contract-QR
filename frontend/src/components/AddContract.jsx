@@ -19,7 +19,29 @@ const AddContract = () => {
     specialInstruction,
     contractCreated,
     endContract,
+    business,
+    billToAddress,
+    shipToAddress,
+    billToContact,
+    shipToContact,
   } = useDataContext();
+
+  const businessList = [
+    "Residential",
+    "Gated Community",
+    "Housing Society",
+    "Bungalow",
+    "Offices",
+    "Corporate Park",
+    "Data Center",
+    "Warehouse",
+    "Food & Delivery",
+    "Restaurant",
+    "Malls",
+    "Entertainment",
+    "Sports Complex"
+  ];
+
   const timeList = [
     "10 am - 12 pm",
     "12 pm - 2 pm",
@@ -39,7 +61,7 @@ const AddContract = () => {
     const date = new Date(startDate);
     if (endContract && endContract === "1 Year") {
       let ss = await new Date(date.getFullYear() + 1, date.getMonth(), 0);
-      return setEndDate(ss)
+      return setEndDate(ss);
     } else if (endContract && endContract === "3 Months (90 Days)") {
       let ss = await new Date(date.getFullYear(), date.getMonth() + 3, 0);
       return setEndDate(ss);
@@ -54,6 +76,20 @@ const AddContract = () => {
       let ss = await new Date(date.getFullYear(), date.getMonth() + 2, 0);
       return setEndDate(ss);
     }
+  };
+
+  const isFormValid = () => {
+    return (
+      contractNo &&
+      billingFrequency &&
+      preferred &&
+      area &&
+      specialInstruction &&
+      billToAddress &&
+      billToContact &&
+      shipToAddress &&
+      shipToContact
+    );
   };
 
   useEffect(() => {
@@ -115,6 +151,14 @@ const AddContract = () => {
           </div>
           <hr className="mt-3" />
           <div className="col-md-4">
+            <InputSelect
+              label="Business:"
+              name="business"
+              value={business}
+              data={businessList}
+            />
+          </div>
+          <div className="col-md-3">
             <InputRow
               label="Day"
               id="preferred"
@@ -123,7 +167,7 @@ const AddContract = () => {
               value={day}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <InputSelect
               label="Time"
               id="preferred"
@@ -132,8 +176,14 @@ const AddContract = () => {
               data={timeList}
             />
           </div>
-          <div className="col-md-4">
-            <InputRow label="Area" type="number" name="area" value={area} />
+          <div className="col-md-2">
+            <InputRow
+              label="Area"
+              placeholder="in sqft"
+              type="number"
+              name="area"
+              value={area}
+            />
           </div>
           <hr className="mt-3" />
           <div className="col-md-6">
@@ -174,6 +224,7 @@ const AddContract = () => {
               className="btn btn-primary btn-lg"
               type="submit"
               onClick={handleSubmit}
+              disabled={!isFormValid()}
             >
               Save
             </button>

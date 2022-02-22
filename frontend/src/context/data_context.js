@@ -76,7 +76,6 @@ export const initialState = {
   ],
   startDate: new Date().toISOString().slice(0, 10),
   billingFrequency: "",
-  numberOfCards: "",
   frequency: "Daily",
   frequencyList: [
     "Daily",
@@ -96,6 +95,7 @@ export const initialState = {
   endContract: "1 Month (30 Days)",
   preferred: { day: "", time: "10 am - 12 pm" },
   specialInstruction: "",
+  business: "Residential",
   area: "",
   comments: "",
   image: "",

@@ -36,7 +36,7 @@ const ContactsTable = ({ id, same }) => {
             </td>
             <td>
               <input
-                type="text"
+                type="email"
                 id={id}
                 name="email"
                 value={email}
@@ -65,7 +65,7 @@ const ContactsTable = ({ id, same }) => {
             </td>
             <td>
               <input
-                type="text"
+                type="email"
                 id={id}
                 name="email"
                 value={email}
@@ -94,7 +94,7 @@ const ContactsTable = ({ id, same }) => {
             </td>
             <td>
               <input
-                type="text"
+                type="email"
                 id={id}
                 name="email"
                 value={email}

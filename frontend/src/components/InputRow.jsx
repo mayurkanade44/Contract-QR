@@ -19,6 +19,7 @@ const InputRow = ({ label, type, name, value, id, placeholder }) => {
           name={name}
           value={value}
           onChange={handleChange}
+          required
         />
       </div>
     </div>

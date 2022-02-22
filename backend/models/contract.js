@@ -49,6 +49,9 @@ const ContractSchema = new mongoose.Schema(
     endDate: {
       type: Date,
     },
+    business: {
+      type: String,
+    },
     billingFrequency: {
       type: String,
       required: [true, "Please provide billing frequency"],
@@ -71,21 +74,6 @@ const ContractSchema = new mongoose.Schema(
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
-
-// ContractSchema.pre("save", async function () {
-//   const salt = await this.startDate;
-//   let lastDate = new Date(
-//     salt.getFullYear(),
-//     salt.getMonth(),
-//     salt.getUTCDate()
-//   );
-
-//   this.endDate = await new Date(
-//     lastDate.getFullYear() + 1,
-//     lastDate.getMonth(),
-//     0
-//   );
-// });
 
 ContractSchema.pre("remove", async function () {
   await this.model("Service").deleteMany({ contract: this._id });
