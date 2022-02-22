@@ -185,8 +185,8 @@ const data_reducer = (state, action) => {
     case CREATE_CARDS: {
       return {
         ...state,
-        loading: false
-      }
+        loading: false,
+      };
     }
 
     case CLEAR_VALUES: {

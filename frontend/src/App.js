@@ -34,12 +34,30 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/addcard/:id" element={<AddCard></AddCard>} />
+        <Route
+          path="/addcard/:id"
+          element={
+            <ProtectedRoute>
+              <AddCard />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/contract/:id"
-          element={<SingleContract></SingleContract>}
+          element={
+            <ProtectedRoute>
+              <SingleContract />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/service/:id" element={<SingleCard></SingleCard>} />
+        <Route
+          path="/service/:id"
+          element={
+            <ProtectedRoute>
+              <SingleCard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound></NotFound>} />
       </Routes>
     </Router>

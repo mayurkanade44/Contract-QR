@@ -31,11 +31,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      setInterval(() => {
-        navigate("/");
-      }, 2000);
+      navigate("/");
     }
-  }, [navigate, user]);
+  }, [user]);
 
   return (
     <div className="position-absolute top-50 start-50 translate-middle border border-info p-4 mt-4">
