@@ -23,7 +23,7 @@ const ClientAddress = ({ id, same }) => {
           <div className="row">
             <div className="col-md-4">
               <InputSelect
-                label="Name"
+                label="Name :"
                 id={id}
                 name="prefix"
                 type="text"
@@ -43,7 +43,7 @@ const ClientAddress = ({ id, same }) => {
           </div>
 
           <InputRow
-            label="Address1"
+            label="Address1 :"
             id={id}
             type="text"
             name="address1"
@@ -51,7 +51,7 @@ const ClientAddress = ({ id, same }) => {
             value={shipToAddress.address1}
           />
           <InputRow
-            label="Address2"
+            label="Address2 :"
             id={id}
             type="text"
             placeholder="Flat/Office No"
@@ -59,7 +59,7 @@ const ClientAddress = ({ id, same }) => {
             value={shipToAddress.address2}
           />
           <InputRow
-            label="Address3"
+            label="Address3 :"
             id={id}
             type="text"
             placeholder="Road/Lane Name"
@@ -67,7 +67,7 @@ const ClientAddress = ({ id, same }) => {
             value={shipToAddress.address3}
           />
           <InputRow
-            label="Address4"
+            label="Address4 :"
             id={id}
             type="text"
             placeholder="Location"
@@ -75,7 +75,7 @@ const ClientAddress = ({ id, same }) => {
             value={shipToAddress.address4}
           />
           <InputRow
-            label="Near By"
+            label="Near By :"
             id={id}
             type="text"
             placeholder="Landmark"
@@ -83,14 +83,14 @@ const ClientAddress = ({ id, same }) => {
             value={shipToAddress.nearBy}
           />
           <InputRow
-            label="City"
+            label="City :"
             id={id}
             type="text"
             name="city"
             value={shipToAddress.city}
           />
           <InputRow
-            label="Pincode"
+            label="Pincode :"
             id={id}
             type="number"
             name="pincode"
@@ -101,8 +101,8 @@ const ClientAddress = ({ id, same }) => {
         <div>
           <div className="row my-2">
             <div className="col-md-2">
-              <label htmlFor="">
-                <h4>Name:</h4>
+              <label>
+                <h4>Name :</h4>
               </label>
             </div>
             <div className="col-md-2">
@@ -137,7 +137,7 @@ const ClientAddress = ({ id, same }) => {
             </div>
           </div>
           <InputRow
-            label="Address1"
+            label="Address1 :"
             id={id}
             type="text"
             name="address1"
@@ -145,7 +145,7 @@ const ClientAddress = ({ id, same }) => {
             value={address1}
           />
           <InputRow
-            label="Address2"
+            label="Address2 :"
             id={id}
             type="text"
             placeholder="Flat/Office No"
@@ -153,7 +153,7 @@ const ClientAddress = ({ id, same }) => {
             value={address2}
           />
           <InputRow
-            label="Address3"
+            label="Address3 :"
             id={id}
             type="text"
             placeholder="Road/Lane Name"
@@ -161,7 +161,7 @@ const ClientAddress = ({ id, same }) => {
             value={address3}
           />
           <InputRow
-            label="Address4"
+            label="Address4 :"
             id={id}
             type="text"
             placeholder="Location"
@@ -169,16 +169,22 @@ const ClientAddress = ({ id, same }) => {
             value={address4}
           />
           <InputRow
-            label="Near By"
+            label="Near By :"
             id={id}
             type="text"
             placeholder="Landmark"
             name="nearBy"
             value={nearBy}
           />
-          <InputRow label="City" id={id} type="text" name="city" value={city} />
           <InputRow
-            label="Pincode"
+            label="City :"
+            id={id}
+            type="text"
+            name="city"
+            value={city}
+          />
+          <InputRow
+            label="Pincode :"
             id={id}
             type="number"
             name="pincode"

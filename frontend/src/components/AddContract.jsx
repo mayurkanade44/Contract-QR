@@ -20,11 +20,8 @@ const AddContract = () => {
     contractCreated,
     endContract,
     business,
-    billToAddress,
-    shipToAddress,
-    billToContact,
-    shipToContact,
   } = useDataContext();
+  const { day, time } = preferred;
 
   const businessList = [
     "Residential",
@@ -78,20 +75,6 @@ const AddContract = () => {
     }
   };
 
-  const isFormValid = () => {
-    return (
-      contractNo &&
-      billingFrequency &&
-      preferred &&
-      area &&
-      specialInstruction &&
-      billToAddress &&
-      billToContact &&
-      shipToAddress &&
-      shipToContact
-    );
-  };
-
   useEffect(() => {
     if (startDate) {
       lastDate(startDate);
@@ -99,11 +82,10 @@ const AddContract = () => {
     // eslint-disable-next-line
   }, [startDate, endContract]);
 
-  const { day, time } = preferred;
-
   const handleSubmit = (e) => {
     e.preventDefault();
     createContract(endDate);
+    setSame(false);
   };
 
   const handleSame = (e) => {
@@ -116,26 +98,28 @@ const AddContract = () => {
     if (contractCreated) {
       setTimeout(() => {
         navigate(`/addcard/${contract}`);
-      }, 3000);
+      }, 2000);
     }
     // eslint-disable-next-line
   }, [contractCreated]);
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-4">
             <InputRow
-              label="Contract Number"
+              label="Contract Number :"
               type="text"
+              placeholder="eg: s/124"
               name="contractNo"
               value={contractNo}
+              onkeypress={(e)=>{}}
             />
           </div>
           <div className="col-md-4">
             <InputRow
-              label="Start Date"
+              label="Start Date :"
               type="date"
               name="startDate"
               value={startDate}
@@ -143,7 +127,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-4">
             <InputSelect
-              label="End Date:"
+              label="End Date :"
               name="endContract"
               value={endContract}
               data={endDateList}
@@ -152,7 +136,7 @@ const AddContract = () => {
           <hr className="mt-3" />
           <div className="col-md-4">
             <InputSelect
-              label="Business:"
+              label="Business :"
               name="business"
               value={business}
               data={businessList}
@@ -160,7 +144,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-3">
             <InputRow
-              label="Day"
+              label="Day :"
               id="preferred"
               type="text"
               name="day"
@@ -169,7 +153,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-3">
             <InputSelect
-              label="Time"
+              label="Time :"
               id="preferred"
               name="time"
               value={time}
@@ -178,7 +162,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-2">
             <InputRow
-              label="Area"
+              label="Area :"
               placeholder="in sqft"
               type="number"
               name="area"
@@ -188,7 +172,7 @@ const AddContract = () => {
           <hr className="mt-3" />
           <div className="col-md-6">
             <InputRow
-              label="Billing Frequency"
+              label="Billing Frequency :"
               type="text"
               name="billingFrequency"
               value={billingFrequency}
@@ -196,7 +180,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-6">
             <InputRow
-              label="Instructions"
+              label="Instructions :"
               type="text"
               name="specialInstruction"
               value={specialInstruction}
@@ -204,7 +188,7 @@ const AddContract = () => {
           </div>
           <hr className="mt-3" />
           <div className="col-md-6 ">
-            <h4 className="text-info text-center">Bill To Details:</h4>
+            <h4 className="text-info text-center mb-3">Bill To Details:</h4>
             <ClientAddress id="billToAddress" />
             <ContactsTable id="billToContact" />
           </div>
@@ -212,7 +196,7 @@ const AddContract = () => {
             <h4 className="text-info d-inline ms-5">Ship To Details:</h4>
             <button
               onClick={handleSame}
-              className="btn btn-primary ms-5 d-inline"
+              className="btn btn-primary btn-sm ms-5 d-inline"
             >
               Same As Billing Details
             </button>
@@ -220,12 +204,7 @@ const AddContract = () => {
             <ContactsTable id="shipToContact" />
           </div>
           <div className="col-md-2">
-            <button
-              className="btn btn-primary btn-lg"
-              type="submit"
-              onClick={handleSubmit}
-              disabled={!isFormValid()}
-            >
+            <button className="btn btn-primary btn-lg" type="submit">
               Save
             </button>
           </div>
