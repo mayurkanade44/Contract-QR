@@ -94,6 +94,12 @@ const AddContract = () => {
     setSame(true);
   };
 
+  const onkeypress = (e) => {
+    if (e.key !== "/[0-9a-zA-Z]/") {
+      return "";
+    }
+  };
+
   useEffect(() => {
     if (contractCreated) {
       setTimeout(() => {
@@ -111,10 +117,11 @@ const AddContract = () => {
             <InputRow
               label="Contract Number :"
               type="text"
+              id="ContractNumber"
               placeholder="eg: s/124"
               name="contractNo"
               value={contractNo}
-              onkeypress={(e)=>{}}
+              onkeypress={onkeypress}
             />
           </div>
           <div className="col-md-4">
