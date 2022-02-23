@@ -13,13 +13,13 @@ const InputRow = ({ label, type, name, value, id, placeholder }) => {
       <div className="col">
         <input
           className="form-control"
+          required
           type={type}
           id={id}
           placeholder={placeholder}
           name={name}
           value={value}
           onChange={handleChange}
-          required
         />
       </div>
     </div>

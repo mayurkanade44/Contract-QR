@@ -39,7 +39,7 @@ const AddContract = () => {
     "Restaurant",
     "Malls",
     "Entertainment",
-    "Sports Complex"
+    "Sports Complex",
   ];
 
   const timeList = [
