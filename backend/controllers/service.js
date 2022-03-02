@@ -1,13 +1,12 @@
 const Service = require("../models/service");
 const Contract = require("../models/contract");
 const QRCode = require("qrcode");
-const PizZip = require("pizzip");
-const Docxtemplater = require("docxtemplater");
 const fs = require("fs");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const sgMail = require("@sendgrid/mail");
 const request = require("request");
+const newdoc = require("docx-templates");
 
 const getAllService = async (req, res) => {
   try {
@@ -58,53 +57,52 @@ const createDoc = async (req, res) => {
   }
 
   try {
-    services.forEach((element, index) => {
-      const content = fs.readFileSync(
-        path.resolve(__dirname, "test.docx"),
-        "binary"
+    services.forEach(async (element, index) => {
+      const z = element._id.toString().replace(/ObjectId\("(.*)"\)/, "$1");
+      const tp = await QRCode.toDataURL(
+        `http://localhost:5000/api/service/${z}`
       );
+      const template = fs.readFileSync(path.resolve(__dirname, "test2.docx"));
 
-      const zip = new PizZip(content);
+      const buffer = await newdoc.createReport({
+        cmdDelimiter: ["{", "}"],
+        template,
 
-      const doc = new Docxtemplater(zip, {
-        paragraphLoop: true,
-        linebreaks: true,
+        additionalJsContext: {
+          contractNo: contractNo,
+          day: day,
+          time: time,
+          card: index + 1,
+          noCards: services.length,
+          prefix: pre,
+          name: name,
+          address1: address1,
+          address2: address2,
+          address3: address3,
+          address4: address4,
+          city: city,
+          nearBy: nearBy,
+          pincode: pincode,
+          shipToContact: shipToContact,
+          serviceDue: element.serviceDue,
+          service: element.service,
+          frequency: element.frequency,
+          area: area,
+          billingFrequency: billingFrequency,
+          specialInstruction: specialInstruction,
+          url: "12",
+          qrCode: async (url12) => {
+            const dataUrl = tp;
+            const data = await dataUrl.slice("data:image/png;base64,".length);
+            return { width: 2, height: 2, data, extension: ".png" };
+          },
+        },
       });
 
-      doc.render({
-        contractNo: contractNo,
-        day: day,
-        time: time,
-        card: index + 1,
-        noCards: services.length,
-        prefix: pre,
-        name: name,
-        address1: address1,
-        address2: address2,
-        address3: address3,
-        address4: address4,
-        city: city,
-        nearBy: nearBy,
-        pincode: pincode,
-        shipToContact: shipToContact,
-        serviceDue: element.serviceDue,
-        service: element.service,
-        frequency: element.frequency,
-        area: area,
-        billingFrequency: billingFrequency,
-        specialInstruction: specialInstruction,
-      });
-
-      const buf = doc.getZip().generate({
-        type: "nodebuffer",
-        compression: "DEFLATE",
-      });
-
-      // buf is a nodejs Buffer, you can either write it to a file or res.send it with express for example.
       const contractName = contractNo.replace("/", "");
       fs.writeFileSync(
         path.resolve(__dirname, `${contractName} ${element.frequency}.docx`),
-        buf
+        buffer
       );
     });
     res.send({ msg: "Documents created successfully" });
