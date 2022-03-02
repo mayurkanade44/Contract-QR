@@ -10,12 +10,13 @@ const SingleCard = () => {
 
   useEffect(() => {
     fetchSingleCard(id);
+    // eslint-disable-next-line
   }, [id]);
   return (
     <div className="container">
       <div className="my-5">
         {card.map((card) => {
-          const { area, contract, _id, service } = card;
+          const { contract, _id, service } = card;
           return (
             <div key={_id}>
               <h2 className="text-center">{`Contract Number: ${contract.contractNo}`}</h2>

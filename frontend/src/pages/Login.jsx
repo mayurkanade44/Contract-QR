@@ -33,6 +33,7 @@ const Login = () => {
     if (user) {
       navigate("/");
     }
+    // eslint-disable-next-line
   }, [user]);
 
   return (
