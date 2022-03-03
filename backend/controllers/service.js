@@ -74,7 +74,7 @@ const createDoc = async (req, res) => {
       const tp = await QRCode.toDataURL(
         `http://localhost:5000/api/service/${z}`
       );
-      const template = fs.readFileSync(path.resolve(__dirname, "test1.docx"));
+      const template = fs.readFileSync(path.resolve(__dirname, "test2.docx"));
 
       const buffer = await newdoc.createReport({
         cmdDelimiter: ["{", "}"],

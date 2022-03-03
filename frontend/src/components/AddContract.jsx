@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, ClientAddress, ContactsTable, InputSelect } from ".";
+import { InputRow, ClientAddress, ContactsTable, InputSelect, Alert } from ".";
 import { useNavigate } from "react-router-dom";
 
 const AddContract = () => {
@@ -20,6 +20,7 @@ const AddContract = () => {
     contractCreated,
     endContract,
     business,
+    showAlert
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -215,6 +216,7 @@ const AddContract = () => {
               Save
             </button>
           </div>
+          <div className="col-md-4">{showAlert && <Alert />}</div>
         </div>
       </form>
     </div>

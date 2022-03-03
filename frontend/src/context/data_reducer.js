@@ -18,6 +18,7 @@ import {
   LOGOUT,
   CREATE_CARDS,
   CLEAR_VALUES,
+  CONTRACT_FAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -168,6 +169,15 @@ const data_reducer = (state, action) => {
         contract: action.payload.contractId,
       };
     }
+    case CONTRACT_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
+        alertType: "danger",
+        showAlert: "true",
+      };
+    }
     case DELETE_CONTRACT: {
       return {
         ...state,
@@ -197,7 +207,7 @@ const data_reducer = (state, action) => {
         service: [],
         comments: "",
         completion: "Completed",
-        image:''
+        image: "",
       };
     }
     case IMAGE_UPLOADED: {

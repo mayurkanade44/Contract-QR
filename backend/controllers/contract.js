@@ -1,5 +1,6 @@
 const Contract = require("../models/contract");
 const QRCode = require("qrcode");
+const { BadRequestError } = require("../errors");
 
 const getAllContracts = async (req, res) => {
   try {
@@ -12,6 +13,13 @@ const getAllContracts = async (req, res) => {
 };
 
 const createContract = async (req, res) => {
+  const { contractNo } = req.body;
+  const contractAlreadyExists = await Contract.findOne({ contractNo });
+  console.log(contractAlreadyExists);
+  if (contractAlreadyExists) {
+    throw new BadRequestError("Contract Number Already Exists");
+  }
+
   try {
     const contract = await Contract.create({ ...req.body });
     res.status(201).json({ contract });

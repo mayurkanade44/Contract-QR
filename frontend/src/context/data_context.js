@@ -22,6 +22,7 @@ import {
   LOGOUT,
   CREATE_CARDS,
   CLEAR_VALUES,
+  CONTRACT_FAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -102,7 +103,7 @@ export const initialState = {
   business: "Residential",
   area: "",
   comments: "",
-  completion:"Completed",
+  completion: "Completed",
   image: "",
   contract: "",
 };
@@ -253,7 +254,10 @@ export const DataProvider = ({ children }) => {
         payload: { contractId },
       });
     } catch (error) {
-      console.log(error);
+      dispatch({
+        type: CONTRACT_FAIL,
+        payload: { msg: error.response.data.msg },
+      });
     }
   };
 
