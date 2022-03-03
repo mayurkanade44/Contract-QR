@@ -197,6 +197,7 @@ const data_reducer = (state, action) => {
         service: [],
         comments: "",
         completion: "Completed",
+        image:''
       };
     }
     case IMAGE_UPLOADED: {

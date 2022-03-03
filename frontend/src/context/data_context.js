@@ -290,7 +290,6 @@ export const DataProvider = ({ children }) => {
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
-    console.log(file);
 
     const form = new FormData();
     form.append("image", file);
@@ -303,7 +302,6 @@ export const DataProvider = ({ children }) => {
       };
       const res = await axios.post("/service/upload", form, config);
       dispatch({ type: IMAGE_UPLOADED, payload: res.data.image });
-      console.log(res.data.image);
     } catch (error) {
       console.log(error);
     }

@@ -55,7 +55,6 @@ const ContactsTable = ({ id, same }) => {
                 id={id}
                 value={name}
                 onChange={handleChange}
-                required
               />
             </td>
             <td>
@@ -65,7 +64,6 @@ const ContactsTable = ({ id, same }) => {
                 name="contact"
                 value={contact}
                 onChange={handleChange}
-                required
               />
             </td>
             <td>
@@ -75,7 +73,6 @@ const ContactsTable = ({ id, same }) => {
                 name="email"
                 value={email}
                 onChange={handleChange}
-                required
               />
             </td>
           </tr>
@@ -87,7 +84,6 @@ const ContactsTable = ({ id, same }) => {
                 id={id}
                 value={name}
                 onChange={handleChange}
-                required
               />
             </td>
             <td>
@@ -97,7 +93,6 @@ const ContactsTable = ({ id, same }) => {
                 name="contact"
                 value={contact}
                 onChange={handleChange}
-                required
               />
             </td>
             <td>
@@ -107,7 +102,6 @@ const ContactsTable = ({ id, same }) => {
                 name="email"
                 value={email}
                 onChange={handleChange}
-                required
               />
             </td>
           </tr>
