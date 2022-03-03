@@ -46,8 +46,20 @@ const createDoc = async (req, res) => {
     city,
     pincode,
   } = shipToAddress;
-
   const { day, time } = preferred;
+
+  const test = [
+    {
+      name: "aaa",
+      contact: 88,
+      email: "mayurkanade44@gmail.com",
+    },
+    {
+      name: "bb",
+      contact: 77,
+      email: "mayurkanade44@gmail.com",
+    },
+  ];
 
   var pre = "";
   if (prefix === "Other") {
@@ -62,7 +74,7 @@ const createDoc = async (req, res) => {
       const tp = await QRCode.toDataURL(
         `http://localhost:5000/api/service/${z}`
       );
-      const template = fs.readFileSync(path.resolve(__dirname, "test2.docx"));
+      const template = fs.readFileSync(path.resolve(__dirname, "test1.docx"));
 
       const buffer = await newdoc.createReport({
         cmdDelimiter: ["{", "}"],
@@ -83,7 +95,7 @@ const createDoc = async (req, res) => {
           city: city,
           nearBy: nearBy,
           pincode: pincode,
-          shipToContact: shipToContact,
+          shipToContact: test,
           serviceDue: element.serviceDue,
           service: element.service,
           frequency: element.frequency,
