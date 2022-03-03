@@ -102,6 +102,7 @@ export const initialState = {
   business: "Residential",
   area: "",
   comments: "",
+  completion:"Completed",
   image: "",
   contract: "",
 };
@@ -310,11 +311,13 @@ export const DataProvider = ({ children }) => {
 
   const updateCard = async (id) => {
     try {
-      const { comments, image } = state;
+      const { comments, image, completion } = state;
       const res = await axios.patch(`/service/${id}`, {
         comments,
+        completion,
         image,
       });
+      dispatch({ type: CLEAR_VALUES });
       console.log("success");
     } catch (error) {
       console.log(error);

@@ -95,7 +95,7 @@ const createDoc = async (req, res) => {
           city: city,
           nearBy: nearBy,
           pincode: pincode,
-          shipToContact: test,
+          shipToContact: shipToContact,
           serviceDue: element.serviceDue,
           service: element.service,
           frequency: element.frequency,
@@ -193,8 +193,9 @@ const singleService = async (req, res) => {
 const updateCard = async (req, res) => {
   const {
     params: { id: serviceId },
-    body: { image, comments },
+    body: { image, comments, completion },
   } = req;
+  console.log(comments, completion);
   try {
     const service = await Service.findByIdAndUpdate(
       { _id: serviceId },

@@ -195,6 +195,8 @@ const data_reducer = (state, action) => {
         loading: false,
         frequency: "Daily",
         service: [],
+        comments: "",
+        completion: "Completed",
       };
     }
     case IMAGE_UPLOADED: {

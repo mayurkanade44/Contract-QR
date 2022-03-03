@@ -16,6 +16,9 @@ const ServiceSchema = new mongoose.Schema({
   comments: {
     type: String,
   },
+  completion: {
+    type: String
+  },
   contract: {
     type: mongoose.Types.ObjectId,
     ref: "Contract",
