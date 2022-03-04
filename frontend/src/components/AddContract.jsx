@@ -20,7 +20,7 @@ const AddContract = () => {
     contractCreated,
     endContract,
     business,
-    showAlert
+    showAlert,
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -95,12 +95,6 @@ const AddContract = () => {
     setSame(true);
   };
 
-  const onkeypress = (e) => {
-    if (e.key !== "/[0-9a-zA-Z]/") {
-      return "";
-    }
-  };
-
   useEffect(() => {
     if (contractCreated) {
       setTimeout(() => {
@@ -122,7 +116,6 @@ const AddContract = () => {
               placeholder="eg: s/124"
               name="contractNo"
               value={contractNo}
-              onkeypress={onkeypress}
             />
           </div>
           <div className="col-md-4">

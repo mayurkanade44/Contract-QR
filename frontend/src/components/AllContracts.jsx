@@ -20,7 +20,7 @@ const AllContracts = () => {
         <thead>
           <tr>
             <th>Contract No</th>
-            <th>Name</th>
+            <th>Ship To Name</th>
             <th>Start Date</th>
             <th>End Date</th>
           </tr>

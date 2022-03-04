@@ -136,6 +136,7 @@ const AddCard = () => {
             <InputRow
               label="Services"
               type="text"
+              placeholder="separate by comma"
               name="service"
               value={service}
             />

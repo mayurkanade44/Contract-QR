@@ -254,6 +254,7 @@ export const DataProvider = ({ children }) => {
         type: CREATE_CONTRACT,
         payload: { contractId },
       });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       dispatch({
         type: CONTRACT_FAIL,
@@ -267,7 +268,7 @@ export const DataProvider = ({ children }) => {
     try {
       const { frequency, service, contract, treatmentLocation } = state;
       service.split(",").map((ser) => {
-        return serv.push(ser);
+        return serv.push(ser.trim());
       });
       const res = await axios.post("/service", {
         serviceDue: dueMonths,

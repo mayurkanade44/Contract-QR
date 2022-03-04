@@ -1,7 +1,7 @@
 import React from "react";
 import { useDataContext } from "../context/data_context";
 
-const InputSelect = ({ label, data, name, value, id }) => {
+const InputSelect = ({ label, data, name, value, id, abc }) => {
   const { handleChange } = useDataContext();
   return (
     <div className="row mt-2">

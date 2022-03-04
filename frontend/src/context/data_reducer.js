@@ -208,6 +208,15 @@ const data_reducer = (state, action) => {
         comments: "",
         completion: "Completed",
         image: "",
+        contractNo: "",
+        business: "Residential",
+        area: "",
+        endContract: "1 Month (30 Days)",
+        specialInstruction: "",
+        billingFrequency: "",
+        startDate: new Date().toISOString().slice(0, 10),
+        preferred: { day: "", time: "10 am - 12 pm" },
+        contractCreated: false,
       };
     }
     case IMAGE_UPLOADED: {
