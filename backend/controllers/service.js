@@ -99,6 +99,7 @@ const createDoc = async (req, res) => {
           serviceDue: element.serviceDue,
           service: element.service,
           frequency: element.frequency,
+          location: element.treatmentLocation,
           area: area,
           billingFrequency: billingFrequency,
           specialInstruction: specialInstruction,

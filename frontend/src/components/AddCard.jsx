@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, InputSelect} from ".";
+import { InputRow, InputSelect } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -15,6 +15,8 @@ const AddCard = () => {
     singleContract,
     createCard,
     createCards,
+    treatmentLocation,
+    handleChange,
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services } = singleContract;
@@ -63,7 +65,6 @@ const AddCard = () => {
       ) {
         return due.push(date);
       }
-    
     });
     setDueMonths(due);
   };
@@ -89,7 +90,7 @@ const AddCard = () => {
 
   return (
     <div className="container my-3">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="row g-4">
           <div className="col-md-4">
             <h4>{`Contract Number: ${contractNo}`}</h4>
@@ -123,7 +124,7 @@ const AddCard = () => {
                 })}
             </tbody>
           </table>
-          <div className="col-md-4">
+          <div className="col-lg-4">
             <InputSelect
               label="Frequency"
               name="frequency"
@@ -131,7 +132,7 @@ const AddCard = () => {
               data={frequencyList}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-lg-4">
             <InputRow
               label="Services"
               type="text"
@@ -139,26 +140,33 @@ const AddCard = () => {
               value={service}
             />
           </div>
-          <div className="col-md-4">
-            <button
-              className="btn btn-dark"
-              type="submit"
-              onClick={handleSubmit}
-            >
-              Save
-            </button>
+          <div className="col-lg-3">
+            <div className="form-floating">
+              <textarea
+                className="form-control"
+                id="floatingTextarea2"
+                name="treatmentLocation"
+                placeholder="Location To Be Treated"
+                value={treatmentLocation}
+                onChange={handleChange}
+                style={{ height: 120 }}
+                required
+              ></textarea>
+              <label htmlFor="floatingTextarea2">Location To Be Treated</label>
+            </div>
           </div>
-          <div className="col-md-4">
-            <button
-              className="btn btn-dark"
-              type="submit"
-              onClick={generateCards}
-            >
-              Create Cards
+          <div className="col-lg-1">
+            <button className="btn btn-dark" type="submit">
+              Save
             </button>
           </div>
         </div>
       </form>
+      <div className="col-md-4">
+        <button className="btn btn-dark" type="submit" onClick={generateCards}>
+          Create Cards
+        </button>
+      </div>
     </div>
   );
 };

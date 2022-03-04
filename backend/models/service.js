@@ -17,7 +17,11 @@ const ServiceSchema = new mongoose.Schema({
     type: String,
   },
   completion: {
-    type: String
+    type: String,
+  },
+  treatmentLocation: {
+    type: String,
+    required: [true, "Please provide treatment location"],
   },
   contract: {
     type: mongoose.Types.ObjectId,

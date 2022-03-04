@@ -103,6 +103,7 @@ export const initialState = {
   business: "Residential",
   area: "",
   comments: "",
+  treatmentLocation: "",
   completion: "Completed",
   image: "",
   contract: "",
@@ -264,7 +265,7 @@ export const DataProvider = ({ children }) => {
   const createCard = async (dueMonths) => {
     const serv = [];
     try {
-      const { frequency, service, contract } = state;
+      const { frequency, service, contract, treatmentLocation } = state;
       service.split(",").map((ser) => {
         return serv.push(ser);
       });
@@ -272,6 +273,7 @@ export const DataProvider = ({ children }) => {
         serviceDue: dueMonths,
         frequency,
         service: serv,
+        treatmentLocation,
         contract,
       });
       dispatch({ type: CREATE_CARD });
