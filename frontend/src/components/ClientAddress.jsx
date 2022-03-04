@@ -23,7 +23,7 @@ const ClientAddress = ({ id, same }) => {
           <div className="row">
             <div className="col-md-4">
               <InputSelect
-                label="Name :"
+                label="Name"
                 id={id}
                 name="prefix"
                 type="text"
@@ -102,7 +102,7 @@ const ClientAddress = ({ id, same }) => {
           <div className="row my-2">
             <div className="col-md-2">
               <label>
-                <h4>Name :</h4>
+                <h4>Name</h4>
               </label>
             </div>
             <div className="col-md-2">
