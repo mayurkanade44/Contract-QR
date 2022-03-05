@@ -67,6 +67,9 @@ const AllContracts = () => {
           </Link>
         </div>
       </div>
+      {contracts.length === 0 && (
+        <h4 className="text-center m-2 text-danger">No Contract Found</h4>
+      )}
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -76,9 +79,7 @@ const AllContracts = () => {
             <th>End Date</th>
           </tr>
         </thead>
-        {contracts.length === 0 && (
-          <h4 className="text-center">No Contract Found</h4>
-        )}
+
         <tbody>
           {contracts &&
             contracts.map((contracts) => {

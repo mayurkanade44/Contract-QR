@@ -130,6 +130,7 @@ const AddCard = () => {
               name="frequency"
               value={frequency}
               data={frequencyList}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-lg-4">
@@ -139,6 +140,7 @@ const AddCard = () => {
               placeholder="separate by comma"
               name="service"
               value={service}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-lg-3">
