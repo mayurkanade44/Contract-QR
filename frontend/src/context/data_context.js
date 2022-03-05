@@ -278,6 +278,7 @@ export const DataProvider = ({ children }) => {
 
   const createCard = async (dueMonths) => {
     const serv = [];
+    dispatch({ type: LOADING });
     try {
       const { frequency, service, contract, treatmentLocation } = state;
       service.split(",").map((ser) => {
