@@ -191,9 +191,10 @@ export const DataProvider = ({ children }) => {
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
-  }
+  };
 
   const fetchSingleContract = async (id) => {
+    dispatch({ type: LOADING });
     try {
       const res = await axios.get(`/contracts/${id}`);
       const contract = res.data.contract;
@@ -207,6 +208,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const fetchSingleCard = async (id) => {
+    dispatch({ type: LOADING });
     try {
       const res = await axios.get(`/service/${id}`);
 
@@ -370,7 +372,7 @@ export const DataProvider = ({ children }) => {
         loginUser,
         logout,
         createCards,
-        clearValues
+        clearValues,
       }}
     >
       {children}

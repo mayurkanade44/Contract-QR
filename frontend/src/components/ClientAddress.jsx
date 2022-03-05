@@ -41,7 +41,6 @@ const ClientAddress = ({ id, same }) => {
               />
             </div>
           </div>
-
           <InputRow
             label="Address1 :"
             id={id}

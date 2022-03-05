@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ClientDetails, AllCards } from "../components";
+import { ClientDetails, AllCards, Loading } from "../components";
 import { useDataContext } from "../context/data_context";
 
 const SingleContract = () => {
-  
-
-  const { fetchSingleContract, singleContract, deleteContract,} =
+  const { fetchSingleContract, singleContract, deleteContract, loading } =
     useDataContext();
   const {
     contractNo,
@@ -24,6 +22,10 @@ const SingleContract = () => {
     fetchSingleContract(id);
     // eslint-disable-next-line
   }, [id]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container">
@@ -59,7 +61,9 @@ const SingleContract = () => {
           )}
         </div>
         <h2 className="text-center">Service Cards</h2>
-        {services && <AllCards data={services} area={area} preferred={preferred} />}
+        {services && (
+          <AllCards data={services} area={area} preferred={preferred} />
+        )}
       </div>
     </div>
   );

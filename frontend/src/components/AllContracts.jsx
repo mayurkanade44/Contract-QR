@@ -12,7 +12,6 @@ const AllContracts = () => {
     fetchContracts,
     search,
     loading,
-    handleChange,
     clearValues,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
@@ -36,13 +35,7 @@ const AllContracts = () => {
     <div className="container">
       <div className="row my-2">
         <div className="col-md-4">
-          <InputRow
-            label="Search"
-            type="text"
-            name="search"
-            value={search}
-            handleChange={handleChange}
-          />
+          <InputRow label="Search" type="text" name="search" value={search} />
         </div>
         <div className="col-md-1 mt-1">
           <button

@@ -3,7 +3,7 @@ import { InputRow, InputSelect } from ".";
 import { useDataContext } from "../context/data_context";
 
 const UpdateCard = ({ id }) => {
-  const { comments, handleImage, updateCard, completion, image, handleChange } =
+  const { comments, handleImage, updateCard, completion, image } =
     useDataContext();
   const remarks = ["Completed", "Not Completed", "Partially Completed"];
 
@@ -33,7 +33,6 @@ const UpdateCard = ({ id }) => {
               type="text"
               name="comments"
               value={comments}
-              handleChange={handleChange}
             />
           </div>
           <div className="col-lg-1 my-1">

@@ -20,7 +20,6 @@ const getAllContracts = async (req, res) => {
 const createContract = async (req, res) => {
   const { contractNo } = req.body;
   const contractAlreadyExists = await Contract.findOne({ contractNo });
-  console.log(contractAlreadyExists);
   if (contractAlreadyExists) {
     throw new BadRequestError("Contract Number Already Exists");
   }
@@ -74,18 +73,6 @@ const generateQR = async (req, res) => {
 
     url: http://localhost:5000/api/contracts/${id}`;
 
-    // QRCode.toDataURL(
-    //   `num: ${num},
-
-    //   url: http://localhost:5000/api/contracts/${id}`,
-    //   function (err, code) {
-    //     if (err) return console.log("error occurred");
-
-    //     // Printing the code
-    //     console.log(code);
-    //     res.status(200).json(code);
-    //   }
-    // );
 
     const generateQR = async (text) => {
       try {

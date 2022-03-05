@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { UpdateCard } from "../components";
+import { UpdateCard, Loading } from "../components";
 import { useDataContext } from "../context/data_context";
 
-
 const SingleCard = () => {
-  const { card, fetchSingleCard } = useDataContext();
+  const { card, fetchSingleCard, loading } = useDataContext();
   const { id } = useParams();
 
   useEffect(() => {
     fetchSingleCard(id);
     // eslint-disable-next-line
   }, [id]);
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="container">
       <div className="my-5">
@@ -24,7 +27,7 @@ const SingleCard = () => {
             </div>
           );
         })}
-        <UpdateCard id={id}/>
+        <UpdateCard id={id} />
       </div>
     </div>
   );
