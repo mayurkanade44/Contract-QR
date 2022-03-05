@@ -3,8 +3,13 @@ const QRCode = require("qrcode");
 const { BadRequestError } = require("../errors");
 
 const getAllContracts = async (req, res) => {
+  const { search } = req.query;
+  const queryObject = {};
   try {
-    const contracts = await Contract.find({}, { __v: 0 });
+    if (search) {
+      queryObject.contractNo = { $regex: search, $options: "i" };
+    }
+    const contracts = await Contract.find(queryObject);
     res.status(200).json({ contracts, len: contracts.length });
   } catch (error) {
     res.status(500).json({ msg: error });
