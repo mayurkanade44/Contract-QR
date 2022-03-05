@@ -217,6 +217,7 @@ const data_reducer = (state, action) => {
         startDate: new Date().toISOString().slice(0, 10),
         preferred: { day: "", time: "10 am - 12 pm" },
         contractCreated: false,
+        search: ''
       };
     }
     case IMAGE_UPLOADED: {

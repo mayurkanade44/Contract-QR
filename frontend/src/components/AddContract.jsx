@@ -21,6 +21,7 @@ const AddContract = () => {
     endContract,
     business,
     showAlert,
+    handleChange
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -116,6 +117,7 @@ const AddContract = () => {
               placeholder="eg: s/124"
               name="contractNo"
               value={contractNo}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-md-4">
@@ -124,6 +126,7 @@ const AddContract = () => {
               type="date"
               name="startDate"
               value={startDate}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-md-4">
@@ -132,6 +135,7 @@ const AddContract = () => {
               name="endContract"
               value={endContract}
               data={endDateList}
+              handleChange={handleChange}
             />
           </div>
           <hr className="mt-3" />
@@ -141,6 +145,7 @@ const AddContract = () => {
               name="business"
               value={business}
               data={businessList}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-md-3">
@@ -150,6 +155,7 @@ const AddContract = () => {
               type="text"
               name="day"
               value={day}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-md-3">
@@ -168,6 +174,7 @@ const AddContract = () => {
               type="number"
               name="area"
               value={area}
+              handleChange={handleChange}
             />
           </div>
           <hr className="mt-3" />
@@ -177,6 +184,7 @@ const AddContract = () => {
               type="text"
               name="billingFrequency"
               value={billingFrequency}
+              handleChange={handleChange}
             />
           </div>
           <div className="col-md-6">
@@ -185,6 +193,7 @@ const AddContract = () => {
               type="text"
               name="specialInstruction"
               value={specialInstruction}
+              handleChange={handleChange}
             />
           </div>
           <hr className="mt-3" />

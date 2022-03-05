@@ -106,6 +106,7 @@ export const initialState = {
   treatmentLocation: "",
   completion: "Completed",
   image: "",
+  search: "",
   contract: "",
 };
 
@@ -171,8 +172,14 @@ export const DataProvider = ({ children }) => {
   };
 
   const fetchContracts = async () => {
+    const { search } = state;
+    let url = "/contracts";
+    if (search) {
+      url = url + `?search=${search}`;
+    }
+    dispatch({ type: LOADING });
     try {
-      const res = await axios.get("/contracts");
+      const res = await axios.get(url);
       dispatch({
         type: FETCH_CONTRACTS,
         payload: res.data.contracts,
@@ -181,6 +188,10 @@ export const DataProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const clearValues = () => {
+    dispatch({ type: CLEAR_VALUES });
+  }
 
   const fetchSingleContract = async (id) => {
     try {
@@ -359,6 +370,7 @@ export const DataProvider = ({ children }) => {
         loginUser,
         logout,
         createCards,
+        clearValues
       }}
     >
       {children}

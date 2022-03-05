@@ -1,8 +1,15 @@
 import React from "react";
 import { useDataContext } from "../context/data_context";
 
-const InputRow = ({ label, type, name, value, id, placeholder, onkeypress }) => {
-  const { handleChange } = useDataContext();
+const InputRow = ({
+  label,
+  type,
+  name,
+  value,
+  id,
+  placeholder,
+  handleChange,
+}) => {
   return (
     <div className="row g-3 align-items-center">
       <div className="col-auto ">
@@ -20,7 +27,6 @@ const InputRow = ({ label, type, name, value, id, placeholder, onkeypress }) => 
           name={name}
           value={value}
           onChange={handleChange}
-          onKeyPress={onkeypress}
         />
       </div>
     </div>
