@@ -13,13 +13,18 @@ const AllContracts = () => {
     search,
     loading,
     clearValues,
+    fetchServices,
+    allServices
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     fetchContracts();
+    fetchServices();
     // eslint-disable-next-line
   }, [contract, toggle]);
+
+  console.log(allServices);
 
   const handleSubmit = (e) => {
     e.preventDefault();

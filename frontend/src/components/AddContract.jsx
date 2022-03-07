@@ -120,7 +120,6 @@ const AddContract = () => {
               placeholder="eg: s/124"
               name="contractNo"
               value={contractNo}
-              
             />
           </div>
           <div className="col-md-4">
@@ -129,7 +128,6 @@ const AddContract = () => {
               type="date"
               name="startDate"
               value={startDate}
-              
             />
           </div>
           <div className="col-md-4">
@@ -138,7 +136,6 @@ const AddContract = () => {
               name="endContract"
               value={endContract}
               data={endDateList}
-              
             />
           </div>
           <hr className="mt-3" />
@@ -148,7 +145,6 @@ const AddContract = () => {
               name="business"
               value={business}
               data={businessList}
-              
             />
           </div>
           <div className="col-md-3">
@@ -158,7 +154,6 @@ const AddContract = () => {
               type="text"
               name="day"
               value={day}
-              
             />
           </div>
           <div className="col-md-3">
@@ -177,7 +172,6 @@ const AddContract = () => {
               type="number"
               name="area"
               value={area}
-              
             />
           </div>
           <hr className="mt-3" />
@@ -187,7 +181,6 @@ const AddContract = () => {
               type="text"
               name="billingFrequency"
               value={billingFrequency}
-              
             />
           </div>
           <div className="col-md-6">
@@ -196,7 +189,6 @@ const AddContract = () => {
               type="text"
               name="specialInstruction"
               value={specialInstruction}
-              
             />
           </div>
           <hr className="mt-3" />
@@ -214,7 +206,7 @@ const AddContract = () => {
               Same As Billing Details
             </button>
             <ClientAddress id="shipToAddress" same={same} />
-            <ShipContacts />
+            <ShipContacts same={same} />
           </div>
           <div className="col-md-2">
             <button

@@ -19,6 +19,7 @@ import {
   CREATE_CARDS,
   CLEAR_VALUES,
   CONTRACT_FAIL,
+  FETCH_SERVICES,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -102,6 +103,13 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contracts: action.payload,
+      };
+    }
+    case FETCH_SERVICES: {
+      return {
+        ...state,
+        loading: false,
+        allServices: action.payload,
       };
     }
     case FETCH_CONTRACT: {
@@ -188,15 +196,15 @@ const data_reducer = (state, action) => {
         };
       }
       return { ...state, [name]: value };
-      
-    
     }
     case SAME_DETAILS: {
       return {
         ...state,
         loading: false,
         shipToAddress: state.billToAddress,
-        shipToContact: state.billToContact,
+        shipToContact1: state.billToContact1,
+        shipToContact2: state.billToContact2,
+        shipToContact3: state.billToContact3,
       };
     }
     case CREATE_CONTRACT: {

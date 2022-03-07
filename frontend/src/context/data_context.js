@@ -23,6 +23,7 @@ import {
   CREATE_CARDS,
   CLEAR_VALUES,
   CONTRACT_FAIL,
+  FETCH_SERVICES,
 } from "./action";
 
 const DataContext = createContext();
@@ -42,6 +43,7 @@ export const initialState = {
   card: [],
   contractCreated: false,
   contractNo: "",
+  allServices: [],
   billToAddress: {
     prefix: "Mr",
     name: "",
@@ -219,6 +221,15 @@ export const DataProvider = ({ children }) => {
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
+  };
+
+  const fetchServices = async () => {
+    try {
+      const res = await axios.get("/service");
+      dispatch({ type: FETCH_SERVICES, payload: res.data.services });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const fetchSingleContract = async (id) => {
@@ -410,6 +421,7 @@ export const DataProvider = ({ children }) => {
         logout,
         createCards,
         clearValues,
+        fetchServices,
       }}
     >
       {children}

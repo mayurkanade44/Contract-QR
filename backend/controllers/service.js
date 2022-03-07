@@ -37,8 +37,8 @@ const createDoc = async (req, res) => {
     specialInstruction,
     area,
   } = isValidContract;
-  const shipToContact = []
-  shipToContact.push(shipToContact1, shipToContact2, shipToContact3)
+  const shipToContact = [];
+  shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
   const {
     prefix,
     name,

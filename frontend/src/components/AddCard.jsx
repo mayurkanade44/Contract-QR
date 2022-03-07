@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, InputSelect, Loading } from ".";
+import { InputRow, InputSelect } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -17,7 +17,6 @@ const AddCard = () => {
     createCards,
     treatmentLocation,
     handleChange,
-    loading,
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services } = singleContract;
@@ -88,10 +87,6 @@ const AddCard = () => {
     e.preventDefault();
     createCards(id);
   };
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <div className="container my-3">

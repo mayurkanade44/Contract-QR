@@ -7,6 +7,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const FETCH_CONTRACTS = "FETCH_CONTRACTS";
+export const FETCH_SERVICES = "FETCH_SERVICES";
 export const FETCH_CONTRACT = "FETCH_CONTRACT";
 export const CREATE_CONTRACT = "CREATE_CONTRACT";
 export const FETCH_CARD = "FETCH_CARD";
