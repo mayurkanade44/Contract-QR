@@ -29,12 +29,16 @@ const createDoc = async (req, res) => {
     endDate,
     billingFrequency,
     shipToAddress,
-    shipToContact,
+    shipToContact1,
+    shipToContact2,
+    shipToContact3,
     services,
     preferred,
     specialInstruction,
     area,
   } = isValidContract;
+  const shipToContact = []
+  shipToContact.push(shipToContact1, shipToContact2, shipToContact3)
   const {
     prefix,
     name,
@@ -47,19 +51,6 @@ const createDoc = async (req, res) => {
     pincode,
   } = shipToAddress;
   const { day, time } = preferred;
-
-  const test = [
-    {
-      name: "aaa",
-      contact: 88,
-      email: "mayurkanade44@gmail.com",
-    },
-    {
-      name: "bb",
-      contact: 77,
-      email: "mayurkanade44@gmail.com",
-    },
-  ];
 
   var pre = "";
   if (prefix === "Other") {

@@ -73,7 +73,6 @@ const generateQR = async (req, res) => {
 
     url: http://localhost:5000/api/contracts/${id}`;
 
-
     const generateQR = async (text) => {
       try {
         await QRCode.toFile("./test.png", text);
