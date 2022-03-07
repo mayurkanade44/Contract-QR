@@ -65,7 +65,7 @@ const createDoc = async (req, res) => {
       const tp = await QRCode.toDataURL(
         `http://localhost:5000/api/service/${z}`
       );
-      const template = fs.readFileSync(path.resolve(__dirname, "test2.docx"));
+      const template = fs.readFileSync(path.resolve(__dirname, "test3.docx"));
 
       const buffer = await newdoc.createReport({
         cmdDelimiter: ["{", "}"],
@@ -146,7 +146,6 @@ const generateQr = async (isValidContract, services) => {
     const name = `${contractName} ${services.frequency}`;
 
     const stringdata = `Contract Number: ${contractNo},
-
     url: http://localhost:5000/api/service/${serviceId}`;
     await QRCode.toFile(`./${name}.png`, stringdata);
   } catch (error) {}
