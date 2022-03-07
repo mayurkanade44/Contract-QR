@@ -1,6 +1,6 @@
 import React from "react";
 
-const ClientDetails = ({ data, contacts }) => {
+const ClientDetails = ({ data, contacts1, contacts2, contacts3 }) => {
   return (
     <div>
       <h5>{`Name: ${data.name}`}</h5>
@@ -16,15 +16,27 @@ const ClientDetails = ({ data, contacts }) => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map((contact) => {
-            return (
-              <tr key={contact._id}>
-                <td>{contact.name}</td>
-                <td>{contact.contact}</td>
-                <td>{contact.email}</td>
-              </tr>
-            );
-          })}
+          {contacts1 && (
+            <tr>
+              <td>{contacts1.name}</td>
+              <td>{contacts1.contact}</td>
+              <td>{contacts1.email}</td>
+            </tr>
+          )}
+          {contacts2 && (
+            <tr>
+              <td>{contacts2.name}</td>
+              <td>{contacts2.contact}</td>
+              <td>{contacts2.email}</td>
+            </tr>
+          )}
+          {contacts3 && (
+            <tr>
+              <td>{contacts3.name}</td>
+              <td>{contacts3.contact}</td>
+              <td>{contacts3.email}</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

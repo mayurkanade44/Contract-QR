@@ -22,7 +22,7 @@ const ShipContacts = ({ id, same }) => {
       <div className="col-md-4 ">
         <h4 className="text-center">Contact</h4>
         <input
-          type="text"
+          type="number"
           className="form-control mb-2"
           name="contact"
           id="shipToContact1"
@@ -34,7 +34,7 @@ const ShipContacts = ({ id, same }) => {
       <div className="col-md-4 ">
         <h4 className="text-center">Email</h4>
         <input
-          type="text"
+          type="email"
           className="form-control mb-2"
           name="email"
           id="shipToContact1"
@@ -55,7 +55,7 @@ const ShipContacts = ({ id, same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="number"
           className="form-control mb-2"
           name="contact"
           id="shipToContact2"
@@ -65,7 +65,7 @@ const ShipContacts = ({ id, same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="email"
           className="form-control mb-2"
           name="email"
           id="shipToContact2"
@@ -85,7 +85,7 @@ const ShipContacts = ({ id, same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="number"
           className="form-control mb-2"
           name="contact"
           id="shipToContact3"
@@ -95,7 +95,7 @@ const ShipContacts = ({ id, same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="email"
           className="form-control mb-2"
           name="email"
           id="shipToContact3"

@@ -9,9 +9,13 @@ const SingleContract = () => {
   const {
     contractNo,
     billToAddress,
-    billToContact,
+    billToContact1,
+    billToContact2,
+    billToContact3,
     shipToAddress,
-    shipToContact,
+    shipToContact1,
+    shipToContact2,
+    shipToContact3,
     services,
     area,
     preferred,
@@ -51,13 +55,23 @@ const SingleContract = () => {
         <div className="col-md-6">
           <h2 className="text-center mb-4">Bill To Details</h2>
           {billToAddress && (
-            <ClientDetails data={billToAddress} contacts={billToContact} />
+            <ClientDetails
+              data={billToAddress}
+              contacts1={billToContact1}
+              contacts2={billToContact2}
+              contacts3={billToContact3}
+            />
           )}
         </div>
         <div className="col-md-6">
           <h2 className="text-center mb-4">Ship To Details</h2>
           {shipToAddress && (
-            <ClientDetails data={shipToAddress} contacts={shipToContact} />
+            <ClientDetails
+              data={shipToAddress}
+              contacts1={shipToContact1}
+              contacts2={shipToContact2}
+              contacts3={shipToContact3}
+            />
           )}
         </div>
         <h2 className="text-center">Service Cards</h2>

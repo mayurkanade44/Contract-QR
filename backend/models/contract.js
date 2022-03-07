@@ -18,7 +18,7 @@ const ContractSchema = new mongoose.Schema(
       pincode: Number,
     },
 
-    billToContacts: {
+    billToContact1: {
       name: String,
       contact: Number,
       email: String,

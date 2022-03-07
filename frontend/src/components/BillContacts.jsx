@@ -22,7 +22,7 @@ const BillContacts = ({ same }) => {
       <div className="col-md-4 ">
         <h4 className="text-center">Contact</h4>
         <input
-          type="text"
+          type="number"
           className="form-control mb-2"
           name="contact"
           id="billToContact1"
@@ -34,7 +34,7 @@ const BillContacts = ({ same }) => {
       <div className="col-md-4 ">
         <h4 className="text-center">Email</h4>
         <input
-          type="text"
+          type="email"
           className="form-control mb-2"
           name="email"
           id="billToContact1"
@@ -55,7 +55,7 @@ const BillContacts = ({ same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="number"
           className="form-control mb-2"
           name="contact"
           id="billToContact2"
@@ -65,7 +65,7 @@ const BillContacts = ({ same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="email"
           className="form-control mb-2"
           name="email"
           id="billToContact2"
@@ -85,7 +85,7 @@ const BillContacts = ({ same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="number"
           className="form-control mb-2"
           name="contact"
           id="billToContact3"
@@ -95,7 +95,7 @@ const BillContacts = ({ same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="text"
+          type="email"
           className="form-control mb-2"
           name="email"
           id="billToContact3"
