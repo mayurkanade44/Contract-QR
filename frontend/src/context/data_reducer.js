@@ -151,7 +151,45 @@ const data_reducer = (state, action) => {
           preferred: { ...state.preferred, [name]: value },
         };
       }
+      if (id === "billToContact1") {
+        return {
+          ...state,
+          billToContact1: { ...state.billToContact1, [name]: value },
+        };
+      }
+      if (id === "billToContact2") {
+        return {
+          ...state,
+          billToContact2: { ...state.billToContact2, [name]: value },
+        };
+      }
+      if (id === "billToContact3") {
+        return {
+          ...state,
+          billToContact3: { ...state.billToContact3, [name]: value },
+        };
+      }
+      if (id === "shipToContact1") {
+        return {
+          ...state,
+          shipToContact1: { ...state.shipToContact1, [name]: value },
+        };
+      }
+      if (id === "shipToContact2") {
+        return {
+          ...state,
+          shipToContact2: { ...state.shipToContact2, [name]: value },
+        };
+      }
+      if (id === "shipToContact3") {
+        return {
+          ...state,
+          shipToContact3: { ...state.shipToContact3, [name]: value },
+        };
+      }
       return { ...state, [name]: value };
+      
+    
     }
     case SAME_DETAILS: {
       return {

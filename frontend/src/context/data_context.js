@@ -53,7 +53,21 @@ export const initialState = {
     city: "",
     pincode: "",
   },
-  billToContact: [
+  billToContact1: [
+    {
+      name: "",
+      contact: "",
+      email: "",
+    },
+  ],
+  billToContact2: [
+    {
+      name: "",
+      contact: "",
+      email: "",
+    },
+  ],
+  billToContact3: [
     {
       name: "",
       contact: "",
@@ -72,7 +86,21 @@ export const initialState = {
     pincode: "",
   },
 
-  shipToContact: [
+  shipToContact1: [
+    {
+      name: "",
+      contact: "",
+      email: "",
+    },
+  ],
+  shipToContact2: [
+    {
+      name: "",
+      contact: "",
+      email: "",
+    },
+  ],
+  shipToContact3: [
     {
       name: "",
       contact: "",
@@ -241,8 +269,12 @@ export const DataProvider = ({ children }) => {
         contractNo,
         billToAddress,
         shipToAddress,
-        shipToContact,
-        billToContact,
+        shipToContact1,
+        shipToContact2,
+        shipToContact3,
+        billToContact1,
+        billToContact2,
+        billToContact3,
         startDate,
         billingFrequency,
         preferred,
@@ -252,9 +284,13 @@ export const DataProvider = ({ children }) => {
       const res = await axios.post("/contracts", {
         contractNo,
         billToAddress,
-        billToContact,
+        shipToContact1,
+        shipToContact2,
+        shipToContact3,
+        billToContact1,
+        billToContact2,
+        billToContact3,
         shipToAddress,
-        shipToContact,
         startDate,
         endDate: last,
         billingFrequency,

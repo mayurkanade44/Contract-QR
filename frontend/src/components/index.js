@@ -6,7 +6,8 @@ import ClientDetails from "./ClientDetails";
 import InputRow from "./InputRow";
 import AddCard from "./AddCard";
 import InputSelect from "./InputSelect";
-import ContactsTable from "./ContactsTable";
+import BillContacts from "./BillContacts";
+import ShipContacts from "./ShipContacts";
 import UpdateCard from "./UpdateCard";
 import Alert from "./Alert";
 import Navbar from "./Navbar";
@@ -21,9 +22,10 @@ export {
   ClientAddress,
   AddCard,
   InputSelect,
-  ContactsTable,
+  BillContacts,
   UpdateCard,
   Alert,
   Navbar,
   Loading,
+  ShipContacts,
 };

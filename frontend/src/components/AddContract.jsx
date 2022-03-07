@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, ClientAddress, ContactsTable, InputSelect, Alert } from ".";
+import { InputRow, ClientAddress, BillContacts, ShipContacts, InputSelect, Alert } from ".";
 import { useNavigate } from "react-router-dom";
 
 const AddContract = () => {
@@ -203,7 +203,7 @@ const AddContract = () => {
           <div className="col-md-6 ">
             <h4 className="text-info text-center mb-3">Bill To Details:</h4>
             <ClientAddress id="billToAddress" />
-            <ContactsTable id="billToContact" />
+            <BillContacts />
           </div>
           <div className="col-md-6 ">
             <h4 className="text-info d-inline ms-5">Ship To Details:</h4>
@@ -214,7 +214,7 @@ const AddContract = () => {
               Same As Billing Details
             </button>
             <ClientAddress id="shipToAddress" same={same} />
-            <ContactsTable id="shipToContact" />
+            <ShipContacts />
           </div>
           <div className="col-md-2">
             <button

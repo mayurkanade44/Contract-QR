@@ -18,13 +18,24 @@ const ContractSchema = new mongoose.Schema(
       pincode: Number,
     },
 
-    billToContact: [
-      {
-        name: String,
-        contact: Number,
-        email: String,
-      },
-    ],
+    billToContacts: {
+      name: String,
+      contact: Number,
+      email: String,
+    },
+
+    billToContact2: {
+      name: String,
+      contact: Number,
+      email: String,
+    },
+
+    billToContact3: {
+      name: String,
+      contact: Number,
+      email: String,
+    },
+
     shipToAddress: {
       prefix: String,
       name: String,
@@ -37,13 +48,24 @@ const ContractSchema = new mongoose.Schema(
       pincode: Number,
     },
 
-    shipToContact: [
-      {
-        name: String,
-        contact: Number,
-        email: String,
-      },
-    ],
+    shipToContact1: {
+      name: String,
+      contact: Number,
+      email: String,
+    },
+
+    shipToContact2: {
+      name: String,
+      contact: Number,
+      email: String,
+    },
+
+    shipToContact3: {
+      name: String,
+      contact: Number,
+      email: String,
+    },
+
     startDate: {
       type: Date,
       required: [true, "Date is required"],
