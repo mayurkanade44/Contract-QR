@@ -31,7 +31,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/dashboard");
     }
     // eslint-disable-next-line
   }, [user]);

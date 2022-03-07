@@ -12,6 +12,7 @@ import UpdateCard from "./UpdateCard";
 import Alert from "./Alert";
 import Navbar from "./Navbar";
 import Loading from "./Loading";
+import Dashboard from "./Dashboard";
 
 export {
   AllContracts,
@@ -28,4 +29,5 @@ export {
   Navbar,
   Loading,
   ShipContacts,
+  Dashboard,
 };

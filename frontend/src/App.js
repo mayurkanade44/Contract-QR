@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AddCard, Navbar } from "./components";
+import { AddCard, Navbar, Dashboard } from "./components";
 import {
   Home,
   SingleContract,
@@ -23,6 +23,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           }
         />

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, ClientAddress, BillContacts, ShipContacts, InputSelect, Alert } from ".";
+import {
+  InputRow,
+  ClientAddress,
+  BillContacts,
+  ShipContacts,
+  InputSelect,
+  Alert,
+} from ".";
 import { useNavigate } from "react-router-dom";
 
 const AddContract = () => {
@@ -23,7 +30,7 @@ const AddContract = () => {
     showAlert,
     handleChange,
     loading,
-    displayAlert
+    displayAlert,
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -90,7 +97,7 @@ const AddContract = () => {
     e.preventDefault();
     createContract(endDate);
     setSame(false);
-    displayAlert()
+    displayAlert();
   };
 
   const handleSame = (e) => {

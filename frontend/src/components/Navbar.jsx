@@ -35,6 +35,11 @@ const Navbar = () => {
                     <h4>Home</h4>
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/dashboard" className="nav-link active" aria-current="page">
+                    <h4>Dashboard</h4>
+                  </Link>
+                </li>
                 <h4
                   className="nav-link dropdown-toggle"
                   id="navbarDropdownMenuLink"

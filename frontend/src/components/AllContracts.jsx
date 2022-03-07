@@ -24,6 +24,16 @@ const AllContracts = () => {
     // eslint-disable-next-line
   }, [contract, toggle]);
 
+
+  var start = moment(new Date())
+
+  if(allServices) {
+    const serv = allServices.filter((ser) =>
+      ser.serviceDue.includes(start.format("MMMM YY"))
+    );
+    console.log(serv.length);
+  }
+
   console.log(allServices);
 
   const handleSubmit = (e) => {
