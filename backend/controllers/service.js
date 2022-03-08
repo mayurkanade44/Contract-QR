@@ -186,23 +186,39 @@ const updateCard = async (req, res) => {
     params: { id: serviceId },
     body: { image, comments, completion },
   } = req;
-  console.log(comments, completion);
   try {
     const service = await Service.findByIdAndUpdate(
       { _id: serviceId },
       req.body,
       { new: true, runValidators: true }
-    ).populate({ path: "contract", select: "billToContact shipToContact" });
+    ).populate({
+      path: "contract",
+      select:
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3",
+    });
+
     if (service) {
       const temails = new Set();
-      const list = service.contract.billToContact;
-      const list1 = service.contract.shipToContact;
-      list.map((list) => {
-        return temails.add(list.email);
-      });
-      list1.map((list) => {
-        return temails.add(list.email);
-      });
+      const first = service.contract.billToContact1.email;
+      const second = service.contract.shipToContact1.email;
+      const fifth = service.contract.billToContact2.email;
+      const six = service.contract.billToContact3.email;
+      const third = service.contract.shipToContact2.email;
+      const fourth = service.contract.shipToContact3.email;
+      temails.add(first)
+      temails.add(second)
+      if(third) {
+        temails.add(third)
+      }
+      if (fourth) {
+        temails.add(fourth);
+      }
+      if (fifth) {
+        temails.add(fifth);
+      }
+      if (six) {
+        temails.add(six);
+      }
       const emails = [...temails];
       sendEmail(emails, image);
     }

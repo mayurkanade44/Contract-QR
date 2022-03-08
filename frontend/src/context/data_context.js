@@ -24,6 +24,7 @@ import {
   CLEAR_VALUES,
   CONTRACT_FAIL,
   FETCH_SERVICES,
+  UPDATE_CARD,
 } from "./action";
 
 const DataContext = createContext();
@@ -112,20 +113,6 @@ export const initialState = {
   startDate: new Date().toISOString().slice(0, 10),
   billingFrequency: "",
   frequency: "Daily",
-  frequencyList: [
-    "Daily",
-    "Thrice A Week",
-    "Twice A Week",
-    "Weekly",
-    "Thrice A Month",
-    "Fortnightly",
-    "Monthly",
-    "Alternate Monthly",
-    "Quarterly",
-    "Thrice A Year",
-    "Twice A Year",
-    "Yearly",
-  ],
   service: [],
   endContract: "1 Month (30 Days)",
   preferred: { day: "", time: "10 am - 12 pm" },
@@ -377,6 +364,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const updateCard = async (id) => {
+    dispatch({ type: LOADING });
     try {
       const { comments, image, completion } = state;
       const res = await axios.patch(`/service/${id}`, {
@@ -384,8 +372,8 @@ export const DataProvider = ({ children }) => {
         completion,
         image,
       });
+      dispatch({ type: UPDATE_CARD });
       dispatch({ type: CLEAR_VALUES });
-      console.log("success");
     } catch (error) {
       console.log(error);
     }

@@ -21,3 +21,4 @@ export const DELETE_CONTRACT = "DELETE_CONTRACT";
 export const CREATE_CARDS = "CREATE_CARDS";
 export const CLEAR_VALUES = "CLEAR_VALUES";
 export const CONTRACT_FAIL = "CONTRACT_FAIL";
+export const UPDATE_CARD = "UPDATE_CARD";

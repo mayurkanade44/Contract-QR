@@ -20,6 +20,7 @@ import {
   CLEAR_VALUES,
   CONTRACT_FAIL,
   FETCH_SERVICES,
+  UPDATE_CARD
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -56,7 +57,7 @@ const data_reducer = (state, action) => {
         user: action.payload.name,
         alertText: action.payload.msg,
         alertType: "success",
-        showAlert: true
+        showAlert: true,
       };
     }
     case REGISTER_FAIL: {
@@ -65,7 +66,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: action.payload.msg,
         alertType: "danger",
-        showAlert: true
+        showAlert: true,
       };
     }
     case LOGIN_SUCCESS: {
@@ -76,7 +77,7 @@ const data_reducer = (state, action) => {
         user: action.payload.name,
         alertText: "Redirecting to home page",
         alertType: "success",
-        showAlert: true
+        showAlert: true,
       };
     }
     case LOGIN_FAIL: {
@@ -85,7 +86,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: action.payload.msg,
         alertType: "danger",
-        showAlert: true
+        showAlert: true,
       };
     }
     case LOGOUT: {
@@ -213,7 +214,7 @@ const data_reducer = (state, action) => {
         contract: action.payload.contractId,
         alertText: "Contract Created Successfully",
         alertType: "success",
-        showAlert: true
+        showAlert: true,
       };
     }
     case CONTRACT_FAIL: {
@@ -222,7 +223,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: action.payload.msg,
         alertType: "danger",
-        showAlert: true
+        showAlert: true,
       };
     }
     case DELETE_CONTRACT: {
@@ -245,7 +246,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: "Cards created successfully",
         alertType: "success",
-        showAlert: true
+        showAlert: true,
       };
     }
 
@@ -275,6 +276,15 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         image: action.payload,
+      };
+    }
+    case UPDATE_CARD: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Email Has Benn Sent",
+        alertType: "success",
+        showAlert: true,
       };
     }
 

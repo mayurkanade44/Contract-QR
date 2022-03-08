@@ -1,15 +1,23 @@
 import React from "react";
-import { InputRow, InputSelect } from ".";
+import { InputRow, InputSelect, Alert } from ".";
 import { useDataContext } from "../context/data_context";
 
 const UpdateCard = ({ id }) => {
-  const { comments, handleImage, updateCard, completion, image } =
-    useDataContext();
+  const {
+    comments,
+    handleImage,
+    updateCard,
+    completion,
+    image,
+    showAlert,
+    displayAlert,
+  } = useDataContext();
   const remarks = ["Completed", "Not Completed", "Partially Completed"];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     updateCard(id);
+    displayAlert();
   };
 
   return (
@@ -45,6 +53,7 @@ const UpdateCard = ({ id }) => {
               Save
             </button>
           </div>
+          <div className="col-md-12">{showAlert && <Alert />}</div>
         </div>
       </form>
     </div>

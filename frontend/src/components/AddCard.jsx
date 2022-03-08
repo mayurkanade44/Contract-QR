@@ -9,7 +9,6 @@ const AddCard = () => {
   const [add, setAdd] = useState(true);
   const {
     frequency,
-    frequencyList,
     service,
     fetchSingleContract,
     singleContract,
@@ -23,6 +22,21 @@ const AddCard = () => {
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services } = singleContract;
+
+  const frequencyList = [
+    "Daily",
+    "Thrice A Week",
+    "Twice A Week",
+    "Weekly",
+    "Thrice A Month",
+    "Fortnightly",
+    "Monthly",
+    "Alternate Monthly",
+    "Quarterly",
+    "Thrice A Year",
+    "Twice A Year",
+    "Yearly",
+  ];
 
   const { id } = useParams();
 
@@ -89,7 +103,7 @@ const AddCard = () => {
   const generateCards = (e) => {
     e.preventDefault();
     createCards(id);
-    displayAlert()
+    displayAlert();
   };
 
   return (
