@@ -346,6 +346,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const createCards = async (id) => {
+    dispatch({ type: LOADING });
     try {
       const res = await axios.get(`/service/create/${id}`);
       dispatch({

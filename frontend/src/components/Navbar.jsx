@@ -24,13 +24,13 @@ const Navbar = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <span className="nav-link active" aria-current="page">
-                  <h4>Contract`</h4>
+                  <h4>Contracts</h4>
                 </span>
               </li>
             </ul>
             {user && (
               <ul className="navbar-nav nav-item ms-auto dropdown">
-                <li className="nav-item">
+                <li className="nav-item me-4">
                   <Link to="/" className="nav-link active" aria-current="page">
                     <h4>Home</h4>
                   </Link>

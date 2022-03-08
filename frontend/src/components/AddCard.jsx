@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, InputSelect } from ".";
+import { InputRow, InputSelect, Alert } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
@@ -17,6 +17,9 @@ const AddCard = () => {
     createCards,
     treatmentLocation,
     handleChange,
+    showAlert,
+    loading,
+    displayAlert,
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services } = singleContract;
@@ -86,6 +89,7 @@ const AddCard = () => {
   const generateCards = (e) => {
     e.preventDefault();
     createCards(id);
+    displayAlert()
   };
 
   return (
@@ -163,10 +167,18 @@ const AddCard = () => {
           </div>
         </div>
       </form>
-      <div className="col-md-4">
-        <button className="btn btn-dark" type="submit" onClick={generateCards}>
-          Create Cards
-        </button>
+      <div className="row">
+        <div className="col-md-2">
+          <button
+            className="btn btn-dark"
+            type="submit"
+            onClick={generateCards}
+            disabled={loading ? true : false}
+          >
+            Create Cards
+          </button>
+        </div>
+        <div className="col-md-4">{showAlert && <Alert />}</div>
       </div>
     </div>
   );

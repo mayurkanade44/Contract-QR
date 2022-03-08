@@ -46,8 +46,6 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         showAlert: true,
-        alertText: "provide name",
-        alertType: "danger",
       };
     }
     case REGISTER_SUCCESS: {
@@ -58,7 +56,7 @@ const data_reducer = (state, action) => {
         user: action.payload.name,
         alertText: action.payload.msg,
         alertType: "success",
-        showAlert: "true",
+        showAlert: true
       };
     }
     case REGISTER_FAIL: {
@@ -67,7 +65,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: action.payload.msg,
         alertType: "danger",
-        showAlert: "true",
+        showAlert: true
       };
     }
     case LOGIN_SUCCESS: {
@@ -78,7 +76,7 @@ const data_reducer = (state, action) => {
         user: action.payload.name,
         alertText: "Redirecting to home page",
         alertType: "success",
-        showAlert: "true",
+        showAlert: true
       };
     }
     case LOGIN_FAIL: {
@@ -87,7 +85,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: action.payload.msg,
         alertType: "danger",
-        showAlert: "true",
+        showAlert: true
       };
     }
     case LOGOUT: {
@@ -215,7 +213,7 @@ const data_reducer = (state, action) => {
         contract: action.payload.contractId,
         alertText: "Contract Created Successfully",
         alertType: "success",
-        showAlert: "true",
+        showAlert: true
       };
     }
     case CONTRACT_FAIL: {
@@ -224,7 +222,7 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: action.payload.msg,
         alertType: "danger",
-        showAlert: "true",
+        showAlert: true
       };
     }
     case DELETE_CONTRACT: {
@@ -245,6 +243,9 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
+        alertText: "Cards created successfully",
+        alertType: "success",
+        showAlert: true
       };
     }
 

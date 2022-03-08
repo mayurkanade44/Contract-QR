@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
 import { Link } from "react-router-dom";
-import { BarChart } from ".";
+import { BarChart, Loading } from ".";
 import moment from "moment";
 
 const Dashboard = () => {
-  const { allServices, fetchServices } = useDataContext();
+  const { allServices, fetchServices, frequency } = useDataContext();
   const [jobs, setJobs] = useState({
     Jan: "",
     Feb: "",
@@ -21,8 +21,8 @@ const Dashboard = () => {
     Dec: "",
   });
 
+  const year = moment(new Date()).format("YY");
   const job = () => {
-    const year = moment(new Date()).format("YY");
     const jan = allServices.filter((ser) =>
       ser.serviceDue.includes(`January ${year}`)
     );
@@ -73,18 +73,22 @@ const Dashboard = () => {
     setJobs((jobs) => ({ ...jobs, Dec: dec.length }));
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchServices();
-  },[])
+  }, [frequency]);
 
   useEffect(() => {
     job();
   }, [allServices]);
 
+  if (allServices.length === 0) {
+    return <Loading />;
+  }
+
   return (
     <div className="container my-2">
       <h3 className="text-center">Dashboard</h3>
-      <div className="row my-4">
+      <div className="row my-2">
         <Link
           to="/"
           className="col-md-6 d-flex align-items-center justify-content-center bg-dark"
@@ -100,7 +104,7 @@ const Dashboard = () => {
           <h4 className="text-info">Create New Contract</h4>
         </Link>
         <div className="col-md-12">
-          <BarChart data={jobs} />
+          <BarChart data={jobs} year={year} />
         </div>
       </div>
     </div>
