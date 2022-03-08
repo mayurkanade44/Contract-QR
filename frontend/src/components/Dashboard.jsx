@@ -1,7 +1,86 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDataContext } from "../context/data_context";
 import { Link } from "react-router-dom";
+import { BarChart } from ".";
+import moment from "moment";
 
 const Dashboard = () => {
+  const { allServices, fetchServices } = useDataContext();
+  const [jobs, setJobs] = useState({
+    Jan: "",
+    Feb: "",
+    Mar: "",
+    Apr: "",
+    May: "",
+    Jun: "",
+    Jul: "",
+    Aug: "",
+    Sep: "",
+    Oct: "",
+    Nov: "",
+    Dec: "",
+  });
+
+  const job = () => {
+    const year = moment(new Date()).format("YY");
+    const jan = allServices.filter((ser) =>
+      ser.serviceDue.includes(`January ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Jan: jan.length }));
+    const feb = allServices.filter((ser) =>
+      ser.serviceDue.includes(`February ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Feb: feb.length }));
+    const mar = allServices.filter((ser) =>
+      ser.serviceDue.includes(`March ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Mar: mar.length }));
+    const apr = allServices.filter((ser) =>
+      ser.serviceDue.includes(`April ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Apr: apr.length }));
+    const may = allServices.filter((ser) =>
+      ser.serviceDue.includes(`May ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, May: may.length }));
+    const jun = allServices.filter((ser) =>
+      ser.serviceDue.includes(`June ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Jun: jun.length }));
+    const jul = allServices.filter((ser) =>
+      ser.serviceDue.includes(`July ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Jul: jul.length }));
+    const aug = allServices.filter((ser) =>
+      ser.serviceDue.includes(`August ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Aug: aug.length }));
+    const sep = allServices.filter((ser) =>
+      ser.serviceDue.includes(`September ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Sep: sep.length }));
+    const oct = allServices.filter((ser) =>
+      ser.serviceDue.includes(`October ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Oct: oct.length }));
+    const nov = allServices.filter((ser) =>
+      ser.serviceDue.includes(`November ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Nov: nov.length }));
+    const dec = allServices.filter((ser) =>
+      ser.serviceDue.includes(`December ${year}`)
+    );
+    setJobs((jobs) => ({ ...jobs, Dec: dec.length }));
+  };
+
+  useEffect(()=> {
+    fetchServices();
+  },[])
+
+  useEffect(() => {
+    job();
+  }, [allServices]);
+
   return (
     <div className="container my-2">
       <h3 className="text-center">Dashboard</h3>
@@ -20,6 +99,9 @@ const Dashboard = () => {
         >
           <h4 className="text-info">Create New Contract</h4>
         </Link>
+        <div className="col-md-12">
+          <BarChart data={jobs} />
+        </div>
       </div>
     </div>
   );

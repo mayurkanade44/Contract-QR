@@ -13,6 +13,8 @@ import Alert from "./Alert";
 import Navbar from "./Navbar";
 import Loading from "./Loading";
 import Dashboard from "./Dashboard";
+import BarChart from "./BarChart";
+
 
 export {
   AllContracts,
@@ -30,4 +32,5 @@ export {
   Loading,
   ShipContacts,
   Dashboard,
+  BarChart,
 };

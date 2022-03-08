@@ -14,27 +14,16 @@ const AllContracts = () => {
     loading,
     clearValues,
     fetchServices,
-    allServices
+    allServices,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
 
+  console.log(allServices);
   useEffect(() => {
     fetchContracts();
     fetchServices();
     // eslint-disable-next-line
   }, [contract, toggle]);
-
-
-  var start = moment(new Date())
-
-  if(allServices) {
-    const serv = allServices.filter((ser) =>
-      ser.serviceDue.includes(start.format("MMMM YY"))
-    );
-    console.log(serv.length);
-  }
-
-  console.log(allServices);
 
   const handleSubmit = (e) => {
     e.preventDefault();
