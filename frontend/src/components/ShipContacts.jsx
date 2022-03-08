@@ -1,5 +1,4 @@
 import { useDataContext } from "../context/data_context";
-import { InputRow } from ".";
 
 const ShipContacts = ({ same }) => {
   const { handleChange, shipToContact1, shipToContact2, shipToContact3 } =

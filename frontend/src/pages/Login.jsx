@@ -13,8 +13,6 @@ const Login = () => {
     role: "Sales",
   });
 
-  const roles = ["Sales", "Operator"];
-
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };

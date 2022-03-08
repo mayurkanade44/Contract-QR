@@ -28,7 +28,6 @@ const AddContract = () => {
     endContract,
     business,
     showAlert,
-    handleChange,
     loading,
     displayAlert,
   } = useDataContext();
