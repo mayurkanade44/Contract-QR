@@ -18,7 +18,6 @@ const AllContracts = () => {
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
 
-  console.log(allServices);
   useEffect(() => {
     fetchContracts();
     fetchServices();

@@ -51,7 +51,7 @@ const Navbar = () => {
                   <span>{user && user}</span>
                 </h4>
                 <ul
-                  className="dropdown-menu"
+                  className="dropdown-menu" style={{marginLeft:250}}
                   aria-labelledby="navbarDropdownMenuLink"
                 >
                   <li>
