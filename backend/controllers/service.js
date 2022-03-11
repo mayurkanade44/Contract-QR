@@ -105,11 +105,11 @@ const createDoc = async (req, res) => {
 
       const contractName = contractNo.replace("/", "");
       fs.writeFileSync(
-        path.resolve(__dirname, `${contractName} ${element.frequency}.docx`),
+        path.resolve(__dirname, `${contractName} ${element.frequency} ${index + 1}.docx`),
         buffer
       );
       const result = await cloudinary.uploader.upload(
-        `controllers/${contractName} ${element.frequency}.docx`,
+        `controllers/${contractName} ${element.frequency} ${index + 1}.docx`,
         {
           resource_type: "raw",
           use_filename: true,
@@ -160,7 +160,7 @@ const generateQr = async (isValidContract, services) => {
     const serviceId = await services._id;
     const contractNo = isValidContract.contractNo;
     const contractName = contractNo.replace("/", "");
-    const name = `${contractName} ${services.frequency}`;
+    const name = `${contractName} ${services.frequency} ${services.service}`;
 
     const stringdata = `Contract Number: ${contractNo},
     url: http://localhost:5000/api/service/${serviceId}`;

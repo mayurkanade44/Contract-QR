@@ -279,8 +279,10 @@ export const DataProvider = ({ children }) => {
         specialInstruction,
         area,
       } = state;
+      const upper = contractNo.charAt(0).toUpperCase() + contractNo.slice(1);
+      console.log(upper);
       const res = await axios.post("/contracts", {
-        contractNo,
+        contractNo: upper,
         billToAddress,
         shipToContact1,
         shipToContact2,
