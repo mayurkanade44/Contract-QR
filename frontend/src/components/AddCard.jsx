@@ -242,7 +242,11 @@ const AddCard = () => {
             </div>
           </div>
           <div className="col-lg-1">
-            <button className="btn btn-dark" type="submit">
+            <button
+              className="btn btn-dark"
+              type="submit"
+              disabled={loading ? true : false}
+            >
               Save
             </button>
           </div>

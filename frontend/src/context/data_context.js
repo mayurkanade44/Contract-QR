@@ -211,6 +211,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const fetchServices = async () => {
+    dispatch({ type: LOADING });
     try {
       const res = await axios.get("/service");
       dispatch({ type: FETCH_SERVICES, payload: res.data.services });

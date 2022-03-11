@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useDataContext } from "../context/data_context";
 import { Link } from "react-router-dom";
-import { InputRow } from ".";
-import Loading from "./Loading";
+import { InputRow, Loading } from ".";
 
 const AllContracts = () => {
   const {
