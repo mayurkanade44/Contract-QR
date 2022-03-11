@@ -108,7 +108,24 @@ const createDoc = async (req, res) => {
         path.resolve(__dirname, `${contractName} ${element.frequency}.docx`),
         buffer
       );
+      const result = await cloudinary.uploader.upload(
+        `controllers/${contractName} ${element.frequency}.docx`,
+        {
+          resource_type: "raw",
+          use_filename: true,
+          folder: "service-cards",
+        }
+      );
+      const serv = await Service.findByIdAndUpdate(
+        { _id: z },
+        { card: result.secure_url },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
     });
+
     res.send({ msg: "Documents created successfully" });
   } catch (error) {
     console.log(error);
@@ -148,6 +165,7 @@ const generateQr = async (isValidContract, services) => {
     const stringdata = `Contract Number: ${contractNo},
     url: http://localhost:5000/api/service/${serviceId}`;
     await QRCode.toFile(`./${name}.png`, stringdata);
+    // fs.unlinkSync(`./${name}.png`);
   } catch (error) {}
 };
 
@@ -182,6 +200,7 @@ const singleService = async (req, res) => {
 };
 
 const updateCard = async (req, res) => {
+  console.log(req.body);
   const {
     params: { id: serviceId },
     body: { image, comments, completion },
@@ -205,10 +224,10 @@ const updateCard = async (req, res) => {
       const six = service.contract.billToContact3.email;
       const third = service.contract.shipToContact2.email;
       const fourth = service.contract.shipToContact3.email;
-      temails.add(first)
-      temails.add(second)
-      if(third) {
-        temails.add(third)
+      temails.add(first);
+      temails.add(second);
+      if (third) {
+        temails.add(third);
       }
       if (fourth) {
         temails.add(fourth);
@@ -229,6 +248,7 @@ const updateCard = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
+  console.log(req.files);
   const result = await cloudinary.uploader.upload(
     req.files.image.tempFilePath,
     {

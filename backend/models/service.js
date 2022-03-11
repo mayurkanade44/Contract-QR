@@ -19,6 +19,9 @@ const ServiceSchema = new mongoose.Schema({
   completion: {
     type: String,
   },
+  card: {
+    type: String,
+  },
   treatmentLocation: {
     type: String,
     required: [true, "Please provide treatment location"],
