@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputRow, InputSelect, Alert } from ".";
+import { InputSelect, Alert } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import MultiSelect from "react-multiple-select-dropdown-lite";
+import "react-multiple-select-dropdown-lite/dist/index.css";
 
 const AddCard = () => {
   const [dueMonths, setDueMonths] = useState([]);
   const [add, setAdd] = useState(true);
+  const [value, setValue] = useState("");
+
+  const handleOnchange = (val) => {
+    setValue(val);
+  };
+
   const {
     frequency,
     service,
@@ -36,6 +44,18 @@ const AddCard = () => {
     "Thrice A Year",
     "Twice A Year",
     "Yearly",
+  ];
+
+  const serviceList = [
+    { label: "Green Shield", value: "Green Shield" },
+    { label: "Ratrid", value: "Ratrid" },
+    { label: "Termiproof", value: "Termiproof" },
+    { label: "Bugfree", value: "Bugfree" },
+    { label: "Flyban", value: "Flyban" },
+    { label: "Mosquit", value: "Mosquit" },
+    { label: "Woodsafe", value: "Woodsafe" },
+    { label: "FX1", value: "FX1" },
+    { label: "Others", value: "Others" },
   ];
 
   const { id } = useParams();
@@ -96,7 +116,7 @@ const AddCard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createCard(dueMonths);
+    createCard(dueMonths, value);
     setAdd(!add);
   };
 
@@ -169,13 +189,21 @@ const AddCard = () => {
             />
           </div>
           <div className="col-lg-4">
-            <InputRow
-              label="Services"
-              type="text"
-              placeholder="separate by comma"
-              name="service"
-              value={service}
-            />
+            <div className="app">
+              <div className="row mt-2">
+                <div className="col-lg-3">
+                  <div className="preview-values">
+                    <h4>Services</h4>
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <MultiSelect
+                    onChange={handleOnchange}
+                    options={serviceList}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-lg-3">
             <div className="form-floating">

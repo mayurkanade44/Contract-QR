@@ -15,7 +15,6 @@ import Loading from "./Loading";
 import Dashboard from "./Dashboard";
 import BarChart from "./BarChart";
 
-
 export {
   AllContracts,
   ClientDetails,

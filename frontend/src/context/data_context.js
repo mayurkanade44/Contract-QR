@@ -310,12 +310,12 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const createCard = async (dueMonths) => {
+  const createCard = async (dueMonths, value) => {
     const serv = [];
     dispatch({ type: LOADING });
     try {
-      const { frequency, service, contract, treatmentLocation } = state;
-      service.split(",").map((ser) => {
+      const { frequency, contract, treatmentLocation } = state;
+      value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
       const res = await axios.post("/service", {
