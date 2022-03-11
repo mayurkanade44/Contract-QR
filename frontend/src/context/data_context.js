@@ -336,9 +336,8 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const res = await axios.get(`/service/create/${id}`);
-      dispatch({
-        type: CREATE_CARDS,
-      });
+      dispatch({ type: CREATE_CARDS });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }

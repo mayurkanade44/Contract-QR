@@ -102,6 +102,7 @@ const AddCard = () => {
 
   const generateCards = (e) => {
     e.preventDefault();
+    setAdd(!add);
     createCards(id);
     displayAlert();
   };
@@ -126,17 +127,34 @@ const AddCard = () => {
                 <th>No</th>
                 <th>Services</th>
                 <th>Frequency</th>
+                <th>Download</th>
               </tr>
             </thead>
             <tbody>
               {services &&
                 services.map((data, index) => {
-                  const { frequency, service } = data;
+                  const { frequency, service, card } = data;
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{`${service}`}</td>
                       <td>{frequency}</td>
+                      <td>
+                        <button
+                          className="btn btn-dark"
+                          disabled={card ? false : true}
+                        >
+                          <a
+                            style={{
+                              textDecoration: "none",
+                              color: "white",
+                            }}
+                            href={card}
+                          >
+                            Download
+                          </a>
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
