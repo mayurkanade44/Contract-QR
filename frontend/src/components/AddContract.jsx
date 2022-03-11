@@ -138,7 +138,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-4">
             <InputSelect
-              label="End Date"
+              label="End Date :"
               name="endContract"
               value={endContract}
               data={endDateList}
@@ -147,30 +147,32 @@ const AddContract = () => {
           <hr className="mt-3" />
           <div className="col-md-4">
             <InputSelect
-              label="Business"
+              label="Business :"
               name="business"
               value={business}
               data={businessList}
             />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <InputRow
-              label="Day:"
+              label="Preferred Day:"
               id="preferred"
               type="text"
               name="day"
               value={day}
             />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <InputSelect
-              label="Time :"
+              label="&amp; Time :"
               id="preferred"
               name="time"
               value={time}
               data={timeList}
             />
           </div>
+
+          <hr className="mt-3" />
           <div className="col-md-2">
             <InputRow
               label="Area :"
@@ -180,8 +182,7 @@ const AddContract = () => {
               value={area}
             />
           </div>
-          <hr className="mt-3" />
-          <div className="col-md-6">
+          <div className="col-md-5">
             <InputRow
               label="Billing Frequency :"
               type="text"
@@ -189,7 +190,7 @@ const AddContract = () => {
               value={billingFrequency}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-5">
             <InputRow
               label="Instructions :"
               type="text"

@@ -104,12 +104,13 @@ const createDoc = async (req, res) => {
       });
 
       const contractName = contractNo.replace("/", "");
+      const filename = `${contractName} ${element.frequency} ${index + 1}`;
       fs.writeFileSync(
-        path.resolve(__dirname, `${contractName} ${element.frequency} ${index + 1}.docx`),
+        path.resolve(__dirname, "../files/", `${filename}.docx`),
         buffer
       );
       const result = await cloudinary.uploader.upload(
-        `controllers/${contractName} ${element.frequency} ${index + 1}.docx`,
+        `files/${filename}.docx`,
         {
           resource_type: "raw",
           use_filename: true,
@@ -124,6 +125,7 @@ const createDoc = async (req, res) => {
           runValidators: true,
         }
       );
+      fs.unlinkSync(`./files/${filename}.docx`);
     });
 
     res.send({ msg: "Documents created successfully" });
@@ -164,9 +166,25 @@ const generateQr = async (isValidContract, services) => {
 
     const stringdata = `Contract Number: ${contractNo},
     url: http://localhost:5000/api/service/${serviceId}`;
-    await QRCode.toFile(`./${name}.png`, stringdata);
-    // fs.unlinkSync(`./${name}.png`);
-  } catch (error) {}
+    await QRCode.toFile(`./files/${name}.png`, stringdata, { width: 20 });
+    const result = await cloudinary.uploader.upload(`files/${name}.png`, {
+      width: 80,
+      height: 80,
+      use_filename: true,
+      folder: "service-cards",
+    });
+    const serv = await Service.findByIdAndUpdate(
+      { _id: serviceId },
+      { qr: result.secure_url },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    fs.unlinkSync(`./files/${name}.png`);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const createService = async (req, res) => {
@@ -179,7 +197,6 @@ const createService = async (req, res) => {
     const services = await Service.create(req.body);
     if (services) {
       generateQr(isValidContract, services);
-      // createDoc(isValidContract, services);
     }
     res.status(201).json({ services });
   } catch (error) {

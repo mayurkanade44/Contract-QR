@@ -17,7 +17,6 @@ const AddCard = () => {
 
   const {
     frequency,
-    service,
     fetchSingleContract,
     singleContract,
     createCard,
@@ -145,35 +144,57 @@ const AddCard = () => {
             <thead>
               <tr>
                 <th>No</th>
-                <th>Services</th>
-                <th>Frequency</th>
-                <th>Download</th>
+                <th className="text-center">Services</th>
+                <th className="text-center">Frequency</th>
+                <th className="text-center">Download</th>
               </tr>
             </thead>
             <tbody>
               {services &&
                 services.map((data, index) => {
-                  const { frequency, service, card } = data;
+                  const { frequency, service, card, qr } = data;
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{`${service}`}</td>
+                      <td>{service}</td>
                       <td>{frequency}</td>
                       <td>
-                        <button
-                          className="btn btn-dark"
-                          disabled={card ? false : true}
-                        >
-                          <a
-                            style={{
-                              textDecoration: "none",
-                              color: "white",
-                            }}
-                            href={card}
-                          >
-                            Download
-                          </a>
-                        </button>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <button
+                              className="btn btn-dark"
+                              disabled={card ? false : true}
+                            >
+                              <a
+                                style={{
+                                  textDecoration: "none",
+                                  color: "white",
+                                }}
+                                href={card}
+                              >
+                                Download
+                              </a>
+                            </button>
+                          </div>
+                          <div className="col-md-6">
+                            <button
+                              className="btn btn-dark"
+                              disabled={qr ? false : true}
+                            >
+                              <a
+                                style={{
+                                  textDecoration: "none",
+                                  color: "white",
+                                }}
+                                href={qr}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Download
+                              </a>
+                            </button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   );
