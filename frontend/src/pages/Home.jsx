@@ -3,8 +3,8 @@ import { AllContracts } from "../components";
 
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="container">
+      <h2 className="text-center all-contracts my-4">All Contracts</h2>
       <AllContracts />
     </div>
   );

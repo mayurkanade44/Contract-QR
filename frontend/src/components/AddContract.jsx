@@ -138,7 +138,7 @@ const AddContract = () => {
           </div>
           <div className="col-md-4">
             <InputSelect
-              label="End Date :"
+              label="End Date"
               name="endContract"
               value={endContract}
               data={endDateList}
@@ -147,7 +147,7 @@ const AddContract = () => {
           <hr className="mt-3" />
           <div className="col-md-4">
             <InputSelect
-              label="Business :"
+              label="Business"
               name="business"
               value={business}
               data={businessList}

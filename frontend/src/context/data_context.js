@@ -188,6 +188,16 @@ export const DataProvider = ({ children }) => {
     removeLocalStorage();
   };
 
+  const paginate = (contracts) => {
+    const limit = 10;
+    const pages = Math.ceil(contracts.length / limit);
+    const newContracts = Array.from({ length: pages }, (_, index) => {
+      const start = index * limit;
+      return contracts.slice(start, start + limit);
+    });
+    return newContracts;
+  };
+
   const fetchContracts = async () => {
     const { search } = state;
     let url = "/contracts";
@@ -197,14 +207,16 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const res = await axios.get(url);
+
       dispatch({
         type: FETCH_CONTRACTS,
-        payload: res.data.contracts,
+        payload: paginate(res.data.contracts),
       });
     } catch (error) {
       console.log(error);
     }
   };
+
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
