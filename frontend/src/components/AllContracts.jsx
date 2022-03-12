@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useDataContext } from "../context/data_context";
 import { Link } from "react-router-dom";
-import { InputRow, Loading } from ".";
+import { InputRow, Loading, Pagination } from ".";
 
 const AllContracts = () => {
   const {
@@ -13,9 +13,11 @@ const AllContracts = () => {
     loading,
     clearValues,
     fetchServices,
-    allServices,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
+  const [page, setPage] = useState(0)
+  const [cont, setCont] = useState([])
+
 
   useEffect(() => {
     fetchContracts();
@@ -23,11 +25,21 @@ const AllContracts = () => {
     // eslint-disable-next-line
   }, [contract, toggle]);
 
+  useEffect(()=>{
+    if (loading) return
+    setCont(contracts[page])
+  },[loading, page])
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setToggle(!toggle);
     clearValues();
   };
+
+  const handleChnage = (index) => {
+    setPage(index)
+  }
 
   if (loading) {
     return <Loading />;
@@ -76,8 +88,8 @@ const AllContracts = () => {
         </thead>
 
         <tbody>
-          {contracts &&
-            contracts.map((contracts) => {
+          {cont &&
+            cont.map((contracts) => {
               const { contractNo, _id, startDate, endDate, shipToAddress } =
                 contracts;
               const { name } = shipToAddress;
@@ -97,6 +109,7 @@ const AllContracts = () => {
             })}
         </tbody>
       </table>
+      <Pagination contracts={contracts} handleChange={handleChnage} page={page}  />
     </div>
   );
 };

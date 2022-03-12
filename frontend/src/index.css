@@ -22,3 +22,10 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.all-contracts {
+  color: #573391;
+  font-weight: 800;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+}

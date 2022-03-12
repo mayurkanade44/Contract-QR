@@ -14,6 +14,7 @@ import Navbar from "./Navbar";
 import Loading from "./Loading";
 import Dashboard from "./Dashboard";
 import BarChart from "./BarChart";
+import Pagination from "./Pagination";
 
 export {
   AllContracts,
@@ -32,4 +33,5 @@ export {
   ShipContacts,
   Dashboard,
   BarChart,
+  Pagination,
 };
