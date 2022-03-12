@@ -29,3 +29,7 @@ input[type="number"] {
   font-size: 2.5rem;
   letter-spacing: 2px;
 }
+
+.multiselect {
+  width: 250px !important;
+}

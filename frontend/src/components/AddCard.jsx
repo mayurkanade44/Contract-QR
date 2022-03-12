@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
+import Loading from "./Loading";
 
 const AddCard = () => {
   const [dueMonths, setDueMonths] = useState([]);
   const [add, setAdd] = useState(true);
+  const [genrate, setGenrate] = useState(true);
   const [value, setValue] = useState("");
 
   const handleOnchange = (val) => {
@@ -107,24 +109,35 @@ const AddCard = () => {
 
   useEffect(() => {
     fetchSingleContract(id);
+    // eslint-disable-next-line
+  }, [id, add, genrate]);
+
+  useEffect(() => {
     if ((startDate, endDate)) {
       dueRange(startDate, endDate);
     }
     // eslint-disable-next-line
-  }, [id, startDate, frequency, add]);
+  }, [startDate, frequency]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createCard(dueMonths, value);
     setAdd(!add);
+    displayAlert();
   };
 
   const generateCards = (e) => {
     e.preventDefault();
-    setAdd(!add);
     createCards(id);
+    setTimeout(() => {
+      setGenrate(!genrate);
+    }, 3000);
     displayAlert();
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container my-3">
@@ -156,11 +169,11 @@ const AddCard = () => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{service}</td>
+                      <td>{`${service},`}</td>
                       <td>{frequency}</td>
                       <td>
                         <div className="row">
-                          <div className="col-md-6">
+                          <div className="col-md-6 d-flex justify-content-around">
                             <button
                               className="btn btn-dark"
                               disabled={card ? false : true}
@@ -172,11 +185,11 @@ const AddCard = () => {
                                 }}
                                 href={card}
                               >
-                                Download
+                                Service Card
                               </a>
                             </button>
                           </div>
-                          <div className="col-md-6">
+                          <div className="col-md-6 d-flex justify-content-around">
                             <button
                               className="btn btn-dark"
                               disabled={qr ? false : true}
@@ -190,7 +203,7 @@ const AddCard = () => {
                                 target="_blank"
                                 rel="noreferrer"
                               >
-                                Download
+                                QR Code
                               </a>
                             </button>
                           </div>
@@ -221,6 +234,7 @@ const AddCard = () => {
                   <MultiSelect
                     onChange={handleOnchange}
                     options={serviceList}
+                    className="multiselect"
                   />
                 </div>
               </div>

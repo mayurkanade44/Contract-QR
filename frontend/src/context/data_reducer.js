@@ -238,6 +238,9 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contractCreated: false,
+        alertText: "Card created successfully",
+        alertType: "success",
+        showAlert: true,
       };
     }
     case CREATE_CARDS: {
