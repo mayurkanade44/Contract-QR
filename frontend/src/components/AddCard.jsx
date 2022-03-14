@@ -34,6 +34,7 @@ const AddCard = () => {
 
   const frequencyList = [
     "Daily",
+    "Single",
     "Thrice A Week",
     "Twice A Week",
     "Weekly",
@@ -89,6 +90,8 @@ const AddCard = () => {
       if (frequency && frequency === "Thrice A Year" && index % 4 === 0) {
         return due.push(date);
       } else if (frequency && frequency === "Quarterly" && index % 3 === 0) {
+        return due.push(date);
+      } else if (frequency && frequency === "Single" && index === 0) {
         return due.push(date);
       } else if (frequency && frequency === "Twice A Year" && index % 6 === 0) {
         return due.push(date);
