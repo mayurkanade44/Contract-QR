@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputSelect, Alert } from ".";
+import { InputSelect, Alert, Loading } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import "react-multiple-select-dropdown-lite/dist/index.css";
-import Loading from "./Loading";
 
 const AddCard = () => {
   const [dueMonths, setDueMonths] = useState([]);
@@ -118,11 +117,16 @@ const AddCard = () => {
 
   useEffect(() => {
     fetchSingleContract(id);
+
+    // eslint-disable-next-line
+  }, [id, add]);
+
+  useEffect(() => {
     if ((startDate, endDate)) {
       dueRange(startDate, endDate);
     }
     // eslint-disable-next-line
-  }, [id, add, startDate, frequency]);
+  }, [startDate, frequency]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -138,9 +142,9 @@ const AddCard = () => {
     displayAlert();
   };
 
-  // if (loading) {
-  //   return <Loading />;
-  // }
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container my-3">
@@ -161,60 +165,17 @@ const AddCard = () => {
               <th>No</th>
               <th className="text-center">Services</th>
               <th className="text-center">Frequency</th>
-              {(role === "Back Office" || role === "Admin") && (
-                <th className="text-center">Download</th>
-              )}
             </tr>
           </thead>
           <tbody>
             {services &&
               services.map((data, index) => {
-                const { frequency, service, card, qr } = data;
+                const { frequency, service,} = data;
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{`${service},`}</td>
                     <td>{frequency}</td>
-                    {(role === "Back Office" || role === "Admin") && (
-                      <td>
-                        <div className="row">
-                          <div className="col-md-6 d-flex justify-content-around">
-                            <button
-                              className="btn btn-dark"
-                              disabled={card ? false : true}
-                            >
-                              <a
-                                style={{
-                                  textDecoration: "none",
-                                  color: "white",
-                                }}
-                                href={card}
-                              >
-                                Service Card
-                              </a>
-                            </button>
-                          </div>
-                          <div className="col-md-6 d-flex justify-content-around">
-                            <button
-                              className="btn btn-dark"
-                              disabled={qr ? false : true}
-                            >
-                              <a
-                                style={{
-                                  textDecoration: "none",
-                                  color: "white",
-                                }}
-                                href={qr}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                QR Code
-                              </a>
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                    )}
                   </tr>
                 );
               })}
@@ -293,7 +254,7 @@ const AddCard = () => {
               </button>
             </div>
             <div className="col-md-5">
-              <h5 className="d-inline">{showAlert && <Alert />}</h5>
+              <h5>{showAlert && <Alert />}</h5>
             </div>
           </div>
         </>

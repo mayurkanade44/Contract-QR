@@ -12,8 +12,8 @@ const AllContracts = () => {
     search,
     loading,
     clearValues,
-    fetchServices,
     role,
+    del
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
   const [page, setPage] = useState(0);
@@ -21,13 +21,13 @@ const AllContracts = () => {
 
   useEffect(() => {
     fetchContracts();
-    fetchServices();
     // eslint-disable-next-line
-  }, [contract, toggle]);
+  }, [contract, toggle, del]);
 
   useEffect(() => {
     if (loading) return;
     setCont(contracts[page]);
+    // eslint-disable-next-line
   }, [loading, page]);
 
   const handleSubmit = (e) => {
