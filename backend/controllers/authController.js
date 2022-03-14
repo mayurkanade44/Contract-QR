@@ -6,11 +6,14 @@ const register = async (req, res) => {
   if (!name || !password) {
     throw new BadRequestError("Please provide all values");
   }
-  const user = await User.create({ name, password });
+  const user = await User.create({ name, password, role });
   const token = user.createJWT();
-  res
-    .status(201)
-    .json({ name: user.name, token, msg: "User successfully created." });
+  res.status(201).json({
+    name: user.name,
+    role: user.role,
+    token,
+    msg: "User successfully created.",
+  });
 };
 
 const login = async (req, res) => {
@@ -30,7 +33,7 @@ const login = async (req, res) => {
     throw new UnAuthenticated("Invalid Password");
   }
   const token = await user.createJWT();
-  res.status(200).json({ name: user.name, token });
+  res.status(200).json({ name: user.name, role: user.role, token });
 };
 
 module.exports = { register, login };

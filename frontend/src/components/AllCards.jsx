@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AllCards = ({ data, area, preferred }) => {
+const AllCards = ({ data, area, preferred, role }) => {
   return (
     <div>
       {data && (
@@ -13,7 +13,7 @@ const AllCards = ({ data, area, preferred }) => {
               <th>Frequency</th>
               <th>Area</th>
               <th>Day &amp; Time</th>
-              <th>Update</th>
+              {(role === "Operator" || role === "Admin") && <th>Update</th>}
             </tr>
           </thead>
           <tbody>
@@ -26,11 +26,13 @@ const AllCards = ({ data, area, preferred }) => {
                   <td>{frequency}</td>
                   <td>{area}</td>
                   <td>{`${preferred.day} / ${preferred.time}`}</td>
-                  <td>
-                    <Link to={`/service/${_id}`}>
-                      <button className="btn btn-primary">Update</button>
-                    </Link>
-                  </td>
+                  {(role === "Operator" || role === "Admin") && (
+                    <td>
+                      <Link to={`/service/${_id}`}>
+                        <button className="btn btn-primary">Update</button>
+                      </Link>
+                    </td>
+                  )}
                 </tr>
               );
             })}

@@ -4,7 +4,7 @@ import { ClientDetails, AllCards, Loading } from "../components";
 import { useDataContext } from "../context/data_context";
 
 const SingleContract = () => {
-  const { fetchSingleContract, singleContract, deleteContract, loading } =
+  const { fetchSingleContract, singleContract, deleteContract, loading, role } =
     useDataContext();
   const {
     contractNo,
@@ -34,24 +34,31 @@ const SingleContract = () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-md-8 my-3">
+        <div className="col-md-6 my-3">
           <h2 className="text-center">{`Contract Number: ${contractNo}`}</h2>
         </div>
         <div className="col-md-2 my-3">
           <Link to={`/addcard/${id}`}>
-            <button className="btn btn-primary">Add Cards</button>
+            {(role === "Sales" || role === "Admin") && (
+              <button className="btn btn-primary">Add Cards</button>
+            )}
+            {(role === "Back Office" || role === "Admin") && (
+              <button className="btn btn-primary">Download Cards</button>
+            )}
           </Link>
         </div>
-        <div className="col-md-2 my-3">
-          <Link to="/">
-            <button
-              onClick={() => deleteContract(id)}
-              className="btn btn-danger"
-            >
-              Delete Contract
-            </button>
-          </Link>
-        </div>
+        {role === "Admin" && (
+          <div className="col-md-2 my-3">
+            <Link to="/">
+              <button
+                onClick={() => deleteContract(id)}
+                className="btn btn-danger"
+              >
+                Delete Contract
+              </button>
+            </Link>
+          </div>
+        )}
         <div className="col-md-6">
           <h2 className="text-center mb-4">Bill To Details</h2>
           {billToAddress && (
@@ -76,7 +83,7 @@ const SingleContract = () => {
         </div>
         <h2 className="text-center">Service Cards</h2>
         {services && (
-          <AllCards data={services} area={area} preferred={preferred} />
+          <AllCards data={services} area={area} preferred={preferred} role={role} />
         )}
       </div>
     </div>

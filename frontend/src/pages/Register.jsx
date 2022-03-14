@@ -13,7 +13,7 @@ const Register = () => {
     role: "Sales",
   });
 
-  const roles = ["Sales", "Operator"];
+  const roles = ["Sales", "Back Office", "Operator", "Admin"];
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

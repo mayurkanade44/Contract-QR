@@ -48,7 +48,7 @@ const Navbar = () => {
                   aria-expanded="false"
                 >
                   <FaUserCircle className="mx-2" />
-                  <span>{user && user}</span>
+                  <span>{user && user[0].toUpperCase() + user.slice(1)}</span>
                 </h4>
                 <ul
                   className="dropdown-menu" style={{marginLeft:250}}

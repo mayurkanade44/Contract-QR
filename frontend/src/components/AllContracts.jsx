@@ -13,11 +13,11 @@ const AllContracts = () => {
     loading,
     clearValues,
     fetchServices,
+    role,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
-  const [page, setPage] = useState(0)
-  const [cont, setCont] = useState([])
-
+  const [page, setPage] = useState(0);
+  const [cont, setCont] = useState([]);
 
   useEffect(() => {
     fetchContracts();
@@ -25,11 +25,10 @@ const AllContracts = () => {
     // eslint-disable-next-line
   }, [contract, toggle]);
 
-  useEffect(()=>{
-    if (loading) return
-    setCont(contracts[page])
-  },[loading, page])
-
+  useEffect(() => {
+    if (loading) return;
+    setCont(contracts[page]);
+  }, [loading, page]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,8 +37,8 @@ const AllContracts = () => {
   };
 
   const handleChnage = (index) => {
-    setPage(index)
-  }
+    setPage(index);
+  };
 
   if (loading) {
     return <Loading />;
@@ -66,13 +65,15 @@ const AllContracts = () => {
             Reset
           </button>
         </div>
-        <div className="col-md-5 d-flex justify-content-end">
-          <Link to="/create">
-            <button className="btn btn-secondary btn-lg my-1">
-              Create Contract
-            </button>
-          </Link>
-        </div>
+        {(role === "Sales" || role === "Admin") && (
+          <div className="col-md-5 d-flex justify-content-end">
+            <Link to="/create">
+              <button className="btn btn-secondary btn-lg my-1">
+                Create Contract
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
       {contracts.length === 0 && (
         <h4 className="text-center m-2 text-danger">No Contract Found</h4>
@@ -109,7 +110,11 @@ const AllContracts = () => {
             })}
         </tbody>
       </table>
-      <Pagination contracts={contracts} handleChange={handleChnage} page={page}  />
+      <Pagination
+        contracts={contracts}
+        handleChange={handleChnage}
+        page={page}
+      />
     </div>
   );
 };

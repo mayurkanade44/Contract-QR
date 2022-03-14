@@ -10,9 +10,8 @@ import Loading from "./Loading";
 const AddCard = () => {
   const [dueMonths, setDueMonths] = useState([]);
   const [add, setAdd] = useState(true);
-  const [genrate, setGenrate] = useState(true);
   const [value, setValue] = useState("");
-  const [chemicals, setChemicals] = useState([])
+  const [chemicals, setChemicals] = useState([]);
 
   const handleOnchange = (val) => {
     setValue(val);
@@ -29,6 +28,7 @@ const AddCard = () => {
     showAlert,
     loading,
     displayAlert,
+    role,
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services } = singleContract;
@@ -118,15 +118,11 @@ const AddCard = () => {
 
   useEffect(() => {
     fetchSingleContract(id);
-    // eslint-disable-next-line
-  }, [id, add, genrate]);
-
-  useEffect(() => {
     if ((startDate, endDate)) {
       dueRange(startDate, endDate);
     }
     // eslint-disable-next-line
-  }, [startDate, frequency]);
+  }, [id, add, startDate, frequency]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -138,48 +134,48 @@ const AddCard = () => {
   const generateCards = (e) => {
     e.preventDefault();
     createCards(id);
-    setTimeout(() => {
-      setGenrate(!genrate);
-    }, 3000);
+    setAdd(!add);
     displayAlert();
   };
 
-  if (loading) {
-    return <Loading />;
-  }
+  // if (loading) {
+  //   return <Loading />;
+  // }
 
   return (
     <div className="container my-3">
-      <form onSubmit={handleSubmit}>
-        <div className="row g-4">
-          <div className="col-md-4">
-            <h4>{`Contract Number: ${contractNo}`}</h4>
-          </div>
-          <div className="col-md-4">
-            <h4>{`Start Date: ${moment(startDate).format("DD/MM/YYYY")}`}</h4>
-          </div>
-          <div className="col-md-4">
-            <h4>{`End Date: ${moment(endDate).format("DD/MM/YYYY")}`}</h4>
-          </div>
-          <hr />
-          <table className="table table-striped table-bordered border-dark ">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th className="text-center">Services</th>
-                <th className="text-center">Frequency</th>
+      <div className="row g-4">
+        <div className="col-md-4">
+          <h4>{`Contract Number: ${contractNo}`}</h4>
+        </div>
+        <div className="col-md-4">
+          <h4>{`Start Date: ${moment(startDate).format("DD/MM/YYYY")}`}</h4>
+        </div>
+        <div className="col-md-4">
+          <h4>{`End Date: ${moment(endDate).format("DD/MM/YYYY")}`}</h4>
+        </div>
+        <hr />
+        <table className="table table-striped table-bordered border-dark ">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th className="text-center">Services</th>
+              <th className="text-center">Frequency</th>
+              {(role === "Back Office" || role === "Admin") && (
                 <th className="text-center">Download</th>
-              </tr>
-            </thead>
-            <tbody>
-              {services &&
-                services.map((data, index) => {
-                  const { frequency, service, card, qr } = data;
-                  return (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{`${service},`}</td>
-                      <td>{frequency}</td>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {services &&
+              services.map((data, index) => {
+                const { frequency, service, card, qr } = data;
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{`${service},`}</td>
+                    <td>{frequency}</td>
+                    {(role === "Back Office" || role === "Admin") && (
                       <td>
                         <div className="row">
                           <div className="col-md-6 d-flex justify-content-around">
@@ -218,77 +214,90 @@ const AddCard = () => {
                           </div>
                         </div>
                       </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-          <div className="col-lg-4">
-            <InputSelect
-              label="Frequency"
-              name="frequency"
-              value={frequency}
-              data={frequencyList}
-            />
-          </div>
-          <div className="col-lg-4">
-            <div className="app">
-              <div className="row mt-2">
-                <div className="col-lg-3">
-                  <div className="preview-values">
-                    <h4>Services</h4>
+                    )}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+      {(role === "Sales" || role === "Admin") && (
+        <>
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-lg-4">
+                <InputSelect
+                  label="Frequency"
+                  name="frequency"
+                  value={frequency}
+                  data={frequencyList}
+                />
+              </div>
+              <div className="col-lg-4">
+                <div className="app">
+                  <div className="row mt-2">
+                    <div className="col-lg-3">
+                      <div className="preview-values">
+                        <h4>Services</h4>
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <MultiSelect
+                        onChange={handleOnchange}
+                        options={serviceList}
+                        className="multiselect"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="col-lg-6">
-                  <MultiSelect
-                    onChange={handleOnchange}
-                    options={serviceList}
-                    className="multiselect"
+              </div>
+              <div className="col-lg-3">
+                <div className="form-floating">
+                  <textarea
+                    className="form-control"
+                    id="floatingTextarea2"
+                    name="treatmentLocation"
+                    placeholder="Location To Be Treated"
+                    value={treatmentLocation}
+                    onChange={handleChange}
+                    style={{ height: 120 }}
                     required
-                  />
+                  ></textarea>
+                  <label htmlFor="floatingTextarea2">
+                    Location To Be Treated
+                  </label>
                 </div>
               </div>
+              <div className="col-lg-1">
+                <button
+                  className="btn btn-dark"
+                  type="submit"
+                  disabled={loading ? true : false}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div className="row">
+            <div className="col-md-2">
+              <button
+                className="btn btn-dark"
+                type="submit"
+                onClick={generateCards}
+                disabled={loading ? true : false}
+              >
+                Create Cards
+              </button>
+            </div>
+            <div className="col-md-5">
+              <h5 className="d-inline">{showAlert && <Alert />}</h5>
             </div>
           </div>
-          <div className="col-lg-3">
-            <div className="form-floating">
-              <textarea
-                className="form-control"
-                id="floatingTextarea2"
-                name="treatmentLocation"
-                placeholder="Location To Be Treated"
-                value={treatmentLocation}
-                onChange={handleChange}
-                style={{ height: 120 }}
-                required
-              ></textarea>
-              <label htmlFor="floatingTextarea2">Location To Be Treated</label>
-            </div>
-          </div>
-          <div className="col-lg-1">
-            <button
-              className="btn btn-dark"
-              type="submit"
-              disabled={loading ? true : false}
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </form>
-      <div className="row">
-        <div className="col-md-2">
-          <button
-            className="btn btn-dark"
-            type="submit"
-            onClick={generateCards}
-            disabled={loading ? true : false}
-          >
-            Create Cards
-          </button>
-        </div>
-        <div className="col-md-4">{showAlert && <Alert />}</div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

@@ -32,6 +32,7 @@ const DataContext = createContext();
 
 const user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
 
 export const initialState = {
   loading: false,
@@ -40,6 +41,7 @@ export const initialState = {
   alertType: "",
   user: user || null,
   token: token || null,
+  role: role || null,
   contracts: [],
   singleContract: [],
   card: [],
@@ -142,23 +144,25 @@ export const DataProvider = ({ children }) => {
     }, 2000);
   };
 
-  const addLocalStorage = ({ name, token }) => {
+  const addLocalStorage = ({ name, token, role }) => {
     localStorage.setItem("user", name);
     localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
   };
 
   const removeLocalStorage = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   const registerUser = async (currentUser) => {
     dispatch({ type: LOADING });
     try {
       const res = await axios.post("/register", currentUser);
-      const { name, token, msg } = res.data;
-      dispatch({ type: REGISTER_SUCCESS, payload: { name, token, msg } });
-      addLocalStorage({ name, token });
+      const { name, role, token, msg } = res.data;
+      dispatch({ type: REGISTER_SUCCESS, payload: { name, role, token, msg } });
+      addLocalStorage({ name, token, role });
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
@@ -172,9 +176,9 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const res = await axios.post("/login", currentUser);
-      const { name, token } = res.data;
-      dispatch({ type: LOGIN_SUCCESS, payload: { name, token } });
-      addLocalStorage({ name, token });
+      const { name, token, role } = res.data;
+      dispatch({ type: LOGIN_SUCCESS, payload: { name, token, role } });
+      addLocalStorage({ name, token, role });
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,
@@ -292,7 +296,7 @@ export const DataProvider = ({ children }) => {
         specialInstruction,
         area,
       } = state;
-      const upper = contractNo.charAt(0).toUpperCase() + contractNo.slice(1);
+      const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       console.log(upper);
       const res = await axios.post("/contracts", {
         contractNo: upper,
