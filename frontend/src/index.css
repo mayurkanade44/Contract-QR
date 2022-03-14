@@ -33,3 +33,15 @@ input[type="number"] {
 .multiselect {
   width: 250px !important;
 }
+
+.download {
+  width: 280px 
+}
+
+.update {
+  width: 100px 
+}
+
+.frequency {
+  width: 180px;
+}

@@ -1,11 +1,21 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ClientDetails, AllCards, Loading } from "../components";
+import { ClientDetails, AllCards, Loading, Alert } from "../components";
 import { useDataContext } from "../context/data_context";
+import { useNavigate } from "react-router-dom";
 
 const SingleContract = () => {
-  const { fetchSingleContract, singleContract, deleteContract, loading, role } =
-    useDataContext();
+  const {
+    fetchSingleContract,
+    singleContract,
+    deleteContract,
+    loading,
+    role,
+    showAlert,
+    displayAlert,
+    del,
+  } = useDataContext();
+  const navigate = useNavigate();
   const {
     contractNo,
     billToAddress,
@@ -24,8 +34,24 @@ const SingleContract = () => {
 
   useEffect(() => {
     fetchSingleContract(id);
+
     // eslint-disable-next-line
   }, [id]);
+
+  useEffect(() => {
+    if (del) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+    // eslint-disable-next-line
+  }, [del]);
+
+  const deleteCont = (e) => {
+    e.preventDefault();
+    deleteContract(id);
+    displayAlert();
+  };
 
   if (loading) {
     return <Loading />;
@@ -33,6 +59,7 @@ const SingleContract = () => {
 
   return (
     <div className="container">
+      <h5 className="text-center">{showAlert && <Alert />}</h5>
       <div className="row">
         <div className="col-md-6 my-3">
           <h2 className="text-center">{`Contract Number: ${contractNo}`}</h2>
@@ -42,21 +69,13 @@ const SingleContract = () => {
             {(role === "Sales" || role === "Admin") && (
               <button className="btn btn-primary">Add Cards</button>
             )}
-            {(role === "Back Office" || role === "Admin") && (
-              <button className="btn btn-primary">Download Cards</button>
-            )}
           </Link>
         </div>
         {role === "Admin" && (
           <div className="col-md-2 my-3">
-            <Link to="/">
-              <button
-                onClick={() => deleteContract(id)}
-                className="btn btn-danger"
-              >
-                Delete Contract
-              </button>
-            </Link>
+            <button onClick={deleteCont} className="btn btn-danger">
+              Delete Contract
+            </button>
           </div>
         )}
         <div className="col-md-6">
@@ -83,7 +102,12 @@ const SingleContract = () => {
         </div>
         <h2 className="text-center">Service Cards</h2>
         {services && (
-          <AllCards data={services} area={area} preferred={preferred} role={role} />
+          <AllCards
+            data={services}
+            area={area}
+            preferred={preferred}
+            role={role}
+          />
         )}
       </div>
     </div>

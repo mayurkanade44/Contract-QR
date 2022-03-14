@@ -128,6 +128,7 @@ export const initialState = {
   image: "",
   search: "",
   contract: "",
+  del: false,
 };
 
 export const DataProvider = ({ children }) => {
@@ -266,9 +267,9 @@ export const DataProvider = ({ children }) => {
 
   const deleteContract = async (id) => {
     try {
-      const res = await axios.delete(`/contracts/${id}`);
-      console.log(res.data.msg);
+      await axios.delete(`/contracts/${id}`);
       dispatch({ type: DELETE_CONTRACT });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }
@@ -341,7 +342,7 @@ export const DataProvider = ({ children }) => {
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
-      const res = await axios.post("/service", {
+      await axios.post("/service", {
         serviceDue: dueMonths,
         frequency,
         service: serv,
@@ -358,7 +359,7 @@ export const DataProvider = ({ children }) => {
   const createCards = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get(`/service/create/${id}`);
+      await axios.get(`/service/create/${id}`);
       dispatch({ type: CREATE_CARDS });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
@@ -389,7 +390,7 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const { comments, image, completion } = state;
-      const res = await axios.patch(`/service/${id}`, {
+      await axios.patch(`/service/${id}`, {
         comments,
         completion,
         image,

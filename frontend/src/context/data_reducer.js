@@ -234,6 +234,10 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contract: 1,
+        alertText: "Card has been deleted",
+        alertType: "danger",
+        showAlert: true,
+        del: true,
       };
     }
     case CREATE_CARD: {
@@ -284,6 +288,7 @@ const data_reducer = (state, action) => {
         preferred: { day: "", time: "10 am - 12 pm" },
         contractCreated: false,
         search: "",
+        del: false,
       };
     }
     case IMAGE_UPLOADED: {
