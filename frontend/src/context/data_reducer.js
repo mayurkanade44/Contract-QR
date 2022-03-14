@@ -20,7 +20,8 @@ import {
   CLEAR_VALUES,
   CONTRACT_FAIL,
   FETCH_SERVICES,
-  UPDATE_CARD
+  UPDATE_CARD,
+  CARD_FAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -75,7 +76,7 @@ const data_reducer = (state, action) => {
         loading: false,
         token: action.payload.token,
         user: action.payload.name,
-        alertText: "Redirecting to home page",
+        alertText: "Redirecting To Dashboard",
         alertType: "success",
         showAlert: true,
       };
@@ -243,11 +244,20 @@ const data_reducer = (state, action) => {
         showAlert: true,
       };
     }
+    case CARD_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Ratrid cannot be added with other services ",
+        alertType: "danger",
+        showAlert: true,
+      };
+    }
     case CREATE_CARDS: {
       return {
         ...state,
         loading: false,
-        alertText: "Cards created successfully",
+        alertText: "Cards Are Generating...",
         alertType: "success",
         showAlert: true,
       };
@@ -265,7 +275,7 @@ const data_reducer = (state, action) => {
         contractNo: "",
         business: "Residential",
         area: "",
-        endContract: "1 Month (30 Days)",
+        endContract: "1 Year",
         specialInstruction: "",
         billingFrequency: "",
         startDate: new Date().toISOString().slice(0, 10),

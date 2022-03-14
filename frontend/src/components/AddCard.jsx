@@ -12,6 +12,7 @@ const AddCard = () => {
   const [add, setAdd] = useState(true);
   const [genrate, setGenrate] = useState(true);
   const [value, setValue] = useState("");
+  const [chemicals, setChemicals] = useState([])
 
   const handleOnchange = (val) => {
     setValue(val);
@@ -48,14 +49,22 @@ const AddCard = () => {
   ];
 
   const serviceList = [
-    { label: "Green Shield", value: "Green Shield" },
-    { label: "Ratrid", value: "Ratrid" },
+    { label: "Green Shield - Flat", value: "Green Shield - Flat" },
+    { label: "Green Shield - CA", value: "Green Shield - CA" },
     { label: "Termiproof", value: "Termiproof" },
+    { label: "Termiproof - DISP", value: "Termiproof - DISP" },
+    { label: "Ratrid", value: "Ratrid" },
     { label: "Bugfree", value: "Bugfree" },
     { label: "Flyban", value: "Flyban" },
     { label: "Mosquit", value: "Mosquit" },
     { label: "Woodsafe", value: "Woodsafe" },
     { label: "FX1", value: "FX1" },
+    { label: "Civil Work", value: "Civil Wrok" },
+    { label: "Interior", value: "Interior" },
+    { label: "Thermal Fogging", value: "Thermal Fogging" },
+    { label: "Cold Fogging", value: "Cold Fogging" },
+    { label: "Chemical Spray", value: "Chemical Spray" },
+    { label: "Larvicidal", value: "Larvicidal" },
     { label: "Others", value: "Others" },
   ];
 
@@ -235,6 +244,7 @@ const AddCard = () => {
                     onChange={handleOnchange}
                     options={serviceList}
                     className="multiselect"
+                    required
                   />
                 </div>
               </div>
