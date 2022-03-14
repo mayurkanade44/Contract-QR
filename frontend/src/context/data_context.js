@@ -25,6 +25,7 @@ import {
   CONTRACT_FAIL,
   FETCH_SERVICES,
   UPDATE_CARD,
+  CARD_FAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -114,7 +115,7 @@ export const initialState = {
   billingFrequency: "",
   frequency: "Daily",
   service: [],
-  endContract: "1 Month (30 Days)",
+  endContract: "1 Year",
   preferred: { day: "", time: "10 am - 12 pm" },
   specialInstruction: "",
   business: "Residential",
@@ -216,7 +217,6 @@ export const DataProvider = ({ children }) => {
       console.log(error);
     }
   };
-
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
@@ -328,6 +328,10 @@ export const DataProvider = ({ children }) => {
   const createCard = async (dueMonths, value) => {
     const serv = [];
     dispatch({ type: LOADING });
+    console.log(value);
+    if (value.includes("Ratrid") && value.length > 6) {
+      return dispatch({ type: CARD_FAIL });
+    }
     try {
       const { frequency, contract, treatmentLocation } = state;
       value.split(",").map((ser) => {
