@@ -51,7 +51,7 @@ const AddCard = () => {
   const serviceList = [
     { label: "Green Shield - Flat", value: "Green Shield - Flat" },
     { label: "Green Shield - CA", value: "Green Shield - CA" },
-    { label: "Termiproof", value: "Termiproof" },
+    { label: "Termiproof - CS", value: "Termiproof - CS" },
     { label: "Termiproof - DISP", value: "Termiproof - DISP" },
     { label: "Ratrid", value: "Ratrid" },
     { label: "Bugfree", value: "Bugfree" },
@@ -67,6 +67,56 @@ const AddCard = () => {
     { label: "Larvicidal", value: "Larvicidal" },
     { label: "Others", value: "Others" },
   ];
+
+  const addChemicals = () => {
+    const temp = [];
+    if (value.includes("Green Shield - Flat")) {
+      temp.push("GEL  ODL  OB  MORT  ROCX");
+    }
+    if (value.includes("Green Shield - CA")) {
+      temp.push("E3  PB  HOOK");
+    }
+    if (value.includes("Termiproof - CS")) {
+      temp.push("WBTM  WBPR  OBTM  TM  IMD");
+    }
+    if (value.includes("Termiproof - DISP") || value.includes("Civil Work")) {
+      temp.push("WBTM  TM  IMD");
+    }
+    if (value.includes("Ratrid")) {
+      temp.push("TRAY  CAKE  GRAIN  GPS  GPB");
+    }
+    if (value.includes("Bugfree")) {
+      temp.push("WBBB  OBBB");
+    }
+    if (value.includes("Woodsafe")) {
+      temp.push("WAX  TM");
+    }
+    if (value.includes("Flyban")) {
+      temp.push("FLYCO  OD  E3");
+    }
+    if (value.includes("Mosquit")) {
+      temp.push("PB  OD  E3  HOOK  POW");
+    }
+    if (value.includes("Thermal Fogging")) {
+      temp.push("MF");
+    }
+    if (value.includes("Chemical Spray")) {
+      temp.push("E3  OD");
+    }
+    if (value.includes("Larvicidal")) {
+      temp.push("LAVA  PYRO");
+    }
+    if (value.includes("Cold Fogging")) {
+      temp.push("ULV");
+    }
+    if (value.includes("Interior")) {
+      temp.push("WBTM  OBTM  TM  IMD");
+    }
+    if (value.includes("Others") || value.includes("FX1")) {
+      temp.push(" ");
+    }
+    return setChemicals(temp);
+  };
 
   const { id } = useParams();
 
@@ -89,19 +139,20 @@ const AddCard = () => {
     months.forEach((date, index) => {
       if (frequency && frequency === "Thrice A Year" && index % 4 === 0) {
         return due.push(date);
-      } else if (frequency && frequency === "Quarterly" && index % 3 === 0) {
+      }
+      if (frequency && frequency === "Quarterly" && index % 3 === 0) {
         return due.push(date);
-      } else if (frequency && frequency === "Single" && index === 0) {
+      }
+      if (frequency && frequency === "Single" && index === 0) {
         return due.push(date);
-      } else if (frequency && frequency === "Twice A Year" && index % 6 === 0) {
+      }
+      if (frequency && frequency === "Twice A Year" && index % 6 === 0) {
         return due.push(date);
-      } else if (
-        frequency &&
-        frequency === "Alternate Monthly" &&
-        index % 2 === 0
-      ) {
+      }
+      if (frequency && frequency === "Alternate Monthly" && index % 2 === 0) {
         return due.push(date);
-      } else if (
+      }
+      if (
         frequency &&
         (frequency === "Daily" ||
           frequency === "Weekly" ||
@@ -131,9 +182,14 @@ const AddCard = () => {
     // eslint-disable-next-line
   }, [startDate, frequency]);
 
+  useEffect(() => {
+    addChemicals();
+    // eslint-disable-next-line
+  }, [value]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    createCard(dueMonths, value);
+    createCard(dueMonths, value, chemicals);
     setAdd(!add);
     displayAlert();
   };
@@ -173,7 +229,7 @@ const AddCard = () => {
           <tbody>
             {services &&
               services.map((data, index) => {
-                const { frequency, service,} = data;
+                const { frequency, service } = data;
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>

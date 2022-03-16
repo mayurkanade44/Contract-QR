@@ -245,7 +245,7 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contractCreated: false,
-        alertText: "Card created successfully",
+        alertText: "Card has been saved",
         alertType: "success",
         showAlert: true,
       };

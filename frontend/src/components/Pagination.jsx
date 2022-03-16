@@ -1,5 +1,4 @@
 import React from "react";
-import { useDataContext } from "../context/data_context";
 
 const Pagination = ({ contracts, handleChange, page }) => {
   return (

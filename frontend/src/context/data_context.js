@@ -128,6 +128,7 @@ export const initialState = {
   image: "",
   search: "",
   contract: "",
+  chemicals: [],
   del: false,
 };
 
@@ -330,10 +331,9 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const createCard = async (dueMonths, value) => {
+  const createCard = async (dueMonths, value, chemicals) => {
     const serv = [];
     dispatch({ type: LOADING });
-    console.log(value);
     if (value.includes("Ratrid") && value.length > 6) {
       return dispatch({ type: CARD_FAIL });
     }
@@ -348,6 +348,7 @@ export const DataProvider = ({ children }) => {
         service: serv,
         treatmentLocation,
         contract,
+        chemicals: chemicals
       });
       dispatch({ type: CREATE_CARD });
       dispatch({ type: CLEAR_VALUES });

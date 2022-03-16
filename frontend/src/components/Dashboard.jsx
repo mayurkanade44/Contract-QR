@@ -75,10 +75,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchServices();
+    // eslint-disable-next-line
   }, [frequency]);
 
   useEffect(() => {
     job();
+    // eslint-disable-next-line
   }, [allServices]);
 
   if (allServices.length === 0) {
