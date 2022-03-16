@@ -25,6 +25,8 @@ const ServiceSchema = new mongoose.Schema({
   qr: {
     type: String,
   },
+  chemicals: [String],
+
   treatmentLocation: {
     type: String,
     required: [true, "Please provide treatment location"],

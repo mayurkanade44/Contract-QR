@@ -66,6 +66,11 @@ const createDoc = async (req, res) => {
         `http://localhost:5000/api/service/${z}`
       );
       const template = fs.readFileSync(path.resolve(__dirname, "test3.docx"));
+      const chem = element.chemicals;
+      const allServices = element.service.map((x, index) => ({
+        name: x,
+        chemicals: chem[index],
+      }));
 
       const buffer = await newdoc.createReport({
         cmdDelimiter: ["{", "}"],
@@ -88,7 +93,7 @@ const createDoc = async (req, res) => {
           pincode: pincode,
           shipToContact: shipToContact,
           serviceDue: element.serviceDue,
-          service: element.service,
+          service: allServices,
           frequency: element.frequency,
           location: element.treatmentLocation,
           area: area,
