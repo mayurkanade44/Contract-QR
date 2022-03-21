@@ -107,6 +107,7 @@ const SingleContract = () => {
             area={area}
             preferred={preferred}
             role={role}
+            contractNo={contractNo}
           />
         )}
       </div>
