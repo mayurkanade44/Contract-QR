@@ -299,7 +299,6 @@ export const DataProvider = ({ children }) => {
         area,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
-      console.log(upper);
       const res = await axios.post("/contracts", {
         contractNo: upper,
         billToAddress,

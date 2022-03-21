@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { saveAs } from "file-saver";
 
-const AllCards = ({ data, area, preferred, role }) => {
+const AllCards = ({ data, area, preferred, role, contractNo }) => {
+  const downloadImage = (url, name) => {
+    saveAs(url, `${name}.png`); // Put your image url here.
+  };
+
   return (
     <div>
       {data && (
@@ -22,6 +27,7 @@ const AllCards = ({ data, area, preferred, role }) => {
           <tbody>
             {data.map((data, index) => {
               const { frequency, service, _id, card, qr } = data;
+              const temp = `${contractNo}_${frequency}`;
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
@@ -50,18 +56,9 @@ const AllCards = ({ data, area, preferred, role }) => {
                           <button
                             className="btn btn-outline-success"
                             disabled={qr ? false : true}
+                            onClick={() => downloadImage(qr, temp)}
                           >
-                            <a
-                              style={{
-                                textDecoration: "none",
-                                color: "black",
-                              }}
-                              href={qr}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              QR Code
-                            </a>
+                            QR Code
                           </button>
                         </div>
                       </div>

@@ -59,8 +59,17 @@ const AddCard = () => {
     { label: "Mosquit", value: "Mosquit" },
     { label: "Woodsafe", value: "Woodsafe" },
     { label: "FX1", value: "FX1" },
-    { label: "Civil Work", value: "Civil Wrok" },
-    { label: "Interior", value: "Interior" },
+    {
+      label: "Civil Work",
+      value:
+        "Civil Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Floor Spray",
+    },
+    { label: "Interior", value: "Interior, *Wood Work" },
+    {
+      label: "Civil & Interior",
+      value:
+        "Civil & Interior Wood Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Wood Work,*Floor Spray",
+    },
     { label: "Thermal Fogging", value: "Thermal Fogging" },
     { label: "Cold Fogging", value: "Cold Fogging" },
     { label: "Chemical Spray", value: "Chemical Spray" },
@@ -109,7 +118,7 @@ const AddCard = () => {
     if (value.includes("Cold Fogging")) {
       temp.push("ULV");
     }
-    if (value.includes("Interior")) {
+    if (value.includes("Interior") || value.includes("Civil & Interior")) {
       temp.push("WBTM  OBTM  TM  IMD");
     }
     if (value.includes("Others") || value.includes("FX1")) {
@@ -186,6 +195,7 @@ const AddCard = () => {
     addChemicals();
     // eslint-disable-next-line
   }, [value]);
+  console.log(chemicals);
 
   const handleSubmit = (e) => {
     e.preventDefault();
