@@ -18,6 +18,7 @@ const getAllService = async (req, res) => {
   }
 };
 
+
 const createDoc = async (req, res) => {
   const { id } = req.params;
   const isValidContract = await Contract.findOne({ _id: id }).populate(
@@ -167,7 +168,7 @@ const generateQr = async (isValidContract, services) => {
     const serviceId = await services._id;
     const contractNo = isValidContract.contractNo;
     const contractName = contractNo.replace("/", "");
-    const name = `${contractName} ${services.frequency} ${services.service}`;
+    const name = `${contractName} ${services.frequency} ${services.service.length}`;
 
     const stringdata = `Contract Number: ${contractNo},
     url: http://localhost:5000/api/service/${serviceId}`;

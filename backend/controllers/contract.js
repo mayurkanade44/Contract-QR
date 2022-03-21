@@ -8,6 +8,7 @@ const getAllContracts = async (req, res) => {
   try {
     if (search) {
       queryObject.contractNo = { $regex: search, $options: "i" };
+      // queryObject.business = { $regex: search, $options: "i" };
     }
     const contracts = await Contract.find(queryObject);
     res.status(200).json({ contracts, len: contracts.length });
