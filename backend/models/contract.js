@@ -84,9 +84,7 @@ const ContractSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Please provide area"],
     },
-    specialInstruction: {
-      type: String,
-    },
+    specialInstruction: [String],
     preferred: {
       day: String,
       time: String,

@@ -45,7 +45,6 @@ const AddCard = () => {
     "Quarterly",
     "Thrice A Year",
     "Twice A Year",
-    "Yearly",
   ];
 
   const serviceList = [
@@ -195,7 +194,6 @@ const AddCard = () => {
     addChemicals();
     // eslint-disable-next-line
   }, [value]);
-  console.log(chemicals);
 
   const handleSubmit = (e) => {
     e.preventDefault();

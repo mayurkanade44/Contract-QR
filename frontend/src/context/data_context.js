@@ -299,6 +299,10 @@ export const DataProvider = ({ children }) => {
         area,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
+      const instructions = [];
+      specialInstruction
+        .split(",")
+        .map((inst) => instructions.push(inst.trim()));
       const res = await axios.post("/contracts", {
         contractNo: upper,
         billToAddress,
@@ -313,7 +317,7 @@ export const DataProvider = ({ children }) => {
         endDate: last,
         billingFrequency,
         preferred,
-        specialInstruction,
+        specialInstruction: instructions,
         area,
       });
       const contractId = res.data.contract._id;
@@ -347,7 +351,7 @@ export const DataProvider = ({ children }) => {
         service: serv,
         treatmentLocation,
         contract,
-        chemicals: chemicals
+        chemicals: chemicals,
       });
       dispatch({ type: CREATE_CARD });
       dispatch({ type: CLEAR_VALUES });
