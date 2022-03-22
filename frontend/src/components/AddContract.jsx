@@ -34,10 +34,15 @@ const AddContract = () => {
   const { day, time } = preferred;
 
   const businessList = [
-    "Residential",
+    "1 RK",
+    "1 BHK",
+    "2 BHK",
+    "3 BHK",
+    "4 BHK",
+    "5 BHK",
+    "Bungalow",
     "Gated Community",
     "Housing Society",
-    "Bungalow",
     "Offices",
     "Corporate Park",
     "Data Center",
@@ -46,7 +51,16 @@ const AddContract = () => {
     "Restaurant",
     "Malls",
     "Entertainment",
-    "Sports Complex",
+  ];
+
+  const home = [
+    "1 RK",
+    "1 BHK",
+    "2 BHK",
+    "3 BHK",
+    "4 BHK",
+    "5 BHK",
+    "Bungalow",
   ];
 
   const timeList = [
@@ -64,6 +78,7 @@ const AddContract = () => {
     "6 Months (180 Days)",
     "1 Year",
   ];
+
   const lastDate = async (startDate) => {
     const date = new Date(startDate);
     if (endContract && endContract === "1 Year") {
@@ -173,15 +188,17 @@ const AddContract = () => {
           </div>
 
           <hr className="mt-3" />
-          <div className="col-md-2">
-            <InputRow
-              label="Area :"
-              placeholder="in sqft"
-              type="number"
-              name="area"
-              value={area}
-            />
-          </div>
+          {!home.includes(business) && (
+            <div className="col-md-2">
+              <InputRow
+                label="Area :"
+                placeholder="in sqft"
+                type="text"
+                name="area"
+                value={area}
+              />
+            </div>
+          )}
           <div className="col-md-5">
             <InputRow
               label="Billing Frequency :"

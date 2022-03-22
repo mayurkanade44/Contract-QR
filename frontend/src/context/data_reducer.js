@@ -279,7 +279,7 @@ const data_reducer = (state, action) => {
         completion: "Completed",
         image: "",
         contractNo: "",
-        business: "Residential",
+        business: "Offices",
         area: "",
         endContract: "1 Year",
         specialInstruction: "",

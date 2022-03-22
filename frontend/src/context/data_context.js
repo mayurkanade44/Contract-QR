@@ -120,7 +120,7 @@ export const initialState = {
   endContract: "1 Year",
   preferred: { day: "", time: "10 am - 12 pm" },
   specialInstruction: "",
-  business: "Residential",
+  business: "Offices",
   area: "",
   comments: "",
   treatmentLocation: "",
@@ -297,12 +297,23 @@ export const DataProvider = ({ children }) => {
         preferred,
         specialInstruction,
         area,
+        business
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       const instructions = [];
       specialInstruction
         .split(",")
         .map((inst) => instructions.push(inst.trim()));
+        const home = [
+          "1 RK",
+          "1 BHK",
+          "2 BHK",
+          "3 BHK",
+          "4 BHK",
+          "5 BHK",
+          "Bungalow",
+        ];
+
       const res = await axios.post("/contracts", {
         contractNo: upper,
         billToAddress,
@@ -316,9 +327,10 @@ export const DataProvider = ({ children }) => {
         startDate,
         endDate: last,
         billingFrequency,
+        business,
         preferred,
         specialInstruction: instructions,
-        area,
+        area: home.includes(business) ? business : area,
       });
       const contractId = res.data.contract._id;
       dispatch({
