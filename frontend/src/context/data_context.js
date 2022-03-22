@@ -337,14 +337,14 @@ export const DataProvider = ({ children }) => {
   const createCard = async (dueMonths, value, chemicals) => {
     const serv = [];
     dispatch({ type: LOADING });
-    if (value.includes("Ratrid") && value.length > 6) {
-      return dispatch({ type: CARD_FAIL });
-    }
     try {
       const { frequency, contract, treatmentLocation } = state;
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
+      if (serv.includes("Ratrid") && serv.length > 3) {
+        return dispatch({ type: CARD_FAIL });
+      }
       await axios.post("/service", {
         serviceDue: dueMonths,
         frequency,

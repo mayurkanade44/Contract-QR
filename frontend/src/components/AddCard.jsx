@@ -52,10 +52,10 @@ const AddCard = () => {
     { label: "Green Shield - CA", value: "Green Shield - CA" },
     { label: "Termiproof - CS", value: "Termiproof - CS" },
     { label: "Termiproof - DISP", value: "Termiproof - DISP" },
-    { label: "Ratrid", value: "Ratrid" },
+    { label: "Ratrid", value: "Ratrid,R B Place,W T Place" },
     { label: "Bugfree", value: "Bugfree" },
     { label: "Flyban", value: "Flyban" },
-    { label: "Mosquit", value: "Mosquit" },
+    { label: "Mosquit - CA", value: "Mosquit - CA" },
     { label: "Woodsafe", value: "Woodsafe" },
     { label: "FX1", value: "FX1" },
     {
@@ -91,7 +91,7 @@ const AddCard = () => {
       temp.push("WBTM     TM     IMD");
     }
     if (value.includes("Ratrid")) {
-      temp.push("TRAY     CAKE     GRAIN     GPS     GPB");
+      temp.push("BAIT-Z BAIT-R TRAY CAKE GRAIN GPS GBB PNC PSB");
     }
     if (value.includes("Bugfree")) {
       temp.push("WBBB     OBBB");
