@@ -18,7 +18,6 @@ const getAllService = async (req, res) => {
   }
 };
 
-
 const createDoc = async (req, res) => {
   const { id } = req.params;
   const isValidContract = await Contract.findOne({ _id: id }).populate(
@@ -140,16 +139,17 @@ const createDoc = async (req, res) => {
   }
 };
 
-const sendEmail = async (emails, image) => {
+const sendEmail = async (emails, image, emailSub, serv) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   request.get(image, { encoding: null }, (err, res) => {
     const base64File = Buffer.from(res.body).toString("base64");
     const msg = {
       to: emails,
       from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
-      subject: "Service completed report card",
-      text: "and easy to do anywhere, even with Node.js",
-      html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+      subject: `Service completed report card of ${emailSub}`,
+      text: `Respected Sir/Ma'am, \n\nThe mail is regarding Service done at your end by Express Pesticides Pvt Ltd. Type Of Treatment :<strong>${serv.toString()}</strong> \nWe hope you are satisfied with our service that has been carried out at your place`,
+      // html: "<h4>Respected Sir/Ma'am,</h4> </br></br> <h4>`We have completed your `</h4>",
+      // template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
       attachments: [
         {
           content: base64File,
@@ -223,7 +223,6 @@ const singleService = async (req, res) => {
 };
 
 const updateCard = async (req, res) => {
-  console.log(req.body);
   const {
     params: { id: serviceId },
     body: { image, comments, completion },
@@ -236,7 +235,7 @@ const updateCard = async (req, res) => {
     ).populate({
       path: "contract",
       select:
-        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3",
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo",
     });
 
     if (service) {
@@ -262,7 +261,9 @@ const updateCard = async (req, res) => {
         temails.add(six);
       }
       const emails = [...temails];
-      sendEmail(emails, image);
+      const emailSub = service.contract.contractNo;
+      const serv = service.service;
+      sendEmail(emails, image, emailSub, serv);
     }
     res.status(200).json({ service });
   } catch (error) {
