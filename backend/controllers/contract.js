@@ -4,13 +4,23 @@ const { BadRequestError } = require("../errors");
 
 const getAllContracts = async (req, res) => {
   const { search } = req.query;
-  const queryObject = {};
-  if (search) {
-    queryObject.contractNo = { $regex: search, $options: "i" };
-  }
+  // const queryObject = {};
+  // if (search) {
+  //   queryObject.contractNo = { $regex: search, $options: "i" };
+  // }
   try {
-    const contracts = await Contract.find(queryObject);
-    res.status(200).json({ contracts, len: contracts.length });
+    if (search) {
+      const contracts = await Contract.find({
+        $or: [
+          { contractNo: { $regex: search, $options: "i" } },
+          { shipToAddress : { $regex: search, $options: "i" } },
+        ],
+      });
+      res.status(200).json({ contracts, len: contracts.length });
+    } else {
+      const contracts = await Contract.find({});
+      res.status(200).json({ contracts, len: contracts.length });
+    }
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);

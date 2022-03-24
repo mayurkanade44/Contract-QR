@@ -297,22 +297,22 @@ export const DataProvider = ({ children }) => {
         preferred,
         specialInstruction,
         area,
-        business
+        business,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       const instructions = [];
       specialInstruction
         .split(",")
         .map((inst) => instructions.push(inst.trim()));
-        const home = [
-          "1 RK",
-          "1 BHK",
-          "2 BHK",
-          "3 BHK",
-          "4 BHK",
-          "5 BHK",
-          "Bungalow",
-        ];
+      const home = [
+        "1 RK",
+        "1 BHK",
+        "2 BHK",
+        "3 BHK",
+        "4 BHK",
+        "5 BHK",
+        "Bungalow",
+      ];
 
       const res = await axios.post("/contracts", {
         contractNo: upper,
