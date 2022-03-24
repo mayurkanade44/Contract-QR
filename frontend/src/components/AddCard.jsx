@@ -79,46 +79,46 @@ const AddCard = () => {
   const addChemicals = () => {
     const temp = [];
     if (value.includes("Green Shield - Flat")) {
-      temp.push("GEL     ODL     OB     MORT     ROCX");
+      temp.push("GEL          ODL          OB          MORT          ROCX");
     }
     if (value.includes("Green Shield - CA")) {
-      temp.push("E3     PB     HOOK");
+      temp.push("E3          PB          HOOK");
     }
     if (value.includes("Termiproof - CS")) {
-      temp.push("WBTM     WBPR     OBTM     TM     IMD");
+      temp.push("WBTM          WBPR          OBTM          TM           IMD");
     }
     if (value.includes("Termiproof - DISP") || value.includes("Civil Work")) {
-      temp.push("WBTM     TM     IMD");
+      temp.push("WBTM          TM           IMD");
     }
     if (value.includes("Ratrid")) {
       temp.push("BAIT-Z BAIT-R TRAY CAKE GRAIN GPS GBB PNC PSB");
     }
     if (value.includes("Bugfree")) {
-      temp.push("WBBB     OBBB");
+      temp.push("WBBB          OBBB");
     }
     if (value.includes("Woodsafe")) {
-      temp.push("WAX     TM");
+      temp.push("WAX          TM");
     }
     if (value.includes("Flyban")) {
-      temp.push("FLYCO     OD     E3");
+      temp.push("FLYCO          OD          E3");
     }
     if (value.includes("Mosquit - CA")) {
-      temp.push("PB     OD     E3     HOOK     POW");
+      temp.push("PB          OD          E3          HOOK          POW");
     }
     if (value.includes("Thermal Fogging")) {
       temp.push("MF");
     }
     if (value.includes("Chemical Spray")) {
-      temp.push("E3     OD");
+      temp.push("E3          OD");
     }
     if (value.includes("Larvicidal")) {
-      temp.push("LAVA     PYRO");
+      temp.push("LAVA          PYRO");
     }
     if (value.includes("Cold Fogging")) {
       temp.push("ULV");
     }
     if (value.includes("Interior") || value.includes("Civil & Interior")) {
-      temp.push("WBTM     OBTM     TM     IMD");
+      temp.push("WBTM          OBTM          TM          IMD");
     }
     if (value.includes("Others") || value.includes("FX1")) {
       temp.push(" ");
