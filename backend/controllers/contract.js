@@ -13,12 +13,12 @@ const getAllContracts = async (req, res) => {
       const contracts = await Contract.find({
         $or: [
           { contractNo: { $regex: search, $options: "i" } },
-          { shipToAddress : { $regex: search, $options: "i" } },
+          { shipToAddress: { $regex: search, $options: "i" } },
         ],
       });
       res.status(200).json({ contracts, len: contracts.length });
     } else {
-      const contracts = await Contract.find({});
+      const contracts = await Contract.find({}).sort("-createdAt");
       res.status(200).json({ contracts, len: contracts.length });
     }
   } catch (error) {
