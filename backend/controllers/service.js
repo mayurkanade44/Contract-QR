@@ -139,17 +139,19 @@ const createDoc = async (req, res) => {
   }
 };
 
-const sendEmail = async (emails, image, emailSub, serv) => {
+const sendEmail = async (emails, image, contractNo, serv, completion) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   request.get(image, { encoding: null }, (err, res) => {
     const base64File = Buffer.from(res.body).toString("base64");
     const msg = {
       to: emails,
       from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
-      subject: `Service completed report card of ${emailSub}`,
-      text: `Respected Sir/Ma'am, \n\nThe mail is regarding Service done at your end by Express Pesticides Pvt Ltd. Type Of Treatment :<strong>${serv.toString()}</strong> \nWe hope you are satisfied with our service that has been carried out at your place`,
-      // html: "<h4>Respected Sir/Ma'am,</h4> </br></br> <h4>`We have completed your `</h4>",
-      // template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
+      dynamic_template_data: {
+        contractNo: contractNo,
+        service: serv,
+        completion: completion,
+      },
+      template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
       attachments: [
         {
           content: base64File,
@@ -262,8 +264,9 @@ const updateCard = async (req, res) => {
       }
       const emails = [...temails];
       const emailSub = service.contract.contractNo;
-      const serv = service.service;
-      sendEmail(emails, image, emailSub, serv);
+      const serv = service.service.toString();
+      console.log(serv, comments);
+      sendEmail(emails, image, emailSub, serv, completion);
     }
     res.status(200).json({ service });
   } catch (error) {
@@ -272,13 +275,12 @@ const updateCard = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
-  console.log(req.files);
   const result = await cloudinary.uploader.upload(
     req.files.image.tempFilePath,
     {
       use_filename: true,
       folder: "contract",
-      quality: 50,
+      quality: 30,
     }
   );
   fs.unlinkSync(req.files.image.tempFilePath);
