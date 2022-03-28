@@ -196,7 +196,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const paginate = (contracts) => {
-    const limit = 10;
+    const limit = 30;
     const pages = Math.ceil(contracts.length / limit);
     const newContracts = Array.from({ length: pages }, (_, index) => {
       const start = index * limit;

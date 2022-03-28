@@ -265,7 +265,6 @@ const updateCard = async (req, res) => {
       const emails = [...temails];
       const emailSub = service.contract.contractNo;
       const serv = service.service.toString();
-      console.log(serv, comments);
       sendEmail(emails, image, emailSub, serv, completion);
     }
     res.status(200).json({ service });
