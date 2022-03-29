@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useDataContext } from "../context/data_context";
 
 const Navbar = () => {
-  const { user, logout } = useDataContext();
+  const { user, logout, role } = useDataContext();
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,16 +30,33 @@ const Navbar = () => {
             </ul>
             {user && (
               <ul className="navbar-nav nav-item ms-auto dropdown">
+                {role === "Admin" && (
+                  <li className="nav-item me-4">
+                    <Link
+                      to="/admin"
+                      className="nav-link active"
+                      aria-current="page"
+                    >
+                      <h4>Admin</h4>
+                    </Link>
+                  </li>
+                )}
+
                 <li className="nav-item me-4">
                   <Link to="/" className="nav-link active" aria-current="page">
                     <h4>Home</h4>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/dashboard" className="nav-link active" aria-current="page">
+                  <Link
+                    to="/dashboard"
+                    className="nav-link active"
+                    aria-current="page"
+                  >
                     <h4>Dashboard</h4>
                   </Link>
                 </li>
+
                 <h4
                   className="nav-link dropdown-toggle"
                   id="navbarDropdownMenuLink"
@@ -51,7 +68,8 @@ const Navbar = () => {
                   <span>{user && user[0].toUpperCase() + user.slice(1)}</span>
                 </h4>
                 <ul
-                  className="dropdown-menu" style={{marginLeft:250}}
+                  className="dropdown-menu"
+                  style={{ marginLeft: 250 }}
                   aria-labelledby="navbarDropdownMenuLink"
                 >
                   <li>
