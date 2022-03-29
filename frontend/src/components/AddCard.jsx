@@ -57,6 +57,7 @@ const AddCard = () => {
     { label: "Flyban", value: "Flyban" },
     { label: "Mosquit - CA", value: "Mosquit - CA" },
     { label: "Woodsafe", value: "Woodsafe" },
+    { label: "Antron", value: "Antron" },
     { label: "FX1", value: "FX1" },
     {
       label: "Civil Work",
@@ -113,6 +114,9 @@ const AddCard = () => {
     }
     if (value.includes("Larvicidal")) {
       temp.push("LAVA          PYRO");
+    }
+    if (value.includes("Antron")) {
+      temp.push("TM          OD          AC");
     }
     if (value.includes("Cold Fogging")) {
       temp.push("ULV");

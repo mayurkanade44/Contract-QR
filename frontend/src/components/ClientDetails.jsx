@@ -1,12 +1,20 @@
 import React from "react";
 
-const ClientDetails = ({ data, contacts1, contacts2, contacts3 }) => {
+const ClientDetails = ({
+  data,
+  area,
+  preferred,
+  contacts1,
+  contacts2,
+  contacts3,
+}) => {
   return (
     <div>
       <h5>{`Name: ${data.name}`}</h5>
       <h5>{`Address: ${data.address1}, ${data.city}-${data.pincode}`}</h5>
-
-      <h5>Contact Details:-</h5>
+      <h5>{`Area: ${area}, Preferred: ${preferred && preferred.day} & ${
+        preferred && preferred.time
+      }`}</h5>
       <table className="table table-sm table-bordered">
         <thead>
           <tr>

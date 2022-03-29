@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { saveAs } from "file-saver";
 
-const AllCards = ({ data, area, preferred, role, contractNo }) => {
+const AllCards = ({ data, preferred, role, contractNo }) => {
   const downloadImage = (url, name) => {
     saveAs(url, `${name}.png`); // Put your image url here.
   };

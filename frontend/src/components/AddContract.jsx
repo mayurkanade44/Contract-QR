@@ -213,6 +213,7 @@ const AddContract = () => {
               type="text"
               name="specialInstruction"
               value={specialInstruction}
+              placeholder="should be comma separated"
             />
           </div>
           <hr className="mt-3" />

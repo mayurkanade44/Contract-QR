@@ -86,6 +86,8 @@ const SingleContract = () => {
               contacts1={billToContact1}
               contacts2={billToContact2}
               contacts3={billToContact3}
+              area={area}
+              preferred={preferred}
             />
           )}
         </div>
@@ -97,18 +99,14 @@ const SingleContract = () => {
               contacts1={shipToContact1}
               contacts2={shipToContact2}
               contacts3={shipToContact3}
+              area={area}
+              preferred={preferred}
             />
           )}
         </div>
         <h2 className="text-center">Service Cards</h2>
         {services && (
-          <AllCards
-            data={services}
-            area={area}
-            preferred={preferred}
-            role={role}
-            contractNo={contractNo}
-          />
+          <AllCards data={services} role={role} contractNo={contractNo} />
         )}
       </div>
     </div>
