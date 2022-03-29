@@ -77,7 +77,14 @@ const AddContract = () => {
     "1 Month (30 Days)",
     "2 Months (60 Days)",
     "3 Months (90 Days)",
+    "4 Months (120 Days)",
+    "5 Months (150 Days)",
     "6 Months (180 Days)",
+    "7 Months (210 Days)",
+    "8 Months (240 Days)",
+    "9 Months (270 Days)",
+    "10 Months (300 Days)",
+    "11 Months (330 Days)",
     "1 Year",
   ];
 
@@ -89,8 +96,29 @@ const AddContract = () => {
     } else if (endContract && endContract === "3 Months (90 Days)") {
       let ss = await new Date(date.getFullYear(), date.getMonth() + 3, 0);
       return setEndDate(ss);
+    } else if (endContract && endContract === "4 Months (120 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 4, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "5 Months (150 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 5, 0);
+      return setEndDate(ss);
     } else if (endContract && endContract === "6 Months (180 Days)") {
       let ss = await new Date(date.getFullYear(), date.getMonth() + 6, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "7 Months (210 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 7, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "8 Months (240 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 8, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "9 Months (270 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 9, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "10 Months (300 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 10, 0);
+      return setEndDate(ss);
+    } else if (endContract && endContract === "11 Months (330 Days)") {
+      let ss = await new Date(date.getFullYear(), date.getMonth() + 11, 0);
       return setEndDate(ss);
     } else if (
       endContract &&
@@ -232,7 +260,7 @@ const AddContract = () => {
             >
               Same As Billing Details
             </button>
-            <ShipToAddress id="shipToAddress"/>
+            <ShipToAddress id="shipToAddress" />
             <ShipContacts same={same} />
           </div>
           <div className="col-md-2">
