@@ -297,7 +297,7 @@ export const DataProvider = ({ children }) => {
       const instructions = [];
       specialInstruction
         .split(",")
-        .map((inst) => instructions.push(`*${inst.trim()}`));
+        .map((inst) => instructions.push(inst.trim()));
       const home = [
         "1 RK",
         "1 BHK",

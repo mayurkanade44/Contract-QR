@@ -48,7 +48,7 @@ const AddCard = () => {
   ];
 
   const serviceList = [
-    { label: "Green Shield - Flat", value: "Green Shield - Flat" },
+    { label: "Green Shield", value: "Green Shield" },
     { label: "Green Shield - CA", value: "Green Shield - CA" },
     { label: "Termiproof - CS", value: "Termiproof - CS" },
     { label: "Termiproof - DISP", value: "Termiproof - DISP" },
@@ -79,7 +79,7 @@ const AddCard = () => {
 
   const addChemicals = () => {
     const temp = [];
-    if (value.includes("Green Shield - Flat")) {
+    if (value.includes("Green Shield")) {
       temp.push("GEL          ODL          OB          MORT          ROCX");
     }
     if (value.includes("Green Shield - CA")) {
