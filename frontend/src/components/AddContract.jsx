@@ -7,6 +7,8 @@ import {
   ShipContacts,
   InputSelect,
   Alert,
+  BillToAddress,
+  ShipToAddress,
 } from ".";
 import { useNavigate } from "react-router-dom";
 
@@ -219,7 +221,7 @@ const AddContract = () => {
           <hr className="mt-3" />
           <div className="col-md-6 ">
             <h4 className="text-info text-center mb-3">Bill To Details:</h4>
-            <ClientAddress id="billToAddress" />
+            <BillToAddress id="billToAddress" />
             <BillContacts />
           </div>
           <div className="col-md-6 ">
@@ -230,7 +232,7 @@ const AddContract = () => {
             >
               Same As Billing Details
             </button>
-            <ClientAddress id="shipToAddress" same={same} />
+            <ShipToAddress id="shipToAddress"/>
             <ShipContacts same={same} />
           </div>
           <div className="col-md-2">

@@ -59,27 +59,24 @@ export const initialState = {
     city: "",
     pincode: "",
   },
-  billToContact1: [
-    {
-      name: "",
-      contact: "",
-      email: "",
-    },
-  ],
-  billToContact2: [
-    {
-      name: "",
-      contact: "",
-      email: "",
-    },
-  ],
-  billToContact3: [
-    {
-      name: "",
-      contact: "",
-      email: "",
-    },
-  ],
+  billToContact1: {
+    name: "",
+    contact: "",
+    email: "",
+  },
+
+  billToContact2: {
+    name: "",
+    contact: "",
+    email: "",
+  },
+
+  billToContact3: {
+    name: "",
+    contact: "",
+    email: "",
+  },
+
   shipToAddress: {
     prefix: "Mr",
     name: "",
@@ -92,27 +89,24 @@ export const initialState = {
     pincode: "",
   },
 
-  shipToContact1: [
-    {
-      name: "",
-      contact: "",
-      email: "",
-    },
-  ],
-  shipToContact2: [
-    {
-      name: "",
-      contact: "",
-      email: "",
-    },
-  ],
-  shipToContact3: [
-    {
-      name: "",
-      contact: "",
-      email: "",
-    },
-  ],
+  shipToContact1: {
+    name: "",
+    contact: "",
+    email: "",
+  },
+
+  shipToContact2: {
+    name: "",
+    contact: "",
+    email: "",
+  },
+
+  shipToContact3: {
+    name: "",
+    contact: "",
+    email: "",
+  },
+
   startDate: new Date().toISOString().slice(0, 10),
   billingFrequency: "",
   frequency: "Daily",

@@ -15,6 +15,10 @@ import Loading from "./Loading";
 import Dashboard from "./Dashboard";
 import BarChart from "./BarChart";
 import Pagination from "./Pagination";
+import BillToAddress from "./BillToAddress";
+import ShipToAddress from "./ShipToAddress";
+
+
 
 export {
   AllContracts,
@@ -34,4 +38,6 @@ export {
   Dashboard,
   BarChart,
   Pagination,
+  BillToAddress,
+  ShipToAddress,
 };
