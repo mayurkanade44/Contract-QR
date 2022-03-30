@@ -82,6 +82,7 @@ const AllContracts = () => {
         <thead>
           <tr>
             <th>Contract No</th>
+            <th>Created At</th>
             <th>Ship To Name</th>
             <th>Start Date</th>
             <th>End Date</th>
@@ -98,15 +99,23 @@ const AllContracts = () => {
                 endDate,
                 shipToAddress,
                 type,
+                createdAt
               } = contracts;
               const { name } = shipToAddress;
               return (
                 <tr key={_id}>
-                  <td>{`${contractNo} - ${type}`}</td>
+                  <td style={{ width: 200 }}>{`${contractNo} - ${type}`}</td>
+                  <td style={{ width: 130 }}>
+                    {moment(createdAt).format("DD/MM/YYYY")}
+                  </td>
                   <td>{name}</td>
-                  <td>{moment(startDate).format("DD/MM/YYYY")}</td>
-                  <td>{moment(endDate).format("DD/MM/YYYY")}</td>
-                  <td className="text-center">
+                  <td style={{ width: 130 }}>
+                    {moment(startDate).format("DD/MM/YYYY")}
+                  </td>
+                  <td style={{ width: 130 }}>
+                    {moment(endDate).format("DD/MM/YYYY")}
+                  </td>
+                  <td className="text-center" style={{ width: 120 }}>
                     <Link to={`/contract/${_id}`}>
                       <button className="btn btn-info">Details</button>
                     </Link>

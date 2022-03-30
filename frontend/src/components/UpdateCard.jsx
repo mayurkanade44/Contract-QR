@@ -1,5 +1,5 @@
 import React from "react";
-import { InputRow, InputSelect, Alert } from ".";
+import { InputSelect, Alert } from ".";
 import { useDataContext } from "../context/data_context";
 
 const UpdateCard = ({ id }) => {

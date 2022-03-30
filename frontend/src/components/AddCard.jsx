@@ -45,6 +45,7 @@ const AddCard = () => {
     "Quarterly",
     "Thrice A Year",
     "Twice A Year",
+    "Other",
   ];
 
   const serviceList = [
@@ -168,6 +169,7 @@ const AddCard = () => {
         frequency &&
         (frequency === "Daily" ||
           frequency === "Weekly" ||
+          frequency === "Other" ||
           frequency === "Twice A Week" ||
           frequency === "Thrice A Week" ||
           frequency === "Thrice A Month" ||
