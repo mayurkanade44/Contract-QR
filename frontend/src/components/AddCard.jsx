@@ -53,10 +53,9 @@ const AddCard = () => {
     { label: "Green Shield - CA", value: "Green Shield - CA" },
     { label: "Termiproof - CS", value: "Termiproof - CS" },
     { label: "Termiproof - DISP", value: "Termiproof - DISP" },
-    { label: "Ratrid", value: "Ratrid,R B Place,W T Place" },
+    { label: "Rat Rid", value: "Rat Rid, , , ,R B Place,W T Place" },
     { label: "Bugfree", value: "Bugfree" },
     { label: "Flyban", value: "Flyban" },
-    { label: "Mosquit - CA", value: "Mosquit - CA" },
     { label: "Woodsafe", value: "Woodsafe" },
     { label: "Antron", value: "Antron" },
     { label: "FX1", value: "FX1" },
@@ -71,10 +70,18 @@ const AddCard = () => {
       value:
         "Civil & Interior Wood Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Wood Work,*Floor Spray",
     },
-    { label: "Thermal Fogging", value: "Thermal Fogging" },
-    { label: "Cold Fogging", value: "Cold Fogging" },
-    { label: "Chemical Spray", value: "Chemical Spray" },
-    { label: "Larvicidal", value: "Larvicidal" },
+    { label: "Mosquit - Thermal Fogging", value: "Mosquit - Thermal Fogging" },
+    { label: "Mosquit - Cold Fogging", value: "Mosquit - Cold Fogging" },
+    { label: "Mosquit - Chemical Spray", value: "Mosquit - Chemical Spray" },
+    {
+      label: "Mosquit - Chemical Spray(ULV)",
+      value: "Mosquit - Chemical Spray(ULV)",
+    },
+    {
+      label: "Mosquit - Larvicidal Spray",
+      value: "Mosquit - Larvicidal Spary",
+    },
+    { label: "Mosquit - CA", value: "Mosquit - CA" },
     { label: "Others", value: "Others" },
   ];
 
@@ -92,7 +99,7 @@ const AddCard = () => {
     if (value.includes("Termiproof - DISP") || value.includes("Civil Work")) {
       temp.push("WBTM          TM           IMD");
     }
-    if (value.includes("Ratrid")) {
+    if (value.includes("Rat Rid")) {
       temp.push("BAIT-Z BAIT-R TRAY CAKE GRAIN GPS GBB PNC PSB");
     }
     if (value.includes("Bugfree")) {
@@ -107,19 +114,22 @@ const AddCard = () => {
     if (value.includes("Mosquit - CA")) {
       temp.push("PB          OD          E3          HOOK          POW");
     }
-    if (value.includes("Thermal Fogging")) {
+    if (value.includes("Mosquit - Thermal Fogging")) {
       temp.push("MF");
     }
-    if (value.includes("Chemical Spray")) {
+    if (
+      value.includes("Mosquit - Chemical Spray") ||
+      value.includes("Mosquit - Chemical Spray(ULV)")
+    ) {
       temp.push("E3          OD");
     }
-    if (value.includes("Larvicidal")) {
+    if (value.includes("Mosquit - Larvicidal Spary")) {
       temp.push("LAVA          PYRO");
     }
     if (value.includes("Antron")) {
       temp.push("TM          OD          AC");
     }
-    if (value.includes("Cold Fogging")) {
+    if (value.includes("Mosquit - Cold Fogging")) {
       temp.push("ULV");
     }
     if (value.includes("Interior") || value.includes("Civil & Interior")) {

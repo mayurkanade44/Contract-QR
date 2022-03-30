@@ -74,6 +74,8 @@ const AddContract = () => {
     "4 pm - 6 pm",
     "6 pm - 8 pm",
     "Night",
+    "Anytime",
+    "To Confirm",
   ];
   const endDateList = [
     "1 Month (30 Days)",
@@ -180,7 +182,7 @@ const AddContract = () => {
           <div className="col-md-1">
             <select
               className="form-select"
-              style={{marginTop:6}}
+              style={{ marginTop: 6 }}
               aria-label="Default select example"
               name="type"
               value={type}

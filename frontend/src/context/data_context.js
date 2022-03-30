@@ -351,7 +351,8 @@ export const DataProvider = ({ children }) => {
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
-      if (serv.includes("Ratrid") && serv.length > 3) {
+      console.log(serv);
+      if (serv.includes("Rat Rid") && serv.length > 6) {
         return dispatch({ type: CARD_FAIL });
       }
       await axios.post("/service", {
