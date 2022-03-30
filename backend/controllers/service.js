@@ -29,6 +29,7 @@ const createDoc = async (req, res) => {
     endDate,
     billingFrequency,
     shipToAddress,
+    billToAddress,
     shipToContact1,
     shipToContact2,
     shipToContact3,
@@ -66,12 +67,18 @@ const createDoc = async (req, res) => {
       const tp = await QRCode.toDataURL(
         `http://localhost:5000/api/service/${z}`
       );
-      const template = fs.readFileSync(path.resolve(__dirname, "test3.docx"));
+      let template = fs.readFileSync(path.resolve(__dirname, "test3.docx"));
+      const template1 = fs.readFileSync(path.resolve(__dirname, "test2.docx"));
       const chem = element.chemicals;
       const allServices = element.service.map((x, index) => ({
         name: x,
         chemicals: chem[index],
       }));
+
+      if (billToAddress.name.trim() === name.trim()) {
+        template = template1
+      }
+
 
       const buffer = await newdoc.createReport({
         cmdDelimiter: ["{", "}"],
@@ -84,6 +91,8 @@ const createDoc = async (req, res) => {
           time: time,
           card: index + 1,
           noCards: services.length,
+          billPrefix: billToAddress.prefix,
+          billName: billToAddress.name,
           prefix: pre,
           name: name,
           address1: address1,
