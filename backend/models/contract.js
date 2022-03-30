@@ -6,6 +6,9 @@ const ContractSchema = new mongoose.Schema(
       type: String,
       required: [true, "Service contract number is required"],
     },
+    type: {
+      type: String,
+    },
     billToAddress: {
       prefix: String,
       name: String,
@@ -20,19 +23,19 @@ const ContractSchema = new mongoose.Schema(
 
     billToContact1: {
       name: String,
-      contact: Number,
+      contact: String,
       email: String,
     },
 
     billToContact2: {
       name: String,
-      contact: Number,
+      contact: String,
       email: String,
     },
 
     billToContact3: {
       name: String,
-      contact: Number,
+      contact: String,
       email: String,
     },
 
@@ -50,19 +53,19 @@ const ContractSchema = new mongoose.Schema(
 
     shipToContact1: {
       name: String,
-      contact: Number,
+      contact: String,
       email: String,
     },
 
     shipToContact2: {
       name: String,
-      contact: Number,
+      contact: String,
       email: String,
     },
 
     shipToContact3: {
       name: String,
-      contact: Number,
+      contact: String,
       email: String,
     },
 

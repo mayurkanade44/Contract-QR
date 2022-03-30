@@ -28,9 +28,9 @@ const getAllContracts = async (req, res) => {
 };
 
 const createContract = async (req, res) => {
-  const { contractNo } = req.body;
+  const { contractNo, type } = req.body;
   const contractAlreadyExists = await Contract.findOne({ contractNo });
-  if (contractAlreadyExists) {
+  if (contractAlreadyExists && type === "NC") {
     throw new BadRequestError("Contract Number Already Exists");
   }
 
