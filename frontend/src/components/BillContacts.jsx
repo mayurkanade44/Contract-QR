@@ -21,7 +21,7 @@ const BillContacts = ({ same }) => {
       <div className="col-md-4 ">
         <h4 className="text-center">Contact</h4>
         <input
-          type="number"
+          type="text"
           className="form-control mb-2"
           name="contact"
           id="billToContact1"
@@ -54,7 +54,7 @@ const BillContacts = ({ same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="number"
+          type="text"
           className="form-control mb-2"
           name="contact"
           id="billToContact2"
@@ -84,7 +84,7 @@ const BillContacts = ({ same }) => {
       </div>
       <div className="col-md-4 ">
         <input
-          type="number"
+          type="text"
           className="form-control mb-2"
           name="contact"
           id="billToContact3"

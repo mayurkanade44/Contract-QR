@@ -36,6 +36,7 @@ const createDoc = async (req, res) => {
     preferred,
     specialInstruction,
     area,
+    type,
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
@@ -78,6 +79,7 @@ const createDoc = async (req, res) => {
 
         additionalJsContext: {
           contractNo: contractNo,
+          type: type,
           day: day,
           time: time,
           card: index + 1,
@@ -139,17 +141,26 @@ const createDoc = async (req, res) => {
   }
 };
 
-const sendEmail = async (emails, image, contractNo, serv, completion) => {
+const sendEmail = async (
+  emails,
+  image,
+  contractNo,
+  serv,
+  completion,
+  comments
+) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   request.get(image, { encoding: null }, (err, res) => {
     const base64File = Buffer.from(res.body).toString("base64");
     const msg = {
       to: emails,
+      cc: "ea.epcorn@gmail.com",
       from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
       dynamic_template_data: {
         contractNo: contractNo,
         service: serv,
         completion: completion,
+        comments: comments,
       },
       template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
       attachments: [
@@ -265,7 +276,7 @@ const updateCard = async (req, res) => {
       const emails = [...temails];
       const emailSub = service.contract.contractNo;
       const serv = service.service.toString();
-      sendEmail(emails, image, emailSub, serv, completion);
+      sendEmail(emails, image, emailSub, serv, completion, comments);
     }
     res.status(200).json({ service });
   } catch (error) {

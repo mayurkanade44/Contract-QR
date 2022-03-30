@@ -14,6 +14,12 @@ const UpdateCard = ({ id }) => {
   } = useDataContext();
   const remarks = ["Completed", "Not Completed", "Partially Completed"];
 
+  const commentsList = [
+    "All job done",
+    "Found infestation, treatment done",
+    "Found crack, gap in fixture & structure",
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     updateCard(id);
@@ -36,11 +42,11 @@ const UpdateCard = ({ id }) => {
             />
           </div>
           <div className="col-lg-4 mb-2">
-            <InputRow
+            <InputSelect
               label="Comments"
-              type="text"
               name="comments"
               value={comments}
+              data={commentsList}
             />
           </div>
           <div className="col-lg-1 my-1">
