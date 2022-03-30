@@ -47,6 +47,7 @@ export const initialState = {
   card: [],
   contractCreated: false,
   contractNo: "",
+  type: "NC",
   allServices: [],
   billToAddress: {
     prefix: "Mr",
@@ -116,7 +117,7 @@ export const initialState = {
   specialInstruction: "",
   business: "Offices",
   area: "",
-  comments: "",
+  comments: "All job done",
   treatmentLocation: "",
   completion: "Completed",
   image: "",
@@ -278,6 +279,7 @@ export const DataProvider = ({ children }) => {
     try {
       const {
         contractNo,
+        type,
         billToAddress,
         shipToAddress,
         shipToContact1,
@@ -310,6 +312,7 @@ export const DataProvider = ({ children }) => {
 
       const res = await axios.post("/contracts", {
         contractNo: upper,
+        type,
         billToAddress,
         shipToContact1,
         shipToContact2,

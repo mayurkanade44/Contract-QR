@@ -32,6 +32,8 @@ const AddContract = () => {
     showAlert,
     loading,
     displayAlert,
+    type,
+    handleChange,
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -130,6 +132,8 @@ const AddContract = () => {
     }
   };
 
+  const typeList = ["NC", "RC"];
+
   useEffect(() => {
     if (startDate) {
       lastDate(startDate);
@@ -163,15 +167,33 @@ const AddContract = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-3">
             <InputRow
-              label="Contract Number :"
+              label="Contract No:"
               type="text"
               id="ContractNumber"
               placeholder="eg: s/124"
               name="contractNo"
               value={contractNo}
             />
+          </div>
+          <div className="col-md-1">
+            <select
+              className="form-select"
+              style={{marginTop:6}}
+              aria-label="Default select example"
+              name="type"
+              value={type}
+              onChange={handleChange}
+            >
+              {typeList.map((data) => {
+                return (
+                  <option value={data} key={data}>
+                    {data}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           <div className="col-md-4">
             <InputRow

@@ -13,7 +13,7 @@ const AllContracts = () => {
     loading,
     clearValues,
     role,
-    del
+    del,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
   const [page, setPage] = useState(0);
@@ -91,12 +91,18 @@ const AllContracts = () => {
         <tbody>
           {cont &&
             cont.map((contracts) => {
-              const { contractNo, _id, startDate, endDate, shipToAddress } =
-                contracts;
+              const {
+                contractNo,
+                _id,
+                startDate,
+                endDate,
+                shipToAddress,
+                type,
+              } = contracts;
               const { name } = shipToAddress;
               return (
                 <tr key={_id}>
-                  <td>{contractNo}</td>
+                  <td>{`${contractNo} - ${type}`}</td>
                   <td>{name}</td>
                   <td>{moment(startDate).format("DD/MM/YYYY")}</td>
                   <td>{moment(endDate).format("DD/MM/YYYY")}</td>
