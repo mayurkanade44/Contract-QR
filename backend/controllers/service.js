@@ -121,7 +121,7 @@ const createDoc = async (req, res) => {
         },
       });
 
-      const contractName = contractNo.replace("/", "");
+      const contractName = contractNo.replaceAll("/", "");
       const filename = `${contractName} ${element.frequency} ${index + 1}`;
       fs.writeFileSync(
         path.resolve(__dirname, "../files/", `${filename}.docx`),
@@ -191,7 +191,7 @@ const generateQr = async (isValidContract, services) => {
   try {
     const serviceId = await services._id;
     const contractNo = isValidContract.contractNo;
-    const contractName = contractNo.replace("/", "");
+    const contractName = contractNo.replaceAll("/", "");
     const name = `${contractName} ${services.frequency} ${services.service.length}`;
 
     const stringdata = `Contract Number: ${contractNo},
