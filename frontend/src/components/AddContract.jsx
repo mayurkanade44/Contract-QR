@@ -25,6 +25,7 @@ const AddContract = () => {
     sameDetails,
     preferred,
     area,
+    sales,
     specialInstruction,
     contractCreated,
     endContract,
@@ -169,7 +170,7 @@ const AddContract = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="row">
-          <div className="col-md-3">
+          <div className="col-md-4">
             <InputRow
               label="Contract No:"
               type="text"
@@ -197,6 +198,15 @@ const AddContract = () => {
               })}
             </select>
           </div>
+          <div className="col-md-5">
+            <InputRow
+              label="Sales Representative:"
+              type="text"
+              name="sales"
+              value={sales}
+            />
+          </div>
+          <hr className="mt-3" />
           <div className="col-md-4">
             <InputRow
               label="Start Date :"

@@ -48,6 +48,7 @@ export const initialState = {
   contractCreated: false,
   contractNo: "",
   type: "NC",
+  sales: "",
   allServices: [],
   billToAddress: {
     prefix: "Mr",
@@ -294,6 +295,7 @@ export const DataProvider = ({ children }) => {
         specialInstruction,
         area,
         business,
+        sales,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       const instructions = [];
@@ -313,6 +315,7 @@ export const DataProvider = ({ children }) => {
       const res = await axios.post("/contracts", {
         contractNo: upper,
         type,
+        sales: sales.toUpperCase(),
         billToAddress,
         shipToContact1,
         shipToContact2,
@@ -351,7 +354,7 @@ export const DataProvider = ({ children }) => {
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
-      if (serv.includes("Rat Rid") && serv.length > 6) {
+      if (serv.includes("Rat Rid") && serv.length > 5) {
         return dispatch({ type: CARD_FAIL });
       }
       await axios.post("/service", {

@@ -53,7 +53,7 @@ const AddCard = () => {
     { label: "Green Shield - CA", value: "Green Shield - CA" },
     { label: "Termiproof - CS", value: "Termiproof - CS" },
     { label: "Termiproof - DISP", value: "Termiproof - DISP" },
-    { label: "Rat Rid", value: "Rat Rid, , , ,R B Place,W T Place" },
+    { label: "Rat Rid", value: "Rat Rid, , ,R B Place,W T Place" },
     { label: "Bugfree", value: "Bugfree" },
     { label: "Flyban", value: "Flyban" },
     { label: "Woodsafe", value: "Woodsafe" },

@@ -38,6 +38,7 @@ const createDoc = async (req, res) => {
     specialInstruction,
     area,
     type,
+    sales,
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
@@ -87,6 +88,7 @@ const createDoc = async (req, res) => {
         additionalJsContext: {
           contractNo: contractNo,
           type: type,
+          sales: sales,
           day: day,
           time: time,
           card: index + 1,
