@@ -327,7 +327,7 @@ export const DataProvider = ({ children }) => {
         business,
         preferred,
         specialInstruction: instructions,
-        area: home.includes(business) ? business : area,
+        area: home.includes(business) ? business : `${area} Sq.Ft`,
       });
       const contractId = res.data.contract._id;
       dispatch({
@@ -351,7 +351,6 @@ export const DataProvider = ({ children }) => {
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
-      console.log(serv);
       if (serv.includes("Rat Rid") && serv.length > 6) {
         return dispatch({ type: CARD_FAIL });
       }

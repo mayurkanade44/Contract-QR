@@ -41,6 +41,7 @@ const createDoc = async (req, res) => {
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
+
   const {
     prefix,
     name,
@@ -76,9 +77,8 @@ const createDoc = async (req, res) => {
       }));
 
       if (billToAddress.name.trim() === name.trim()) {
-        template = template1
+        template = template1;
       }
-
 
       const buffer = await newdoc.createReport({
         cmdDelimiter: ["{", "}"],
