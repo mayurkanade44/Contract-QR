@@ -165,8 +165,8 @@ const sendEmail = async (
     const base64File = Buffer.from(res.body).toString("base64");
     const msg = {
       to: emails,
-      cc: "ea.epcorn@gmail.com",
-      from: { email: "exteam.epcorn@gmail.com", name: "EPCORN" },
+      cc: "clientproxymail@gmail.com",
+      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
       dynamic_template_data: {
         contractNo: contractNo,
         service: serv,
