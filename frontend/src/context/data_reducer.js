@@ -330,7 +330,7 @@ const data_reducer = (state, action) => {
           pincode: "",
         },
         billToContact1: {
-          name: "Mr/Ms",
+          name: "Mr./Ms.",
           contact: "(M)/(T)",
           email: "",
         },
@@ -348,7 +348,7 @@ const data_reducer = (state, action) => {
         },
 
         shipToContact1: {
-          name: "Mr/Ms",
+          name: "Mr./Ms.",
           contact: "(M)/(T)",
           email: "",
         },

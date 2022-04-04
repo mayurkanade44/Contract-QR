@@ -64,7 +64,7 @@ export const initialState = {
     pincode: "",
   },
   billToContact1: {
-    name: "Mr/Ms",
+    name: "Mr./Ms.",
     contact: "(M)/(T)",
     email: "",
   },
@@ -94,7 +94,7 @@ export const initialState = {
   },
 
   shipToContact1: {
-    name: "Mr/Ms",
+    name: "Mr./Ms.",
     contact: "(M)/(T)",
     email: "",
   },

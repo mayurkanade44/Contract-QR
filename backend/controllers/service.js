@@ -194,8 +194,7 @@ const generateQr = async (isValidContract, services) => {
     const contractName = contractNo.replaceAll("/", "");
     const name = `${contractName} ${services.frequency} ${services.service.length}`;
 
-    const stringdata = `Contract Number: ${contractNo},
-    url: http://localhost:5000/api/service/${serviceId}`;
+    const stringdata = `http://localhost:5000/api/service/${serviceId}`;
     await QRCode.toFile(`./files/${name}.png`, stringdata, { width: 20 });
     const result = await cloudinary.uploader.upload(`files/${name}.png`, {
       width: 80,
