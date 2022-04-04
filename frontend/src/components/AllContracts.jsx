@@ -99,7 +99,7 @@ const AllContracts = () => {
                 endDate,
                 shipToAddress,
                 type,
-                createdAt
+                createdAt,
               } = contracts;
               const { name } = shipToAddress;
               return (

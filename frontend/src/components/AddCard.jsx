@@ -53,6 +53,10 @@ const AddCard = () => {
     { label: "Green Shield - CA", value: "Green Shield - CA" },
     { label: "Termiproof - CS", value: "Termiproof - CS" },
     { label: "Termiproof - DISP", value: "Termiproof - DISP" },
+    {
+      label: "Post Construction Termite",
+      value: "Post Construction Anti Termite Treatment",
+    },
     { label: "Rat Rid", value: "Rat Rid, , ,R B Place,W T Place" },
     { label: "Bugfree", value: "Bugfree" },
     { label: "Flyban", value: "Flyban" },
@@ -95,6 +99,9 @@ const AddCard = () => {
     }
     if (value.includes("Termiproof - CS")) {
       temp.push("WBTM          WBPR          OBTM          TM           IMD");
+    }
+    if (value.includes("Post Construction Anti Termite Treatment")) {
+      temp.push("WBTM");
     }
     if (value.includes("Termiproof - DISP") || value.includes("Civil Work")) {
       temp.push("WBTM          TM           IMD");
