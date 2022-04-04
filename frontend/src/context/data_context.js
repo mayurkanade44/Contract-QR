@@ -26,6 +26,8 @@ import {
   FETCH_SERVICES,
   UPDATE_CARD,
   CARD_FAIL,
+  FETCH_USERS,
+  DELETE_USER,
 } from "./action";
 
 const DataContext = createContext();
@@ -62,8 +64,8 @@ export const initialState = {
     pincode: "",
   },
   billToContact1: {
-    name: "",
-    contact: "",
+    name: "Mr/Ms",
+    contact: "(M)/(T)",
     email: "",
   },
 
@@ -92,8 +94,8 @@ export const initialState = {
   },
 
   shipToContact1: {
-    name: "",
-    contact: "",
+    name: "Mr/Ms",
+    contact: "(M)/(T)",
     email: "",
   },
 
@@ -126,6 +128,7 @@ export const initialState = {
   contract: "",
   chemicals: [],
   del: false,
+  allUsers: [],
 };
 
 export const DataProvider = ({ children }) => {
@@ -160,7 +163,7 @@ export const DataProvider = ({ children }) => {
       const res = await axios.post("/register", currentUser);
       const { name, role, token, msg } = res.data;
       dispatch({ type: REGISTER_SUCCESS, payload: { name, role, token, msg } });
-      addLocalStorage({ name, token, role });
+      // addLocalStorage({ name, token, role });
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
@@ -257,6 +260,27 @@ export const DataProvider = ({ children }) => {
         type: FETCH_CARD,
         payload: res.data.service,
       });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchAllUsers = async () => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await axios.get("/user");
+      dispatch({ type: FETCH_USERS, payload: res.data.users });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeUser = async (id) => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await axios.delete(`/user/${id}`);
+      dispatch({ type: DELETE_USER, payload: res.data.msg });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }
@@ -450,6 +474,8 @@ export const DataProvider = ({ children }) => {
         createCards,
         clearValues,
         fetchServices,
+        fetchAllUsers,
+        removeUser,
       }}
     >
       {children}

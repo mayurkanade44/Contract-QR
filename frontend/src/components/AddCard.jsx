@@ -43,8 +43,8 @@ const AddCard = () => {
     "Monthly",
     "Alternate Monthly",
     "Quarterly",
-    "Thrice A Year",
-    "Twice A Year",
+    "3 Services Once In 4 Months",
+    "2 Services Once In 6 Months",
     "Multi Frequency",
   ];
 
@@ -160,7 +160,11 @@ const AddCard = () => {
     }
     const due = [];
     months.forEach((date, index) => {
-      if (frequency && frequency === "Thrice A Year" && index % 4 === 0) {
+      if (
+        frequency &&
+        frequency === "3 Services Once In 4 Months" &&
+        index % 4 === 0
+      ) {
         return due.push(date);
       }
       if (frequency && frequency === "Quarterly" && index % 3 === 0) {
@@ -169,7 +173,11 @@ const AddCard = () => {
       if (frequency && frequency === "Single" && index === 0) {
         return due.push(date);
       }
-      if (frequency && frequency === "Twice A Year" && index % 6 === 0) {
+      if (
+        frequency &&
+        frequency === "2 Services Once In 6 Months" &&
+        index % 6 === 0
+      ) {
         return due.push(date);
       }
       if (frequency && frequency === "Alternate Monthly" && index % 2 === 0) {

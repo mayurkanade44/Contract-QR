@@ -22,6 +22,8 @@ import {
   FETCH_SERVICES,
   UPDATE_CARD,
   CARD_FAIL,
+  FETCH_USERS,
+  DELETE_USER,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -54,9 +56,9 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        token: action.payload.token,
-        user: action.payload.name,
-        role: action.payload.role,
+        // token: action.payload.token,
+        // user: action.payload.name,
+        // role: action.payload.role,
         alertText: action.payload.msg,
         alertType: "success",
         showAlert: true,
@@ -127,6 +129,25 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         card: action.payload,
+      };
+    }
+
+    case FETCH_USERS: {
+      return {
+        ...state,
+        loading: false,
+        users: action.payload,
+      };
+    }
+
+    case DELETE_USER: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload,
+        alertType: "danger",
+        showAlert: true,
+        del: true,
       };
     }
     case HANDLE_CHANGE: {
@@ -308,9 +329,27 @@ const data_reducer = (state, action) => {
           city: "",
           pincode: "",
         },
-        shipToContact1: {
+        billToContact1: {
+          name: "Mr/Ms",
+          contact: "(M)/(T)",
+          email: "",
+        },
+
+        billToContact2: {
           name: "",
           contact: "",
+          email: "",
+        },
+
+        billToContact3: {
+          name: "",
+          contact: "",
+          email: "",
+        },
+
+        shipToContact1: {
+          name: "Mr/Ms",
+          contact: "(M)/(T)",
           email: "",
         },
 
