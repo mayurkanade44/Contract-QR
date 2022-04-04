@@ -40,6 +40,12 @@ app.use("/api/contracts", contractRouter);
 app.use("/api/service", serviceRouter);
 app.use("/api/user", userRouter);
 
+// app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/frontend/build", "index.html"));
+// });
+
 // app.use(notFound);
 app.use(errorHandler);
 

@@ -38,6 +38,22 @@ const AddContract = () => {
   } = useDataContext();
   const { day, time } = preferred;
 
+  const representativeList = [
+    "PTL",
+    "RHL",
+    "PJ",
+    "BJ",
+    "LN",
+    "APR",
+    "PRI",
+    "KJ",
+    "SD",
+    "ANT",
+    "ROY",
+    "FJQ",
+    "STQ",
+  ];
+
   const businessList = [
     "1 RK",
     "1 BHK",
@@ -198,12 +214,13 @@ const AddContract = () => {
               })}
             </select>
           </div>
-          <div className="col-md-5">
-            <InputRow
-              label="Sales Representative:"
-              type="text"
+          <div className="col-md-6">
+            <InputSelect
+              label="Sales Person :"
               name="sales"
               value={sales}
+              data={representativeList}
+              width={150}
             />
           </div>
           <hr className="mt-3" />
@@ -215,12 +232,13 @@ const AddContract = () => {
               value={startDate}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <InputSelect
-              label="End Date"
+              label="End Date :"
               name="endContract"
               value={endContract}
               data={endDateList}
+              width={180}
             />
           </div>
           <hr className="mt-3" />

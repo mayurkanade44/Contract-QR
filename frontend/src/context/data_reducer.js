@@ -301,7 +301,7 @@ const data_reducer = (state, action) => {
         completion: "Completed",
         image: "",
         contractNo: "",
-        sales: "",
+        sales: "PTL",
         business: "Offices",
         area: "",
         endContract: "1 Year",

@@ -50,7 +50,7 @@ export const initialState = {
   contractCreated: false,
   contractNo: "",
   type: "NC",
-  sales: "",
+  sales: "PTL",
   allServices: [],
   billToAddress: {
     prefix: "Mr",
