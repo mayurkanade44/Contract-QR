@@ -24,6 +24,10 @@ import {
   CARD_FAIL,
   FETCH_USERS,
   DELETE_USER,
+  RENEW_CONTRACT,
+  COPY_CONTRACT,
+  ALL_VALUES,
+  ADD_VALUE,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -284,9 +288,90 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        alertText: "Cards Are Generating...",
+        alertText: action.payload,
         alertType: "success",
         showAlert: true,
+      };
+    }
+
+    case RENEW_CONTRACT: {
+      return {
+        ...state,
+        renew: true,
+      };
+    }
+
+    case COPY_CONTRACT: {
+      return {
+        ...state,
+        loading: false,
+        contractNo: state.singleContract.contractNo,
+        type: "RC",
+        sales: state.singleContract.sales,
+        business: state.singleContract.business,
+        preferred: {
+          day: state.singleContract.preferred.day,
+          time: state.singleContract.preferred.time,
+        },
+        area: state.singleContract.area,
+        billingFrequency: state.singleContract.billingFrequency,
+        specialInstruction: state.singleContract.specialInstruction,
+        billToAddress: {
+          prefix: state.singleContract.billToAddress.prefix,
+          name: state.singleContract.billToAddress.name,
+          address1: state.singleContract.billToAddress.address1,
+          address2: state.singleContract.billToAddress.address2,
+          address3: state.singleContract.billToAddress.address3,
+          address4: state.singleContract.billToAddress.address4,
+          nearBy: state.singleContract.billToAddress.nearBy,
+          city: state.singleContract.billToAddress.city,
+          pincode: state.singleContract.billToAddress.pincode,
+        },
+        billToContact1: {
+          name: state.singleContract.billToContact1.name,
+          contact: state.singleContract.billToContact1.contact,
+          email: state.singleContract.billToContact1.email,
+        },
+
+        billToContact2: {
+          name: state.singleContract.billToContact2.name,
+          contact: state.singleContract.billToContact2.contact,
+          email: state.singleContract.billToContact2.email,
+        },
+
+        billToContact3: {
+          name: state.singleContract.billToContact3.name,
+          contact: state.singleContract.billToContact3.contact,
+          email: state.singleContract.billToContact3.email,
+        },
+        shipToAddress: {
+          prefix: state.singleContract.shipToAddress.prefix,
+          name: state.singleContract.shipToAddress.name,
+          address1: state.singleContract.shipToAddress.address1,
+          address2: state.singleContract.shipToAddress.address2,
+          address3: state.singleContract.shipToAddress.address3,
+          address4: state.singleContract.shipToAddress.address4,
+          nearBy: state.singleContract.shipToAddress.nearBy,
+          city: state.singleContract.shipToAddress.city,
+          pincode: state.singleContract.shipToAddress.pincode,
+        },
+        shipToContact1: {
+          name: state.singleContract.shipToContact1.name,
+          contact: state.singleContract.shipToContact1.contact,
+          email: state.singleContract.shipToContact1.email,
+        },
+
+        shipToContact2: {
+          name: state.singleContract.shipToContact2.name,
+          contact: state.singleContract.shipToContact2.contact,
+          email: state.singleContract.shipToContact2.email,
+        },
+
+        shipToContact3: {
+          name: state.singleContract.shipToContact3.name,
+          contact: state.singleContract.shipToContact3.contact,
+          email: state.singleContract.shipToContact3.email,
+        },
       };
     }
 
@@ -302,11 +387,12 @@ const data_reducer = (state, action) => {
         image: "",
         contractNo: "",
         sales: "PTL",
-        business: "Offices",
+        business: "1 RK",
         area: "",
         endContract: "1 Year",
         specialInstruction: "",
         billingFrequency: "",
+        renew: false,
         billToAddress: {
           prefix: "Mr",
           name: "",
@@ -383,6 +469,26 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         alertText: "Email Has Benn Sent",
+        alertType: "success",
+        showAlert: true,
+      };
+    }
+    case ALL_VALUES: {
+      return {
+        ...state,
+        loading: false,
+        adminList: action.payload,
+      };
+    }
+
+    case ADD_VALUE: {
+      return {
+        ...state,
+        loading: false,
+        addComment: "",
+        addSale: "",
+        addBusines: "",
+        alertText: action.payload,
         alertType: "success",
         showAlert: true,
       };

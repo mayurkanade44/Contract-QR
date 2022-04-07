@@ -28,6 +28,10 @@ import {
   CARD_FAIL,
   FETCH_USERS,
   DELETE_USER,
+  RENEW_CONTRACT,
+  COPY_CONTRACT,
+  ALL_VALUES,
+  ADD_VALUE,
 } from "./action";
 
 const DataContext = createContext();
@@ -110,7 +114,6 @@ export const initialState = {
     contact: "",
     email: "",
   },
-
   startDate: new Date().toISOString().slice(0, 10),
   billingFrequency: "",
   frequency: "Daily",
@@ -118,7 +121,7 @@ export const initialState = {
   endContract: "1 Year",
   preferred: { day: "", time: "10 am - 12 pm" },
   specialInstruction: "",
-  business: "Offices",
+  business: "1 RK",
   area: "",
   comments: "All job done",
   treatmentLocation: "",
@@ -129,6 +132,11 @@ export const initialState = {
   chemicals: [],
   del: false,
   allUsers: [],
+  renew: false,
+  addComment: "",
+  addSale: "",
+  addBusines: "",
+  adminList: [],
 };
 
 export const DataProvider = ({ children }) => {
@@ -225,6 +233,60 @@ export const DataProvider = ({ children }) => {
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
+  };
+
+  const editContract = () => {
+    dispatch({ type: COPY_CONTRACT });
+  };
+
+  const addComments = async () => {
+    try {
+      const { addComment } = state;
+      const res = await axios.post("/admin", {
+        commentsList: addComment,
+      });
+      dispatch({ type: ADD_VALUE, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addSales = async () => {
+    try {
+      const { addSale } = state;
+      const res = await axios.post("/admin", {
+        sales: addSale,
+      });
+      dispatch({ type: ADD_VALUE, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addBusiness = async () => {
+    try {
+      const { addBusines } = state;
+      const res = await axios.post("/admin", {
+        business: addBusines,
+      });
+      dispatch({ type: ADD_VALUE, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allValues = async () => {
+    try {
+      const res = await axios.get("/admin");
+      dispatch({ type: ALL_VALUES, payload: res.data.allValues });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const renewContract = () => {
+    dispatch({ type: RENEW_CONTRACT });
+    dispatch({ type: COPY_CONTRACT });
   };
 
   const fetchServices = async () => {
@@ -399,8 +461,8 @@ export const DataProvider = ({ children }) => {
   const createCards = async (id) => {
     dispatch({ type: LOADING });
     try {
-      await axios.get(`/service/create/${id}`);
-      dispatch({ type: CREATE_CARDS });
+      const res = await axios.get(`/service/create/${id}`);
+      dispatch({ type: CREATE_CARDS, payload: res.data.msg });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
@@ -476,6 +538,11 @@ export const DataProvider = ({ children }) => {
         fetchServices,
         fetchAllUsers,
         removeUser,
+        renewContract,
+        addComments,
+        allValues,
+        addSales,
+        addBusiness,
       }}
     >
       {children}

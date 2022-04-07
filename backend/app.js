@@ -15,6 +15,7 @@ const contractRouter = require("./routes/contract");
 const serviceRouter = require("./routes/service");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoute");
+const adminRouter = require("./routes/adminRoute");
 
 const notFound = require("./middleware/not-found");
 const errorHandler = require("./middleware/error-handler");
@@ -39,6 +40,7 @@ app.use("/api", authRouter);
 app.use("/api/contracts", contractRouter);
 app.use("/api/service", serviceRouter);
 app.use("/api/user", userRouter);
+app.use("/api/admin", adminRouter);
 
 // app.use(express.static(path.join(__dirname, "/frontend/build")));
 
