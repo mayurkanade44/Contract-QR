@@ -454,6 +454,8 @@ const data_reducer = (state, action) => {
         preferred: { day: "", time: "10 am - 12 pm" },
         contractCreated: false,
         search: "",
+        searchSD: "",
+        searchED: "",
         del: false,
       };
     }

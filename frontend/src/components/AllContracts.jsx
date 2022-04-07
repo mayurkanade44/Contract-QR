@@ -14,6 +14,8 @@ const AllContracts = () => {
     clearValues,
     role,
     del,
+    searchSD,
+    searchED,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
   const [page, setPage] = useState(0);
@@ -49,6 +51,24 @@ const AllContracts = () => {
       <div className="row my-2">
         <div className="col-md-4">
           <InputRow label="Search" type="text" name="search" value={search} />
+        </div>
+        <div className="col-md-3">
+          <InputRow
+            label="From :"
+            type="date"
+            name="searchSD"
+            value={searchSD}
+            width={170}
+          />
+        </div>
+        <div className="col-md-3">
+          <InputRow
+            label="End :"
+            type="date"
+            name="searchED"
+            value={searchED}
+            width={170}
+          />
         </div>
         <div className="col-md-1 mt-1">
           <button

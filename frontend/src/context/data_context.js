@@ -128,6 +128,8 @@ export const initialState = {
   completion: "Completed",
   image: "",
   search: "",
+  searchSD: "",
+  searchED: "",
   contract: "",
   chemicals: [],
   del: false,
@@ -213,10 +215,13 @@ export const DataProvider = ({ children }) => {
   };
 
   const fetchContracts = async () => {
-    const { search } = state;
+    const { search, searchSD, searchED } = state;
     let url = "/contracts";
     if (search) {
       url = url + `?search=${search}`;
+    }
+    if (searchED && searchSD) {
+      url = url + `?searchSD=${searchSD}&searchED=${searchED}`;
     }
     dispatch({ type: LOADING });
     try {

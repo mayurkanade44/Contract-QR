@@ -74,7 +74,7 @@ const AddCard = () => {
     {
       label: "Civil & Interior",
       value:
-        "Civil & Interior Wood Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Floor Spray,*Wood Work,",
+        "Civil & Interior Wood Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Floor Spray,*Wood Work",
     },
     { label: "Mosquit - Thermal Fogging", value: "Mosquit - Thermal Fogging" },
     { label: "Mosquit - Cold Fogging", value: "Mosquit - Cold Fogging" },
