@@ -21,7 +21,7 @@ const notFound = require("./middleware/not-found");
 const errorHandler = require("./middleware/error-handler");
 const authenticateUser = require("./middleware/auth");
 
-const path = require("path")
+const path = require("path");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,

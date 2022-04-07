@@ -1,9 +1,8 @@
 const Contract = require("../models/contract");
-const QRCode = require("qrcode");
 const { BadRequestError } = require("../errors");
 
 const getAllContracts = async (req, res) => {
-  const { search } = req.query;
+  const { search, searchSD, searchED } = req.query;
   // const queryObject = {};
   // if (search) {
   //   queryObject.contractNo = { $regex: search, $options: "i" };
@@ -14,7 +13,17 @@ const getAllContracts = async (req, res) => {
         $or: [
           { contractNo: { $regex: search, $options: "i" } },
           { type: { $regex: search, $options: "i" } },
+          { "shipToAddress.name": { $regex: search, $options: "i" } },
         ],
+      }).sort("-createdAt");
+      res.status(200).json({ contracts, len: contracts.length });
+    }
+    if (searchSD && searchED) {
+      const contracts = await Contract.find({
+        endDate: {
+          $gte: new Date(searchSD),
+          $lte: new Date(searchED),
+        },
       }).sort("-createdAt");
       res.status(200).json({ contracts, len: contracts.length });
     } else {
@@ -75,28 +84,6 @@ const updateContract = async (req, res) => {
   }
 };
 
-const generateQR = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const contract = await Contract.find({ _id: id });
-    const stringdata = `Contract Number: ${contract[0].contractNo},
-
-    url: http://localhost:5000/api/contracts/${id}`;
-
-    const generateQR = async (text) => {
-      try {
-        await QRCode.toFile("./test.png", text);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    generateQR(stringdata);
-    res.status(200).json({ msg: "success" });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const deleteContract = async (req, res) => {
   try {
     const { id } = req.params;
@@ -118,5 +105,4 @@ module.exports = {
   getContract,
   deleteContract,
   updateContract,
-  generateQR,
 };

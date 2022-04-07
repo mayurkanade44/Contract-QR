@@ -5,5 +5,4 @@ const { addValues, allValues } = require("../controllers/adminController");
 
 router.route("/").post(addValues).get(allValues);
 
-
 module.exports = router;
