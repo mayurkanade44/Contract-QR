@@ -45,6 +45,7 @@ const AddCard = () => {
     "Quarterly",
     "3 Services Once In 4 Months",
     "2 Services Once In 6 Months",
+    "As An When Called",
     "Multi Frequency",
   ];
 
@@ -62,6 +63,7 @@ const AddCard = () => {
     { label: "Flyban", value: "Flyban" },
     { label: "Woodsafe", value: "Woodsafe" },
     { label: "Antron", value: "Antron" },
+    { label: "Rapron", value: "Rapron" },
     { label: "FX1", value: "FX1" },
     {
       label: "Civil Work",
@@ -111,6 +113,9 @@ const AddCard = () => {
     }
     if (value.includes("Bugfree")) {
       temp.push("WBBB          OBBB");
+    }
+    if (value.includes("Rapron")) {
+      temp.push("CBA");
     }
     if (value.includes("Woodsafe")) {
       temp.push("WAX          TM");
@@ -195,6 +200,7 @@ const AddCard = () => {
         (frequency === "Daily" ||
           frequency === "Weekly" ||
           frequency === "Multi Frequency" ||
+          frequency === "As An When Called" ||
           frequency === "Twice A Week" ||
           frequency === "Thrice A Week" ||
           frequency === "Thrice A Month" ||

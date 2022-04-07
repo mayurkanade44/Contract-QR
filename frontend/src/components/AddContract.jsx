@@ -35,44 +35,58 @@ const AddContract = () => {
     displayAlert,
     type,
     handleChange,
+    adminList,
+    allValues,
   } = useDataContext();
   const { day, time } = preferred;
 
-  const representativeList = [
-    "PTL",
-    "RHL",
-    "PJ",
-    "BJ",
-    "LN",
-    "APR",
-    "PRI",
-    "KJ",
-    "SD",
-    "ANT",
-    "ROY",
-    "FJQ",
-    "STQ",
-  ];
+  // const representativeList = [
+  //   "PTL",
+  //   "RHL",
+  //   "PJ",
+  //   "BJ",
+  //   "LN",
+  //   "APR",
+  //   "PRI",
+  //   "KG",
+  //   "GS",
+  //   "SD",
+  //   "ANT",
+  //   "ROY",
+  //   "FJQ",
+  //   "STQ",
+  // ];
 
-  const businessList = [
-    "1 RK",
-    "1 BHK",
-    "2 BHK",
-    "3 BHK",
-    "4 BHK",
-    "5 BHK",
-    "Bungalow",
-    "Gated Community",
-    "Housing Society",
-    "Offices",
-    "Corporate Park",
-    "Data Center",
-    "Warehouse",
-    "Food & Delivery",
-    "Restaurant",
-    "Malls",
-    "Entertainment",
-  ];
+  const representativeList = [];
+  const businessList = [];
+  if (adminList) {
+    adminList.map(
+      (item) =>
+        (item.sales !== undefined && representativeList.push(item.sales)) ||
+        (item.business !== undefined && businessList.push(item.business))
+    );
+  }
+
+  // const businessList = [
+  //   "1 RK",
+  //   "1 BHK",
+  //   "2 BHK",
+  //   "3 BHK",
+  //   "4 BHK",
+  //   "5 BHK",
+  //   "Bungalow",
+  //   "Gated Community",
+  //   "Housing Society",
+  //   "Offices",
+  //   "Corporate Park",
+  //   "Data Center",
+  //   "Warehouse",
+  //   "Food & Delivery",
+  //   "Restaurant",
+  //   "Malls",
+  //   "Entertainment",
+  //   "Shops",
+  // ];
 
   const home = [
     "1 RK",
@@ -174,6 +188,7 @@ const AddContract = () => {
   };
 
   useEffect(() => {
+    allValues();
     if (contractCreated) {
       setTimeout(() => {
         navigate(`/addcard/${contract}`);
@@ -268,7 +283,6 @@ const AddContract = () => {
               data={timeList}
             />
           </div>
-
           <hr className="mt-3" />
           {!home.includes(business) && (
             <div className="col-md-2">

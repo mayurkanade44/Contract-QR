@@ -17,6 +17,8 @@ import BarChart from "./BarChart";
 import Pagination from "./Pagination";
 import BillToAddress from "./BillToAddress";
 import ShipToAddress from "./ShipToAddress";
+import Renew from "./Renew";
+
 
 
 
@@ -40,4 +42,5 @@ export {
   Pagination,
   BillToAddress,
   ShipToAddress,
+  Renew,
 };
