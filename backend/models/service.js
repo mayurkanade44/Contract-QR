@@ -26,7 +26,13 @@ const ServiceSchema = new mongoose.Schema({
     type: String,
   },
   chemicals: [String],
-
+  area: {
+    type: String,
+    required: [true, "Please provide area"],
+  },
+  business: {
+    type: String,
+  },
   treatmentLocation: {
     type: String,
     required: [true, "Please provide treatment location"],

@@ -79,16 +79,9 @@ const ContractSchema = new mongoose.Schema(
     endDate: {
       type: Date,
     },
-    business: {
-      type: String,
-    },
     billingFrequency: {
       type: String,
       required: [true, "Please provide billing frequency"],
-    },
-    area: {
-      type: String,
-      required: [true, "Please provide area"],
     },
     specialInstruction: [String],
     preferred: {

@@ -30,6 +30,9 @@ const createDoc = async (req, res) => {
     billingFrequency,
     shipToAddress,
     billToAddress,
+    billToContact1,
+    billToContact2,
+    billToContact3,
     shipToContact1,
     shipToContact2,
     shipToContact3,
@@ -42,6 +45,29 @@ const createDoc = async (req, res) => {
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
+
+  const temails = new Set();
+  const first = billToContact1.email;
+  const second = shipToContact1.email;
+  const fifth = billToContact2.email;
+  const six = billToContact3.email;
+  const third = shipToContact2.email;
+  const fourth = shipToContact3.email;
+  temails.add(first);
+  temails.add(second);
+  if (third) {
+    temails.add(third);
+  }
+  if (fourth) {
+    temails.add(fourth);
+  }
+  if (fifth) {
+    temails.add(fifth);
+  }
+  if (six) {
+    temails.add(six);
+  }
+  const emails = [...temails];
 
   const {
     prefix,
@@ -62,6 +88,16 @@ const createDoc = async (req, res) => {
   } else {
     var pre = prefix;
   }
+
+  const nc = "d-8db487f4b19147a896ae2ed220f5d1ec";
+  const rc = "d-4c0ebd0b403245a98545aaa2c8483202";
+
+  const allserv = [];
+  const allfreq = [];
+  services.map((item) => {
+    allfreq.push(item.frequency);
+    item.service.map((n) => allserv.push(n));
+  });
 
   try {
     services.forEach(async (element, index) => {
@@ -109,7 +145,7 @@ const createDoc = async (req, res) => {
           service: allServices,
           frequency: element.frequency,
           location: element.treatmentLocation,
-          area: area,
+          area: element.area,
           billingFrequency: billingFrequency,
           specialInstruction: specialInstruction,
           url: "12",
@@ -145,11 +181,37 @@ const createDoc = async (req, res) => {
       );
       fs.unlinkSync(`./files/${filename}.docx`);
     });
-
-    res.send({ msg: "Documents created successfully" });
+    // if (type === "NC") {
+    //   sendContractEmail(nc, emails, contractNo, allserv, allfreq);
+    // } else {
+    //   sendContractEmail(rc, emails, contractNo, allserv, allfreq);
+    // }
+    res.send({ msg: "Cards created successfully" });
   } catch (error) {
     console.log(error);
   }
+};
+
+const sendContractEmail = async (
+  mail,
+  emails,
+  contractNo,
+  allserv,
+  allfreq
+) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: emails,
+    cc: "clientproxymail@gmail.com",
+    from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+    dynamic_template_data: {
+      contractNo: contractNo,
+      service: allserv.toString(),
+      frequency: allfreq.toString(),
+    },
+    template_id: mail,
+  };
+  await sgMail.send(msg);
 };
 
 const sendEmail = async (
