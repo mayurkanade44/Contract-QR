@@ -384,8 +384,6 @@ export const DataProvider = ({ children }) => {
         billingFrequency,
         preferred,
         specialInstruction,
-        area,
-        business,
         sales,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
@@ -393,15 +391,6 @@ export const DataProvider = ({ children }) => {
       specialInstruction
         .split(",")
         .map((inst) => instructions.push(inst.trim()));
-      const home = [
-        "1 RK",
-        "1 BHK",
-        "2 BHK",
-        "3 BHK",
-        "4 BHK",
-        "5 BHK",
-        "Bungalow",
-      ];
 
       const res = await axios.post("/contracts", {
         contractNo: upper,
@@ -418,10 +407,8 @@ export const DataProvider = ({ children }) => {
         startDate,
         endDate: last,
         billingFrequency,
-        business,
         preferred,
         specialInstruction: instructions,
-        area: home.includes(business) ? business : `${area} Sq.Ft`,
       });
       const contractId = res.data.contract._id;
       dispatch({
@@ -440,8 +427,17 @@ export const DataProvider = ({ children }) => {
   const createCard = async (dueMonths, value, chemicals) => {
     const serv = [];
     dispatch({ type: LOADING });
+    const home = [
+      "1 RK",
+      "1 BHK",
+      "2 BHK",
+      "3 BHK",
+      "4 BHK",
+      "5 BHK",
+      "Bungalow",
+    ];
     try {
-      const { frequency, contract, treatmentLocation } = state;
+      const { frequency, contract, treatmentLocation, area, business } = state;
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
@@ -450,14 +446,16 @@ export const DataProvider = ({ children }) => {
       }
       await axios.post("/service", {
         serviceDue: dueMonths,
+        business,
         frequency,
         service: serv,
         treatmentLocation,
         contract,
         chemicals: chemicals,
+        area: home.includes(business) ? business : `${area} Sq.Ft`,
       });
       dispatch({ type: CREATE_CARD });
-      dispatch({ type: CLEAR_VALUES });
+      // dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }

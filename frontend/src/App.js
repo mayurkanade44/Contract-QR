@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AddCard, Navbar, Dashboard } from "./components";
+import { AddCard, Navbar, Dashboard, Renew } from "./components";
 import {
   Home,
   SingleContract,
@@ -56,6 +56,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AddCard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/renew/:id"
+          element={
+            <ProtectedRoute>
+              <Renew />
             </ProtectedRoute>
           }
         />
