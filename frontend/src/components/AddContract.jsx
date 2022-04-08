@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
 import {
   InputRow,
-  ClientAddress,
   BillContacts,
   ShipContacts,
   InputSelect,
@@ -24,12 +23,10 @@ const AddContract = () => {
     contract,
     sameDetails,
     preferred,
-    area,
     sales,
     specialInstruction,
     contractCreated,
     endContract,
-    business,
     showAlert,
     loading,
     displayAlert,
@@ -40,23 +37,6 @@ const AddContract = () => {
   } = useDataContext();
   const { day, time } = preferred;
 
-  // const representativeList = [
-  //   "PTL",
-  //   "RHL",
-  //   "PJ",
-  //   "BJ",
-  //   "LN",
-  //   "APR",
-  //   "PRI",
-  //   "KG",
-  //   "GS",
-  //   "SD",
-  //   "ANT",
-  //   "ROY",
-  //   "FJQ",
-  //   "STQ",
-  // ];
-
   const representativeList = [];
   const businessList = [];
   if (adminList) {
@@ -66,37 +46,6 @@ const AddContract = () => {
         (item.business !== undefined && businessList.push(item.business))
     );
   }
-
-  // const businessList = [
-  //   "1 RK",
-  //   "1 BHK",
-  //   "2 BHK",
-  //   "3 BHK",
-  //   "4 BHK",
-  //   "5 BHK",
-  //   "Bungalow",
-  //   "Gated Community",
-  //   "Housing Society",
-  //   "Offices",
-  //   "Corporate Park",
-  //   "Data Center",
-  //   "Warehouse",
-  //   "Food & Delivery",
-  //   "Restaurant",
-  //   "Malls",
-  //   "Entertainment",
-  //   "Shops",
-  // ];
-
-  const home = [
-    "1 RK",
-    "1 BHK",
-    "2 BHK",
-    "3 BHK",
-    "4 BHK",
-    "5 BHK",
-    "Bungalow",
-  ];
 
   const timeList = [
     "10 am - 12 pm",
@@ -258,14 +207,6 @@ const AddContract = () => {
           </div>
           <hr className="mt-3" />
           <div className="col-md-4">
-            <InputSelect
-              label="Business"
-              name="business"
-              value={business}
-              data={businessList}
-            />
-          </div>
-          <div className="col-md-4">
             <InputRow
               label="Preferred Day:"
               id="preferred"
@@ -284,18 +225,7 @@ const AddContract = () => {
             />
           </div>
           <hr className="mt-3" />
-          {!home.includes(business) && (
-            <div className="col-md-2">
-              <InputRow
-                label="Area :"
-                placeholder="in sqft"
-                type="text"
-                name="area"
-                value={area}
-              />
-            </div>
-          )}
-          <div className="col-md-5">
+          <div className="col-md-4">
             <InputRow
               label="Billing Frequency :"
               type="text"

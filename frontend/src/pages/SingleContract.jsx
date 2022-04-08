@@ -14,6 +14,7 @@ const SingleContract = () => {
     showAlert,
     displayAlert,
     del,
+    renewContract,
   } = useDataContext();
   const navigate = useNavigate();
   const {
@@ -27,7 +28,6 @@ const SingleContract = () => {
     shipToContact2,
     shipToContact3,
     services,
-    area,
     preferred,
   } = singleContract;
   const { id } = useParams();
@@ -71,13 +71,22 @@ const SingleContract = () => {
             )}
           </Link>
         </div>
-        {role === "Admin" && (
-          <div className="col-md-2 my-3">
+        <div className="col-md-2 my-3">
+          <Link to={`/renew/${id}`}>
+            {role === "Admin" && (
+              <button onClick={renewContract} className="btn btn-info">
+                Renew Contract
+              </button>
+            )}
+          </Link>
+        </div>
+        <div className="col-md-2 my-3">
+          {role === "Admin" && (
             <button onClick={deleteCont} className="btn btn-danger">
               Delete Contract
             </button>
-          </div>
-        )}
+          )}
+        </div>
         <div className="col-md-6">
           <h2 className="text-center mb-4">Bill To Details</h2>
           {billToAddress && (
@@ -86,7 +95,6 @@ const SingleContract = () => {
               contacts1={billToContact1}
               contacts2={billToContact2}
               contacts3={billToContact3}
-              area={area}
               preferred={preferred}
             />
           )}
@@ -99,7 +107,6 @@ const SingleContract = () => {
               contacts1={shipToContact1}
               contacts2={shipToContact2}
               contacts3={shipToContact3}
-              area={area}
               preferred={preferred}
             />
           )}

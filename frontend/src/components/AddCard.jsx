@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { InputSelect, Alert, Loading } from ".";
+import { InputSelect, Alert, Loading, InputRow } from ".";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import MultiSelect from "react-multiple-select-dropdown-lite";
@@ -28,6 +28,10 @@ const AddCard = () => {
     loading,
     displayAlert,
     role,
+    adminList,
+    area,
+    business,
+    allValues,
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services } = singleContract;
@@ -47,6 +51,23 @@ const AddCard = () => {
     "2 Services Once In 6 Months",
     "As An When Called",
     "Multi Frequency",
+  ];
+
+  const businessList = [];
+  if (adminList) {
+    adminList.map(
+      (item) => item.business !== undefined && businessList.push(item.business)
+    );
+  }
+
+  const home = [
+    "1 RK",
+    "1 BHK",
+    "2 BHK",
+    "3 BHK",
+    "4 BHK",
+    "5 BHK",
+    "Bungalow",
   ];
 
   const serviceList = [
@@ -228,6 +249,7 @@ const AddCard = () => {
   }, [startDate, frequency]);
 
   useEffect(() => {
+    allValues();
     addChemicals();
     // eslint-disable-next-line
   }, [value]);
@@ -290,6 +312,27 @@ const AddCard = () => {
         <>
           <form onSubmit={handleSubmit}>
             <div className="row">
+              <div className="col-md-4">
+                <InputSelect
+                  label="Business"
+                  name="business"
+                  value={business}
+                  data={businessList}
+                />
+              </div>
+              {!home.includes(business) && (
+                <div className="col-md-3">
+                  <InputRow
+                    label="Area :"
+                    placeholder="in sqft"
+                    type="text"
+                    name="area"
+                    value={area}
+                  />
+                </div>
+              )}
+              <div className="col-md-5"></div>
+
               <div className="col-lg-4">
                 <InputSelect
                   label="Frequency"
@@ -326,7 +369,7 @@ const AddCard = () => {
                     placeholder="Location To Be Treated"
                     value={treatmentLocation}
                     onChange={handleChange}
-                    style={{ height: 120 }}
+                    style={{ height: 100 }}
                     required
                   ></textarea>
                   <label htmlFor="floatingTextarea2">
@@ -346,10 +389,10 @@ const AddCard = () => {
             </div>
           </form>
 
-          <div className="row">
+          <div className="row mt-2">
             <div className="col-md-2">
               <button
-                className="btn btn-dark"
+                className="btn btn-success btn-lg"
                 type="submit"
                 onClick={generateCards}
                 disabled={loading ? true : false}

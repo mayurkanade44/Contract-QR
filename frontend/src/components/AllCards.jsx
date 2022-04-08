@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { saveAs } from "file-saver";
 
-const AllCards = ({ data, preferred, role, contractNo }) => {
+const AllCards = ({ data, role, contractNo }) => {
   const downloadImage = (url, name) => {
     saveAs(url, `${name}.png`); // Put your image url here.
   };
@@ -15,6 +15,9 @@ const AllCards = ({ data, preferred, role, contractNo }) => {
             <tr>
               <th>No</th>
               <th className="text-center">Services</th>
+              <th className="text-center" style={{ width: 120 }}>
+                Area
+              </th>
               <th className="text-center">Frequency</th>
               {(role === "Back Office" || role === "Admin") && (
                 <th className="text-center">Download</th>
@@ -26,12 +29,13 @@ const AllCards = ({ data, preferred, role, contractNo }) => {
           </thead>
           <tbody>
             {data.map((data, index) => {
-              const { frequency, service, _id, card, qr } = data;
+              const { frequency, service, _id, card, qr, area } = data;
               const temp = `${contractNo}_${frequency}`;
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{`${service}`}</td>
+                  <td>{area}</td>
                   <td className="frequency">{frequency}</td>
                   {(role === "Back Office" || role === "Admin") && (
                     <td className="download">
