@@ -2,7 +2,6 @@ import React from "react";
 
 const ClientDetails = ({
   data,
-  area,
   preferred,
   contacts1,
   contacts2,
@@ -12,7 +11,7 @@ const ClientDetails = ({
     <div>
       <h5>{`Name: ${data.name}`}</h5>
       <h5>{`Address: ${data.address1}, ${data.city}-${data.pincode}`}</h5>
-      <h5>{`Area: ${area}, Preferred: ${preferred && preferred.day} & ${
+      <h5>{`Preferred: ${preferred && preferred.day} & ${
         preferred && preferred.time
       }`}</h5>
       <table className="table table-sm table-bordered">
