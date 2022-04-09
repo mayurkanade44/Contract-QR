@@ -1,9 +1,9 @@
-import { InputRow} from ".";
+import { InputRow } from ".";
 import { useDataContext } from "../context/data_context";
 
-const ShipToAddress = ({id}) => {
+const ShipToAddress = ({ id }) => {
   const { shipToAddress, handleChange } = useDataContext();
-  const prefixList = ["Mr", "Mrs", "Ms", "Other"];
+  const prefixList = ["Mr", "Mrs", "Ms", "M/s", "Other"];
   const {
     prefix,
     name,

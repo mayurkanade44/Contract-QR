@@ -3,7 +3,7 @@ import { useDataContext } from "../context/data_context";
 
 const BillToAddress = ({ id }) => {
   const { billToAddress, handleChange } = useDataContext();
-  const prefixList = ["Mr", "Mrs", "Ms", "Other"];
+  const prefixList = ["Mr", "Mrs", "Ms", "M/s", "Other"];
   const {
     prefix,
     name,

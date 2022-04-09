@@ -48,7 +48,19 @@ const AllContracts = () => {
 
   return (
     <div className="container">
-      <div className="row my-2">
+      <div className="row my-3">
+        <div className="col-md-6">
+          <h2 className="text-center all-contracts">All Contracts</h2>
+        </div>
+        {(role === "Sales" || role === "Admin") && (
+          <div className="col-md-6 d-flex justify-content-center">
+            <Link to="/create">
+              <button className="btn btn-success btn-lg my-1">
+                Create Contract
+              </button>
+            </Link>
+          </div>
+        )}
         <div className="col-md-4">
           <InputRow label="Search" type="text" name="search" value={search} />
         </div>
@@ -85,15 +97,6 @@ const AllContracts = () => {
             Reset
           </button>
         </div>
-        {(role === "Sales" || role === "Admin") && (
-          <div className="col-md-5 d-flex justify-content-end">
-            <Link to="/create">
-              <button className="btn btn-secondary btn-lg my-1">
-                Create Contract
-              </button>
-            </Link>
-          </div>
-        )}
       </div>
       {contracts.length === 0 && (
         <h4 className="text-center m-2 text-danger">No Contract Found</h4>
