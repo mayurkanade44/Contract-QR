@@ -10,7 +10,6 @@ const Login = () => {
   const [values, setValues] = useState({
     name: "",
     password: "",
-    role: "Sales",
   });
 
   const handleChange = (e) => {

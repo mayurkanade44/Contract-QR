@@ -19,8 +19,10 @@ const Admin = () => {
     addBusines,
     addBusiness,
   } = useDataContext();
+
   useEffect(() => {
     fetchAllUsers();
+    // eslint-disable-next-line
   }, [del]);
 
   const [showUser, setShowUser] = useState(false);
