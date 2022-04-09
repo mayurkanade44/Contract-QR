@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Alert } from "../components";
 import { useDataContext } from "../context/data_context";
-import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const navigate = useNavigate();
-  const { showAlert, loading, displayAlert, registerUser, user } =
+
+  const { showAlert, loading, displayAlert, registerUser, } =
     useDataContext();
   const [values, setValues] = useState({
     name: "",
@@ -29,13 +28,6 @@ const Register = () => {
     registerUser(values);
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     setInterval(() => {
-  //       navigate("/");
-  //     }, 2000);
-  //   }
-  // }, [navigate, user]);
 
   return (
     <div className="position-absolute top-50 start-50 translate-middle border border-info p-4 mt-4">

@@ -19,7 +19,7 @@ const adminRouter = require("./routes/adminRoute");
 
 const notFound = require("./middleware/not-found");
 const errorHandler = require("./middleware/error-handler");
-const authenticateUser = require("./middleware/auth");
+const { authenticateUser } = require("./middleware/auth");
 
 const path = require("path");
 

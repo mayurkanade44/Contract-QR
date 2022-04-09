@@ -1,7 +1,7 @@
-const { UnAuthenticated } = require("../errors");
+const { UnAuthenticated, UnAuthorizedError } = require("../errors");
 const jwt = require("jsonwebtoken");
 
-const auth = async (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
   const authHeaders = req.headers.authorization;
   if (!authHeaders || !authHeaders.startsWith("Bearer")) {
     throw new UnAuthenticated("Authentication Invalid");
@@ -16,4 +16,14 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+const authorizeUser = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      throw new UnAuthorizedError(
+        "You dont have permission, please contact Admin"
+      );
+    }
+    next();
+  };
+};
+module.exports = { authenticateUser, authorizeUser };

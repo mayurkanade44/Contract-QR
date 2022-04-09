@@ -195,7 +195,7 @@ export const DataProvider = ({ children }) => {
   const registerUser = async (currentUser) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.post("/api/register", currentUser);
+      const res = await authFetch.post("/register", currentUser);
       const { name, role, token, msg } = res.data;
       dispatch({ type: REGISTER_SUCCESS, payload: { name, role, token, msg } });
       // addLocalStorage({ name, token, role });
