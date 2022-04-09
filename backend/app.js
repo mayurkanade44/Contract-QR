@@ -37,10 +37,10 @@ app.use(express.json());
 app.use(uploadImage({ useTempFiles: true }));
 
 app.use("/api", authRouter);
-app.use("/api/contracts", contractRouter);
-app.use("/api/service", serviceRouter);
-app.use("/api/user", userRouter);
-app.use("/api/admin", adminRouter);
+app.use("/api/contracts", authenticateUser, contractRouter);
+app.use("/api/service", authenticateUser, serviceRouter);
+app.use("/api/user", authenticateUser, userRouter);
+app.use("/api/admin", authenticateUser, adminRouter);
 
 // app.use(express.static(path.join(__dirname, "/frontend/build")));
 
@@ -48,7 +48,7 @@ app.use("/api/admin", adminRouter);
 //   res.sendFile(path.join(__dirname, "/frontend/build", "index.html"));
 // });
 
-// app.use(notFound);
+app.use(notFound);
 app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
