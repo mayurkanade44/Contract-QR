@@ -29,3 +29,4 @@ export const RENEW_CONTRACT = "RENEW_CONTRACT";
 export const COPY_CONTRACT = "COPY_CONTRACT";
 export const ALL_VALUES = "ALL_VALUES";
 export const ADD_VALUE = "ADD_VALUE";
+export const SEND_MAIL = "SEND_MAIL";

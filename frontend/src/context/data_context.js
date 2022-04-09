@@ -472,6 +472,8 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const sendEmail = async () => {};
+
   const handleImage = async (e) => {
     const file = e.target.files[0];
 
@@ -546,6 +548,7 @@ export const DataProvider = ({ children }) => {
         allValues,
         addSales,
         addBusiness,
+        sendEmail,
       }}
     >
       {children}
