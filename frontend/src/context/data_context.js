@@ -144,6 +144,31 @@ export const initialState = {
 export const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const authFetch = axios.create({
+    baseURL: "/api",
+  });
+
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers.common["Authorization"] = `Bearer ${state.token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        logout();
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
     clearAlert();
@@ -170,7 +195,7 @@ export const DataProvider = ({ children }) => {
   const registerUser = async (currentUser) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.post("/register", currentUser);
+      const res = await axios.post("/api/register", currentUser);
       const { name, role, token, msg } = res.data;
       dispatch({ type: REGISTER_SUCCESS, payload: { name, role, token, msg } });
       // addLocalStorage({ name, token, role });
@@ -186,7 +211,7 @@ export const DataProvider = ({ children }) => {
   const loginUser = async (currentUser) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.post("/login", currentUser);
+      const res = await axios.post("/api/login", currentUser);
       const { name, token, role } = res.data;
       dispatch({ type: LOGIN_SUCCESS, payload: { name, token, role } });
       addLocalStorage({ name, token, role });
@@ -225,7 +250,7 @@ export const DataProvider = ({ children }) => {
     }
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get(url);
+      const res = await authFetch.get(url);
 
       dispatch({
         type: FETCH_CONTRACTS,
@@ -247,7 +272,7 @@ export const DataProvider = ({ children }) => {
   const addComments = async () => {
     try {
       const { addComment } = state;
-      const res = await axios.post("/admin", {
+      const res = await authFetch.post("/admin", {
         commentsList: addComment,
       });
       dispatch({ type: ADD_VALUE, payload: res.data.msg });
@@ -259,7 +284,7 @@ export const DataProvider = ({ children }) => {
   const addSales = async () => {
     try {
       const { addSale } = state;
-      const res = await axios.post("/admin", {
+      const res = await authFetch.post("/admin", {
         sales: addSale,
       });
       dispatch({ type: ADD_VALUE, payload: res.data.msg });
@@ -271,7 +296,7 @@ export const DataProvider = ({ children }) => {
   const addBusiness = async () => {
     try {
       const { addBusines } = state;
-      const res = await axios.post("/admin", {
+      const res = await authFetch.post("/admin", {
         business: addBusines,
       });
       dispatch({ type: ADD_VALUE, payload: res.data.msg });
@@ -282,7 +307,7 @@ export const DataProvider = ({ children }) => {
 
   const allValues = async () => {
     try {
-      const res = await axios.get("/admin");
+      const res = await authFetch.get("/admin");
       dispatch({ type: ALL_VALUES, payload: res.data.allValues });
     } catch (error) {
       console.log(error);
@@ -297,7 +322,7 @@ export const DataProvider = ({ children }) => {
   const fetchServices = async () => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get("/service");
+      const res = await authFetch.get("/service");
       dispatch({ type: FETCH_SERVICES, payload: res.data.services });
     } catch (error) {
       console.log(error);
@@ -307,7 +332,7 @@ export const DataProvider = ({ children }) => {
   const fetchSingleContract = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get(`/contracts/${id}`);
+      const res = await authFetch.get(`/contracts/${id}`);
       const contract = res.data.contract;
       dispatch({
         type: FETCH_CONTRACT,
@@ -321,7 +346,7 @@ export const DataProvider = ({ children }) => {
   const fetchSingleCard = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get(`/service/${id}`);
+      const res = await authFetch.get(`/service/${id}`);
 
       dispatch({
         type: FETCH_CARD,
@@ -335,7 +360,7 @@ export const DataProvider = ({ children }) => {
   const fetchAllUsers = async () => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get("/user");
+      const res = await authFetch.get("/user");
       dispatch({ type: FETCH_USERS, payload: res.data.users });
     } catch (error) {
       console.log(error);
@@ -345,7 +370,7 @@ export const DataProvider = ({ children }) => {
   const removeUser = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.delete(`/user/${id}`);
+      const res = await authFetch.delete(`/user/${id}`);
       dispatch({ type: DELETE_USER, payload: res.data.msg });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
@@ -355,7 +380,7 @@ export const DataProvider = ({ children }) => {
 
   const deleteContract = async (id) => {
     try {
-      await axios.delete(`/contracts/${id}`);
+      await authFetch.delete(`/contracts/${id}`);
       dispatch({ type: DELETE_CONTRACT });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
@@ -392,7 +417,7 @@ export const DataProvider = ({ children }) => {
         .split(",")
         .map((inst) => instructions.push(inst.trim()));
 
-      const res = await axios.post("/contracts", {
+      const res = await authFetch.post("/contracts", {
         contractNo: upper,
         type,
         sales: sales.toUpperCase(),
@@ -444,7 +469,7 @@ export const DataProvider = ({ children }) => {
       if (serv.includes("Rat Rid") && serv.length > 5) {
         return dispatch({ type: CARD_FAIL });
       }
-      await axios.post("/service", {
+      await authFetch.post("/service", {
         serviceDue: dueMonths,
         business,
         frequency,
@@ -464,7 +489,7 @@ export const DataProvider = ({ children }) => {
   const createCards = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.get(`/service/create/${id}`);
+      const res = await authFetch.get(`/service/create/${id}`);
       dispatch({ type: CREATE_CARDS, payload: res.data.msg });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
@@ -486,7 +511,7 @@ export const DataProvider = ({ children }) => {
           "Content-Type": "multipart/form-data",
         },
       };
-      const res = await axios.post("/service/upload", form, config);
+      const res = await authFetch.post("/service/upload", form, config);
       dispatch({ type: IMAGE_UPLOADED, payload: res.data.image });
     } catch (error) {
       console.log(error);
@@ -497,7 +522,7 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const { comments, image, completion } = state;
-      await axios.patch(`/service/${id}`, {
+      await authFetch.patch(`/service/${id}`, {
         comments,
         completion,
         image,
