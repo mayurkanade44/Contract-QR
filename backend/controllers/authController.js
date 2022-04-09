@@ -7,11 +7,10 @@ const register = async (req, res) => {
     throw new BadRequestError("Please provide all values");
   }
   const user = await User.create({ name, password, role });
-  const token = user.createJWT();
+  // const token = user.createJWT();
   res.status(201).json({
     name: user.name,
     role: user.role,
-    token,
     msg: "User successfully created.",
   });
 };
