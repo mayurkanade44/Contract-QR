@@ -32,9 +32,10 @@ const AddCard = () => {
     area,
     business,
     allValues,
+    sendEmail,
   } = useDataContext();
 
-  const { contractNo, startDate, endDate, services } = singleContract;
+  const { contractNo, startDate, endDate, services, type } = singleContract;
 
   const frequencyList = [
     "Daily",
@@ -181,8 +182,6 @@ const AddCard = () => {
     // }
     return setChemicals(temp);
   };
-
-  console.log(chemicals);
 
   const { id } = useParams();
 
@@ -411,7 +410,11 @@ const AddCard = () => {
               </button>
             </div>
             <div className="col-md-2">
-              <button className="btn btn-info" disabled>
+              <button
+                className="btn btn-info"
+                onClick={sendEmail}
+                disabled={type === "NC" ? false : true}
+              >
                 Send Email
               </button>
             </div>

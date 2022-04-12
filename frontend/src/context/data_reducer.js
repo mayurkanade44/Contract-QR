@@ -28,6 +28,7 @@ import {
   COPY_CONTRACT,
   ALL_VALUES,
   ADD_VALUE,
+  SEND_MAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -291,6 +292,16 @@ const data_reducer = (state, action) => {
       };
     }
     case CREATE_CARDS: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload,
+        alertType: "success",
+        showAlert: true,
+      };
+    }
+
+    case SEND_MAIL: {
       return {
         ...state,
         loading: false,

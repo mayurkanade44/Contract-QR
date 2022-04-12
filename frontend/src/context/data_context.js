@@ -32,6 +32,7 @@ import {
   COPY_CONTRACT,
   ALL_VALUES,
   ADD_VALUE,
+  SEND_MAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -514,7 +515,19 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const sendEmail = async () => {};
+  const sendEmail = async () => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await authFetch.get("/service/sendmail");
+      dispatch({ type: SEND_MAIL, payload: res.data.msg });
+    } catch (error) {
+      dispatch({
+        type: CONTRACT_FAIL,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
