@@ -40,13 +40,13 @@ const AddContract = () => {
   const representativeList = [];
   if (adminList) {
     adminList.map(
-      (item) =>
-        (item.sales !== undefined && representativeList.push(item.sales))
+      (item) => item.sales !== undefined && representativeList.push(item.sales)
     );
   }
 
   const timeList = [
     "10 am - 12 pm",
+    "11 am - 1 pm",
     "12 pm - 2 pm",
     "2 pm - 4 pm",
     "4 pm - 6 pm",
