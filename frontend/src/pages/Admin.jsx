@@ -18,7 +18,11 @@ const Admin = () => {
     addSales,
     addBusines,
     addBusiness,
+    serviceChemicals,
+    addServiceChemicals,
   } = useDataContext();
+
+  const { label, value, chemical } = serviceChemicals;
 
   useEffect(() => {
     fetchAllUsers();
@@ -39,6 +43,8 @@ const Admin = () => {
       addBusiness();
     } else if (addComment) {
       addComments();
+    } else if (serviceChemicals) {
+      addServiceChemicals();
     }
     displayAlert();
   };
@@ -93,41 +99,57 @@ const Admin = () => {
         </table>
       )}
       <div className="row">
-        <div className="col-md-6">
-          <div className="row">
-            <div className="col-md-10">
-              <InputRow label="Comment" name="addComment" value={addComment} />
-            </div>
-            <div className="col-md-2">
-              <button onClick={saveValues} className="btn mt-1 btn-info ">
-                Save
-              </button>
-            </div>
-          </div>
+        <div className="col-md-5">
+          <InputRow label="Comment" name="addComment" value={addComment} />
         </div>
-        <div className="col-md-6">
-          <div className="row">
-            <div className="col-md-10">
-              <InputRow label="Sales Person" name="addSale" value={addSale} />
-            </div>
-            <div className="col-md-2">
-              <button onClick={saveValues} className="btn btn-info mt-1">
-                Save
-              </button>
-            </div>
-          </div>
+        <div className="col-md-1">
+          <button onClick={saveValues} className="btn mt-1 btn-info ">
+            Save
+          </button>
         </div>
-        <div className="col-md-6">
-          <div className="row">
-            <div className="col-md-10">
-              <InputRow label="Business" name="addBusines" value={addBusines} />
-            </div>
-            <div className="col-md-2">
-              <button onClick={saveValues} className="btn btn-info mt-1">
-                Save
-              </button>
-            </div>
-          </div>
+        <div className="col-md-5">
+          <InputRow label="Sales Person" name="addSale" value={addSale} />
+        </div>
+        <div className="col-md-1">
+          <button onClick={saveValues} className="btn mt-1 btn-info ">
+            Save
+          </button>
+        </div>
+        <div className="col-md-5">
+          <InputRow label="Business" name="addBusines" value={addBusines} />
+        </div>
+        <div className="col-md-1">
+          <button onClick={saveValues} className="btn mt-1 btn-info ">
+            Save
+          </button>
+        </div>
+        <div className="col-md-6"></div>
+        <div className="col-md-4">
+          <InputRow
+            label="Service Name:"
+            id="serviceChemicals"
+            type="text"
+            name="label"
+            value={label}
+          />
+        </div>
+        <div className="col-md-3">
+          <InputRow
+            label="Value:"
+            id="serviceChemicals"
+            type="text"
+            name="value"
+            value={value}
+          />
+        </div>
+        <div className="col-md-5">
+          <InputRow
+            label="Chemicals:"
+            id="serviceChemicals"
+            type="text"
+            name="chemical"
+            value={chemical}
+          />
         </div>
       </div>
     </div>

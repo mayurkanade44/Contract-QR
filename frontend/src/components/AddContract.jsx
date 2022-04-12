@@ -38,12 +38,10 @@ const AddContract = () => {
   const { day, time } = preferred;
 
   const representativeList = [];
-  const businessList = [];
   if (adminList) {
     adminList.map(
       (item) =>
-        (item.sales !== undefined && representativeList.push(item.sales)) ||
-        (item.business !== undefined && businessList.push(item.business))
+        (item.sales !== undefined && representativeList.push(item.sales))
     );
   }
 

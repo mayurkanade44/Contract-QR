@@ -216,6 +216,12 @@ const data_reducer = (state, action) => {
           shipToContact2: { ...state.shipToContact2, [name]: value },
         };
       }
+      if (id === "serviceChemicals") {
+        return {
+          ...state,
+          serviceChemicals: { ...state.serviceChemicals, [name]: value },
+        };
+      }
       if (id === "shipToContact3") {
         return {
           ...state,
@@ -490,6 +496,11 @@ const data_reducer = (state, action) => {
         addComment: "",
         addSale: "",
         addBusines: "",
+        serviceChemicals: {
+          label: "",
+          value: "",
+          chemical: "",
+        },
         alertText: action.payload,
         alertType: "success",
         showAlert: true,

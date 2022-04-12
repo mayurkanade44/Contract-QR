@@ -138,6 +138,11 @@ export const initialState = {
   addComment: "",
   addSale: "",
   addBusines: "",
+  serviceChemicals: {
+    label: "",
+    value: "",
+    chemical: "",
+  },
   adminList: [],
 };
 
@@ -298,6 +303,18 @@ export const DataProvider = ({ children }) => {
       const { addBusines } = state;
       const res = await authFetch.post("/admin", {
         business: addBusines,
+      });
+      dispatch({ type: ADD_VALUE, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addServiceChemicals = async () => {
+    const { serviceChemicals } = state;
+    try {
+      const res = await authFetch.post("/admin", {
+        serviceChemicals,
       });
       dispatch({ type: ADD_VALUE, payload: res.data.msg });
     } catch (error) {
@@ -574,6 +591,7 @@ export const DataProvider = ({ children }) => {
         addSales,
         addBusiness,
         sendEmail,
+        addServiceChemicals,
       }}
     >
       {children}
