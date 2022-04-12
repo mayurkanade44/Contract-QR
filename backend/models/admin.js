@@ -10,6 +10,11 @@ const AdminSchema = new mongoose.Schema({
   business: {
     type: String,
   },
+  serviceChemicals: {
+    label: String,
+    value: String,
+    chemical: String,
+  },
 });
 
 module.exports = mongoose.model("Admin", AdminSchema);
