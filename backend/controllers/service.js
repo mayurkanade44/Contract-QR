@@ -7,6 +7,16 @@ const cloudinary = require("cloudinary").v2;
 const sgMail = require("@sendgrid/mail");
 const request = require("request");
 const newdoc = require("docx-templates");
+const moment = require("moment");
+const { BadRequestError } = require("../errors");
+
+const allserv = [];
+const allfreq = [];
+let emails = [];
+let contract = "";
+let contractType = "";
+let start = "";
+let end = "";
 
 const getAllService = async (req, res) => {
   try {
@@ -39,12 +49,17 @@ const createDoc = async (req, res) => {
     services,
     preferred,
     specialInstruction,
-    area,
     type,
     sales,
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
+
+  start = moment(startDate).format("MMMM YYYY");
+  end = moment(endDate).format("MMMM YYYY");
+
+  contract = contractNo;
+  contractType = type;
 
   const temails = new Set();
   const first = billToContact1.email;
@@ -67,7 +82,7 @@ const createDoc = async (req, res) => {
   if (six) {
     temails.add(six);
   }
-  const emails = [...temails];
+  emails = [...temails];
 
   const {
     prefix,
@@ -89,11 +104,6 @@ const createDoc = async (req, res) => {
     var pre = prefix;
   }
 
-  const nc = "d-8db487f4b19147a896ae2ed220f5d1ec";
-  const rc = "d-4c0ebd0b403245a98545aaa2c8483202";
-
-  const allserv = [];
-  const allfreq = [];
   services.map((item) => {
     allfreq.push(item.frequency);
     item.service.map((n) => allserv.push(n));
@@ -192,26 +202,35 @@ const createDoc = async (req, res) => {
   }
 };
 
-const sendContractEmail = async (
-  mail,
-  emails,
-  contractNo,
-  allserv,
-  allfreq
-) => {
+const sendContractEmail = async (req, res) => {
+  if (!contract) {
+    throw new BadRequestError("Please generate service cards first");
+  }
+
+  const nc = "d-8db487f4b19147a896ae2ed220f5d1ec";
+  const rc = "d-4c0ebd0b403245a98545aaa2c8483202";
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: emails,
-    cc: "clientproxymail@gmail.com",
-    from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-    dynamic_template_data: {
-      contractNo: contractNo,
-      service: allserv.toString(),
-      frequency: allfreq.toString(),
-    },
-    template_id: mail,
-  };
-  await sgMail.send(msg);
+  if (contractType === "NC") {
+    const msg = {
+      to: emails,
+      cc: "clientproxymail@gmail.com",
+      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+      dynamic_template_data: {
+        contractNo: contract,
+        service: allserv.toString(),
+        frequency: allfreq.toString(),
+        start: start,
+        end: end,
+      },
+      template_id: "d-8db487f4b19147a896ae2ed220f5d1ec",
+    };
+    await sgMail.send(msg);
+  }
+  allfreq.length = 0;
+  allserv.length = 0;
+  emails.length = 0;
+
+  res.status(200).json({ msg: "Email has been sent" });
 };
 
 const sendEmail = async (
@@ -376,4 +395,5 @@ module.exports = {
   singleService,
   uploadImage,
   createDoc,
+  sendContractEmail,
 };
