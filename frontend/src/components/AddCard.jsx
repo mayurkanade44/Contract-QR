@@ -111,7 +111,7 @@ const AddCard = () => {
   //   },
   //   {
   //     label: "Mosquit - Larvicidal Spray",
-  //     value: "Mosquit - Larvicidal Spary",
+  //     value: "Mosquit - Larvicidal Spray",
   //   },
   //   { label: "Mosquit - CA", value: "Mosquit - CA" },
   //   { label: "Others", value: "Others" },
@@ -119,9 +119,16 @@ const AddCard = () => {
 
   const addChemicals = () => {
     const temp = [];
-    serviceChemicalsList.map(
-      (item) => value.includes(item.label) && temp.push(item.chemical)
-    );
+    const value1 = value.split(",");
+
+    value1.forEach((item) => {
+      serviceChemicalsList.forEach((item1) => {
+        return item1.label === item && temp.push(item1.chemical);
+      });
+    });
+    // serviceChemicalsList.map(
+    //   (item) => value.includes(item.value) && temp.push(item.chemical)
+    // );
 
     // if (value.includes("Green Shield")) {
     //   temp.push("GEL          ODL          OB          MORT          ROCX");
@@ -165,7 +172,7 @@ const AddCard = () => {
     // ) {
     //   temp.push("E3          OD");
     // }
-    // if (value.includes("Mosquit - Larvicidal Spary")) {
+    // if (value.includes("Mosquit - Larvicidal Spray")) {
     //   temp.push("LAVA          PYRO");
     // }
     // if (value.includes("Antron")) {
@@ -410,11 +417,7 @@ const AddCard = () => {
               </button>
             </div>
             <div className="col-md-2">
-              <button
-                className="btn btn-info"
-                onClick={sendEmail}
-                disabled={type === "NC" ? false : true}
-              >
+              <button className="btn btn-info" onClick={sendEmail} disabled>
                 Send Email
               </button>
             </div>
