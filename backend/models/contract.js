@@ -82,6 +82,7 @@ const ContractSchema = new mongoose.Schema(
     },
     sendMail: {
       type: Boolean,
+      default: false,
     },
     createdAt: {
       type: Date,

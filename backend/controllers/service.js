@@ -10,14 +10,6 @@ const newdoc = require("docx-templates");
 const moment = require("moment");
 const { BadRequestError } = require("../errors");
 
-const allserv = [];
-const allfreq = [];
-let emails = [];
-let contract = "";
-let contractType = "";
-let start = "";
-let end = "";
-
 const getAllService = async (req, res) => {
   try {
     const services = await Service.find({});
@@ -28,11 +20,15 @@ const getAllService = async (req, res) => {
   }
 };
 
+let start = "";
+let end = "";
+
 const createDoc = async (req, res) => {
   const { id } = req.params;
   const isValidContract = await Contract.findOne({ _id: id }).populate(
     "services"
   );
+
   const {
     contractNo,
     startDate,
@@ -51,15 +47,13 @@ const createDoc = async (req, res) => {
     specialInstruction,
     type,
     sales,
+    sendMail,
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
 
   start = moment(startDate).format("MMMM YYYY");
   end = moment(endDate).format("MMMM YYYY");
-
-  contract = contractNo;
-  contractType = type;
 
   const temails = new Set();
   const first = billToContact1.email;
@@ -82,7 +76,7 @@ const createDoc = async (req, res) => {
   if (six) {
     temails.add(six);
   }
-  emails = [...temails];
+  const emails = [...temails];
 
   const {
     prefix,
@@ -103,6 +97,9 @@ const createDoc = async (req, res) => {
   } else {
     var pre = prefix;
   }
+
+  const allserv = [];
+  const allfreq = [];
 
   services.map((item) => {
     allfreq.push(item.frequency);
@@ -191,46 +188,122 @@ const createDoc = async (req, res) => {
       );
       fs.unlinkSync(`./files/${filename}.docx`);
     });
-    // if (type === "NC") {
-    //   sendContractEmail(nc, emails, contractNo, allserv, allfreq);
-    // } else {
-    //   sendContractEmail(rc, emails, contractNo, allserv, allfreq);
-    // }
+    if (type === "NC" && !sendMail) {
+      sendContractEmail(emails, contractNo, allserv, allfreq);
+    }
+    await Contract.findByIdAndUpdate(
+      { _id: id },
+      { sendMail: true },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     res.send({ msg: "Cards created successfully" });
   } catch (error) {
     console.log(error);
   }
 };
 
-const sendContractEmail = async (req, res) => {
-  if (!contract) {
-    throw new BadRequestError("Please generate service cards first");
-  }
+// const createContrtact = async (req, res) => {
+//   const { id } = req.params;
+//   const isValidContract = await Contract.findOne({ _id: id }).populate(
+//     "services"
+//   );
+//   const {
+//     contractNo,
+//     startDate,
+//     endDate,
+//     billingFrequency,
+//     shipToAddress,
+//     billToAddress,
+//     billToContact1,
+//     billToContact2,
+//     billToContact3,
+//     shipToContact1,
+//     shipToContact2,
+//     shipToContact3,
+//     services,
+//     preferred,
+//     specialInstruction,
+//     type,
+//     sales,
+//   } = isValidContract;
+//   const { day, time } = preferred;
+//   const {
+//     prefix,
+//     name,
+//     address1,
+//     address2,
+//     address3,
+//     address4,
+//     nearBy,
+//     city,
+//     pincode,
+//   } = shipToAddress;
+//   try {
+//     let template = fs.readFileSync(path.resolve(__dirname, "contract.docx"));
 
+//     const buffer = await newdoc.createReport({
+//       cmdDelimiter: ["{", "}"],
+//       template,
+
+//       additionalJsContext: {
+//         contractNo: contractNo,
+//         type: type,
+//         sales: sales,
+//         day: day,
+//         time: time,
+//         prefix: prefix,
+//         name: name,
+//         address1: address1,
+//         address2: address2,
+//         address3: address3,
+//         address4: address4,
+//         city: city,
+//         nearBy: nearBy,
+//         pincode: pincode,
+//         service: services,
+//         billingFrequency: billingFrequency,
+//         specialInstruction: specialInstruction,
+//       },
+//     });
+
+//     const contractName = contractNo.replaceAll("/", "");
+//     const filename = "test";
+//     fs.writeFileSync(
+//       path.resolve(__dirname, "../files/", `${filename}.docx`),
+//       buffer
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+const sendContractEmail = async (emails, contractNo, allserv, allfreq) => {
   const nc = "d-8db487f4b19147a896ae2ed220f5d1ec";
   const rc = "d-4c0ebd0b403245a98545aaa2c8483202";
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  if (contractType === "NC") {
-    const msg = {
-      to: emails,
-      cc: "clientproxymail@gmail.com",
-      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-      dynamic_template_data: {
-        contractNo: contract,
-        service: allserv.toString(),
-        frequency: allfreq.toString(),
-        start: start,
-        end: end,
-      },
-      template_id: "d-8db487f4b19147a896ae2ed220f5d1ec",
-    };
-    await sgMail.send(msg);
-  }
-  allfreq.length = 0;
-  allserv.length = 0;
-  emails.length = 0;
 
-  res.status(200).json({ msg: "Email has been sent" });
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  const msg = {
+    to: emails,
+    cc: "clientproxymail@gmail.com",
+    from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+    dynamic_template_data: {
+      contractNo: contractNo,
+      service: allserv.toString(),
+      frequency: allfreq.toString(),
+      start: start,
+      end: end,
+    },
+    template_id: "d-8db487f4b19147a896ae2ed220f5d1ec",
+  };
+  await sgMail.send(msg);
+
+  // allfreq.length = 0;
+  // allserv.length = 0;
+  // emails.length = 0;
 };
 
 const sendEmail = async (
