@@ -52,6 +52,7 @@ const AddCard = () => {
     "2 Services Once In 6 Months",
     "As An When Called",
     "Multi Frequency",
+    "Other",
   ];
 
   const businessList = [];
@@ -64,6 +65,10 @@ const AddCard = () => {
           serviceChemicalsList.push(item.serviceChemicals))
     );
   }
+
+  const sort = serviceChemicalsList.sort((a, b) => {
+    return a.label.localeCompare(b.label);
+  });
 
   const home = [
     "1 RK",
@@ -242,6 +247,7 @@ const AddCard = () => {
           frequency === "Thrice A Week" ||
           frequency === "Thrice A Month" ||
           frequency === "Fortnightly" ||
+          frequency === "Other" ||
           frequency === "Monthly") &&
         index % 1 === 0
       ) {
@@ -368,7 +374,7 @@ const AddCard = () => {
                     <div className="col-lg-6">
                       <MultiSelect
                         onChange={handleOnchange}
-                        options={serviceChemicalsList}
+                        options={sort}
                         className="multiselect"
                         required
                       />
