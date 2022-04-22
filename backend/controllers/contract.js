@@ -14,6 +14,7 @@ const getAllContracts = async (req, res) => {
           { contractNo: { $regex: search, $options: "i" } },
           { type: { $regex: search, $options: "i" } },
           { "shipToAddress.name": { $regex: search, $options: "i" } },
+          { "billToAddress.name": { $regex: search, $options: "i" } },
         ],
       }).sort("-createdAt");
       res.status(200).json({ contracts, len: contracts.length });

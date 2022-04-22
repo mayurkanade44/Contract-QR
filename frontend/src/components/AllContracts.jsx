@@ -61,6 +61,8 @@ const AllContracts = () => {
             </Link>
           </div>
         )}
+      </div>
+      <div className="row">
         <div className="col-md-4">
           <InputRow label="Search" type="text" name="search" value={search} />
         </div>
@@ -75,7 +77,7 @@ const AllContracts = () => {
         </div>
         <div className="col-md-3">
           <InputRow
-            label="End :"
+            label="To :"
             type="date"
             name="searchED"
             value={searchED}
