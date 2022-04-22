@@ -8,8 +8,9 @@ const getAllContracts = async (req, res) => {
   //   queryObject.contractNo = { $regex: search, $options: "i" };
   // }
   try {
+    let contracts = await Contract.find({}).sort("-createdAt");
     if (search) {
-      const contracts = await Contract.find({
+      contracts = await Contract.find({
         $or: [
           { contractNo: { $regex: search, $options: "i" } },
           { type: { $regex: search, $options: "i" } },
@@ -17,20 +18,16 @@ const getAllContracts = async (req, res) => {
           { "billToAddress.name": { $regex: search, $options: "i" } },
         ],
       }).sort("-createdAt");
-      res.status(200).json({ contracts, len: contracts.length });
     }
     if (searchSD && searchED) {
-      const contracts = await Contract.find({
+      contracts = await Contract.find({
         endDate: {
           $gte: new Date(searchSD),
           $lte: new Date(searchED),
         },
       }).sort("-createdAt");
-      res.status(200).json({ contracts, len: contracts.length });
-    } else {
-      const contracts = await Contract.find({}).sort("-createdAt");
-      res.status(200).json({ contracts, len: contracts.length });
     }
+    res.status(200).json({ contracts, len: contracts.length });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
