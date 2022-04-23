@@ -10,6 +10,7 @@ const {
   updateCard,
   createDoc,
   sendContractEmail,
+  deleteService,
 } = require("../controllers/service");
 
 router
@@ -26,6 +27,7 @@ router
 router
   .route("/:id")
   .get(authorizeUser("Operator", "Admin"), singleService)
-  .patch(authorizeUser("Operator", "Admin"), updateCard);
+  .patch(authorizeUser("Operator", "Admin"), updateCard)
+  .delete(authorizeUser("Admin"), deleteService);
 
 module.exports = router;

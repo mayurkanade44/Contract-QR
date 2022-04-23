@@ -8,6 +8,8 @@ const sgMail = require("@sendgrid/mail");
 const request = require("request");
 const newdoc = require("docx-templates");
 const moment = require("moment");
+const pizzip = require("pizzip");
+const doctemp = require("docxtemplater");
 const { BadRequestError } = require("../errors");
 
 const getAllService = async (req, res) => {
@@ -199,86 +201,197 @@ const createDoc = async (req, res) => {
         runValidators: true,
       }
     );
-    res.send({ msg: "Cards created successfully" });
+    // creatCont(id);
+    res.status(200).json({ msg: "Cards created successfully" });
   } catch (error) {
     console.log(error);
   }
 };
 
-// const createContrtact = async (req, res) => {
-//   const { id } = req.params;
-//   const isValidContract = await Contract.findOne({ _id: id }).populate(
-//     "services"
-//   );
-//   const {
-//     contractNo,
-//     startDate,
-//     endDate,
-//     billingFrequency,
-//     shipToAddress,
-//     billToAddress,
-//     billToContact1,
-//     billToContact2,
-//     billToContact3,
-//     shipToContact1,
-//     shipToContact2,
-//     shipToContact3,
-//     services,
-//     preferred,
-//     specialInstruction,
-//     type,
-//     sales,
-//   } = isValidContract;
-//   const { day, time } = preferred;
-//   const {
-//     prefix,
-//     name,
-//     address1,
-//     address2,
-//     address3,
-//     address4,
-//     nearBy,
-//     city,
-//     pincode,
-//   } = shipToAddress;
-//   try {
-//     let template = fs.readFileSync(path.resolve(__dirname, "contract.docx"));
+const creatCont = async (id, req, res) => {
+  const isValidContract = await Contract.findOne({ _id: id }).populate(
+    "services"
+  );
+  const {
+    contractNo,
+    startDate,
+    endDate,
+    billingFrequency,
+    shipToAddress,
+    billToAddress,
+    billToContact1,
+    billToContact2,
+    billToContact3,
+    shipToContact1,
+    shipToContact2,
+    shipToContact3,
+    services,
+    preferred,
+    specialInstruction,
+    type,
+    sales,
+  } = isValidContract;
+  const shipToContact = [];
+  shipToContact.push(shipToContact1);
+  if (shipToContact2.name || shipToContact2.contact || shipToContact2.email) {
+    shipToContact.push(shipToContact2);
+  }
+  const billToContact = [];
+  billToContact.push(billToContact1);
+  if (billToContact2.name || billToContact2.contact || billToContact2.email) {
+    billToContact.push(billToContact2);
+  }
+  const { day, time } = preferred;
+  const {
+    prefix,
+    name,
+    address1,
+    address2,
+    address3,
+    address4,
+    nearBy,
+    city,
+    pincode,
+  } = billToAddress;
 
-//     const buffer = await newdoc.createReport({
-//       cmdDelimiter: ["{", "}"],
-//       template,
+  const start = moment(startDate).format("MMMM YYYY");
+  const end = moment(endDate).format("MMMM YYYY");
 
-//       additionalJsContext: {
-//         contractNo: contractNo,
-//         type: type,
-//         sales: sales,
-//         day: day,
-//         time: time,
-//         prefix: prefix,
-//         name: name,
-//         address1: address1,
-//         address2: address2,
-//         address3: address3,
-//         address4: address4,
-//         city: city,
-//         nearBy: nearBy,
-//         pincode: pincode,
-//         service: services,
-//         billingFrequency: billingFrequency,
-//         specialInstruction: specialInstruction,
-//       },
-//     });
+  try {
+    let template = fs.readFileSync(path.resolve(__dirname, "contract2.docx"));
+    const zip = new pizzip(template);
 
-//     const contractName = contractNo.replaceAll("/", "");
-//     const filename = "test";
-//     fs.writeFileSync(
-//       path.resolve(__dirname, "../files/", `${filename}.docx`),
-//       buffer
-//     );
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+    const doc = new doctemp(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+    });
+
+    doc.render({
+      prefix: prefix,
+      name: name,
+      address1: address1,
+      address2: address2,
+      address3: address3,
+      address4: address4,
+      city: city,
+      pincode: pincode,
+      nearBy: nearBy,
+      contractNo: contractNo,
+      start: start,
+      end: end,
+      sales: sales,
+      billingFrequency: billingFrequency,
+      shipPrefix: shipToAddress.prefix,
+      shipName: shipToAddress.name,
+      shipAdd1: shipToAddress.address1,
+      shipAdd2: shipToAddress.address2,
+      shipAdd3: shipToAddress.address3,
+      shipAdd4: shipToAddress.address4,
+      shipCity: shipToAddress.city,
+      shipPincode: shipToAddress.pincode,
+      shipNear: shipToAddress.nearBy,
+      day: day,
+      time: time,
+      services: services,
+      shipToContact: shipToContact,
+      billToContact: billToContact,
+    });
+
+    const buffer = doc.getZip().generate({
+      type: "nodebuffer",
+      compression: "DEFLATE",
+    });
+    fs.writeFileSync(path.resolve(__dirname, "output.docx"), buffer);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createContrtact = async (id, req, res) => {
+  const isValidContract = await Contract.findOne({ _id: id }).populate(
+    "services"
+  );
+  const {
+    contractNo,
+    startDate,
+    endDate,
+    billingFrequency,
+    shipToAddress,
+    billToAddress,
+    billToContact1,
+    billToContact2,
+    billToContact3,
+    shipToContact1,
+    shipToContact2,
+    shipToContact3,
+    services,
+    preferred,
+    specialInstruction,
+    type,
+    sales,
+  } = isValidContract;
+  const { day, time } = preferred;
+  const {
+    prefix,
+    name,
+    address1,
+    address2,
+    address3,
+    address4,
+    nearBy,
+    city,
+    pincode,
+  } = shipToAddress;
+  try {
+    let template = fs.readFileSync(path.resolve(__dirname, "contract8.docx"));
+
+    const buffer = await newdoc.createReport({
+      cmdDelimiter: ["{", "}"],
+      template,
+
+      additionalJsContext: {
+        prefix: prefix,
+        name: name,
+        address1: address1,
+        address2: address2,
+        address3: address3,
+        address4: address4,
+        city: city,
+        pincode: pincode,
+        nearBy: nearBy,
+        contractNo: contractNo,
+        start: start,
+        end: end,
+        sales: sales,
+        biillName: billToContact1.name,
+        biillNo: billToContact1.contact,
+        biillEmail: billToContact1.email,
+        billingFrequency: billingFrequency,
+        shipPrefix: shipToAddress.prefix,
+        shipName: shipToAddress.name,
+        shipAdd1: shipToAddress.address1,
+        shipAdd2: shipToAddress.address2,
+        shipAdd3: shipToAddress.address3,
+        shipAdd4: shipToAddress.address4,
+        shipCity: shipToAddress.city,
+        shipPincode: shipToAddress.pincode,
+        shipNear: shipToAddress.nearBy,
+        day: day,
+        time: time,
+        services: services,
+        shipName: shipToContact1.name,
+        shipNo: shipToContact1.contact,
+        shipEmail: shipToContact1.email,
+      },
+    });
+
+    const contractName = contractNo.replaceAll("/", "");
+    const filename = "test";
+    fs.writeFileSync(path.resolve(__dirname, `${filename}.docx`), buffer);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const sendContractEmail = async (emails, contractNo, allserv, allfreq) => {
   const nc = "d-8db487f4b19147a896ae2ed220f5d1ec";
@@ -461,6 +574,16 @@ const uploadImage = async (req, res) => {
   return res.status(200).json({ image: result.secure_url });
 };
 
+const deleteService = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Service.findByIdAndDelete({ _id: id });
+    res.status(200).json({ msg: "Service card has been deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -469,4 +592,5 @@ module.exports = {
   uploadImage,
   createDoc,
   sendContractEmail,
+  deleteService,
 };
