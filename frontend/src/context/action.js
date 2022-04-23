@@ -30,3 +30,4 @@ export const COPY_CONTRACT = "COPY_CONTRACT";
 export const ALL_VALUES = "ALL_VALUES";
 export const ADD_VALUE = "ADD_VALUE";
 export const SEND_MAIL = "SEND_MAIL";
+export const DELETE_SERVICE = "DELETE_SERVICE";

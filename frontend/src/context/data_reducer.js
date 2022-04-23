@@ -29,6 +29,7 @@ import {
   ALL_VALUES,
   ADD_VALUE,
   SEND_MAIL,
+  DELETE_SERVICE,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -267,6 +268,17 @@ const data_reducer = (state, action) => {
         loading: false,
         contract: 1,
         alertText: "Card has been deleted",
+        alertType: "danger",
+        showAlert: true,
+        del: true,
+      };
+    }
+
+    case DELETE_SERVICE: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
         alertType: "danger",
         showAlert: true,
         del: true,

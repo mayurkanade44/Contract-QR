@@ -223,7 +223,7 @@ const AddContract = () => {
             />
           </div>
           <hr className="mt-3" />
-          <div className="col-md-4">
+          <div className="col-md-6">
             <InputRow
               label="Billing Frequency :"
               type="text"
@@ -231,7 +231,7 @@ const AddContract = () => {
               value={billingFrequency}
             />
           </div>
-          <div className="col-md-5">
+          <div className="col-md-6">
             <InputRow
               label="Instructions :"
               type="text"

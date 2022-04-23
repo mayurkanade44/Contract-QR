@@ -33,6 +33,7 @@ import {
   ALL_VALUES,
   ADD_VALUE,
   SEND_MAIL,
+  DELETE_SERVICE,
 } from "./action";
 
 const DataContext = createContext();
@@ -406,6 +407,20 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const deleteService = async (id) => {
+    try {
+      const res = await authFetch.delete(`/service/${id}`);
+      dispatch({ type: DELETE_SERVICE, payload: res.data });
+      dispatch({ type: CLEAR_VALUES });
+    } catch (error) {
+      dispatch({
+        type: CONTRACT_FAIL,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert()
+  };
+
   const sameDetails = () => {
     dispatch({ type: SAME_DETAILS });
   };
@@ -605,6 +620,7 @@ export const DataProvider = ({ children }) => {
         addBusiness,
         sendEmail,
         addServiceChemicals,
+        deleteService,
       }}
     >
       {children}

@@ -33,6 +33,8 @@ const AddCard = () => {
     business,
     allValues,
     sendEmail,
+    deleteService,
+    del
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services, type } = singleContract;
@@ -261,7 +263,7 @@ const AddCard = () => {
     fetchSingleContract(id);
 
     // eslint-disable-next-line
-  }, [id, add]);
+  }, [id, add, del]);
 
   useEffect(() => {
     if ((startDate, endDate)) {
@@ -294,6 +296,8 @@ const AddCard = () => {
     return <Loading />;
   }
 
+  console.log(services);
+
   return (
     <div className="container my-3">
       <div className="row g-4">
@@ -313,17 +317,26 @@ const AddCard = () => {
               <th>No</th>
               <th className="text-center">Services</th>
               <th className="text-center">Frequency</th>
+              <th className="text-center">Delete</th>
             </tr>
           </thead>
           <tbody>
             {services &&
               services.map((data, index) => {
-                const { frequency, service } = data;
+                const { frequency, service, _id } = data;
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{`${service},`}</td>
                     <td>{frequency}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteService(_id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
