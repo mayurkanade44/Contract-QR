@@ -237,7 +237,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const paginate = (contracts) => {
-    const limit = 30;
+    const limit = 50;
     const pages = Math.ceil(contracts.length / limit);
     const newContracts = Array.from({ length: pages }, (_, index) => {
       const start = index * limit;
@@ -418,7 +418,7 @@ export const DataProvider = ({ children }) => {
         payload: { msg: error.response.data.msg },
       });
     }
-    clearAlert()
+    clearAlert();
   };
 
   const sameDetails = () => {
@@ -530,10 +530,10 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const sendEmail = async () => {
+  const sendEmail = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const res = await authFetch.get("/service/sendmail");
+      const res = await authFetch.get(`/service/sendmail/${id}`);
       dispatch({ type: SEND_MAIL, payload: res.data.msg });
     } catch (error) {
       dispatch({

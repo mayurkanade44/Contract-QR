@@ -19,8 +19,8 @@ router
   .get(getAllService);
 router.route("/upload").post(authorizeUser("Operator", "Admin"), uploadImage);
 router
-  .route("/sendmail")
-  .get(authorizeUser("Sales", "Admin"), sendContractEmail);
+  .route("/sendmail/:id")
+  .get(authorizeUser("Admin"), sendContractEmail);
 router
   .route("/create/:id")
   .get(authorizeUser("Sales", "Admin", "Back Office"), createDoc);

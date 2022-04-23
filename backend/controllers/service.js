@@ -22,9 +22,6 @@ const getAllService = async (req, res) => {
   }
 };
 
-let start = "";
-let end = "";
-
 const createDoc = async (req, res) => {
   const { id } = req.params;
   const isValidContract = await Contract.findOne({ _id: id }).populate(
@@ -54,8 +51,8 @@ const createDoc = async (req, res) => {
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
 
-  start = moment(startDate).format("MMMM YYYY");
-  end = moment(endDate).format("MMMM YYYY");
+  const start = moment(startDate).format("MMMM YYYY");
+  const end = moment(endDate).format("MMMM YYYY");
 
   const temails = new Set();
   const first = billToContact1.email;
@@ -190,17 +187,10 @@ const createDoc = async (req, res) => {
       );
       fs.unlinkSync(`./files/${filename}.docx`);
     });
-    if (type === "NC" && !sendMail) {
-      sendContractEmail(emails, contractNo, allserv, allfreq);
-    }
-    await Contract.findByIdAndUpdate(
-      { _id: id },
-      { sendMail: true },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    // if (type === "NC" && !sendMail) {
+    //   sendContractEmail(emails, contractNo, allserv, allfreq);
+    // }
+    
     // creatCont(id);
     res.status(200).json({ msg: "Cards created successfully" });
   } catch (error) {
@@ -393,30 +383,96 @@ const createContrtact = async (id, req, res) => {
   }
 };
 
-const sendContractEmail = async (emails, contractNo, allserv, allfreq) => {
+const sendContractEmail = async (req, res) => {
+  const { id } = req.params;
+  const isValidContract = await Contract.findOne({ _id: id }).populate(
+    "services"
+  );
+
+  const {
+    contractNo,
+    startDate,
+    endDate,
+    billToContact1,
+    billToContact2,
+    billToContact3,
+    shipToContact1,
+    shipToContact2,
+    shipToContact3,
+    services,
+    type,
+    sendMail,
+  } = isValidContract;
+
+  const temails = new Set();
+  const first = billToContact1.email;
+  const second = shipToContact1.email;
+  const fifth = billToContact2.email;
+  const six = billToContact3.email;
+  const third = shipToContact2.email;
+  const fourth = shipToContact3.email;
+  temails.add(first);
+  temails.add(second);
+  if (third) {
+    temails.add(third);
+  }
+  if (fourth) {
+    temails.add(fourth);
+  }
+  if (fifth) {
+    temails.add(fifth);
+  }
+  if (six) {
+    temails.add(six);
+  }
+  const emails = [...temails];
+
+  const allserv = [];
+  const allfreq = [];
+
+  services.map((item) => {
+    allfreq.push(item.frequency);
+    item.service.map((n) => allserv.push(n));
+  });
+
+  const start = moment(startDate).format("MMMM YYYY");
+  const end = moment(endDate).format("MMMM YYYY");
+
   const nc = "d-8db487f4b19147a896ae2ed220f5d1ec";
   const rc = "d-4c0ebd0b403245a98545aaa2c8483202";
 
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  try {
+    if (type === "NC" && !sendMail) {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  const msg = {
-    to: emails,
-    cc: "clientproxymail@gmail.com",
-    from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-    dynamic_template_data: {
-      contractNo: contractNo,
-      service: allserv.toString(),
-      frequency: allfreq.toString(),
-      start: start,
-      end: end,
-    },
-    template_id: "d-8db487f4b19147a896ae2ed220f5d1ec",
-  };
-  await sgMail.send(msg);
+      const msg = {
+        to: emails,
+        cc: "clientproxymail@gmail.com",
+        from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+        dynamic_template_data: {
+          contractNo: contractNo,
+          service: allserv.toString(),
+          frequency: allfreq.toString(),
+          start: start,
+          end: end,
+        },
+        template_id: "d-8db487f4b19147a896ae2ed220f5d1ec",
+      };
+      await sgMail.send(msg);
 
-  // allfreq.length = 0;
-  // allserv.length = 0;
-  // emails.length = 0;
+      await Contract.findByIdAndUpdate(
+        { _id: id },
+        { sendMail: true },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    }  
+    res.status(200).json({ msg: "Email has been sent" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const sendEmail = async (
