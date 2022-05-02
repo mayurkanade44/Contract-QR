@@ -72,9 +72,6 @@ const updateContract = async (req, res) => {
       new: true,
       runValidators: true,
     });
-    if (!contract) {
-      return res.status(400).json({ msg: "no contract found" });
-    }
     res.status(200).json({ contract });
   } catch (error) {
     res.status(500).json({ msg: error });

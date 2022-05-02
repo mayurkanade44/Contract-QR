@@ -26,6 +26,7 @@ export const CARD_FAIL = "CARD_FAIL";
 export const FETCH_USERS = "FETCH_USERS";
 export const DELETE_USER = "DELETE_USER";
 export const RENEW_CONTRACT = "RENEW_CONTRACT";
+export const UPDATE_CONTRACT = "UPDATE_CONTRACT";
 export const COPY_CONTRACT = "COPY_CONTRACT";
 export const ALL_VALUES = "ALL_VALUES";
 export const ADD_VALUE = "ADD_VALUE";
