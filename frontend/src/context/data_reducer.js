@@ -30,6 +30,7 @@ import {
   ADD_VALUE,
   SEND_MAIL,
   DELETE_SERVICE,
+  UPDATE_CONTRACT,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -486,6 +487,15 @@ const data_reducer = (state, action) => {
         searchSD: "",
         searchED: "",
         del: false,
+      };
+    }
+    case UPDATE_CONTRACT: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Contract has been updated",
+        alertType: "success",
+        showAlert: true,
       };
     }
     case IMAGE_UPLOADED: {

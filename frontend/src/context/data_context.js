@@ -34,6 +34,7 @@ import {
   ADD_VALUE,
   SEND_MAIL,
   DELETE_SERVICE,
+  UPDATE_CONTRACT,
 } from "./action";
 
 const DataContext = createContext();
@@ -272,10 +273,6 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES });
   };
 
-  const editContract = () => {
-    dispatch({ type: COPY_CONTRACT });
-  };
-
   const addComments = async () => {
     try {
       const { addComment } = state;
@@ -475,11 +472,52 @@ export const DataProvider = ({ children }) => {
       });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
+      console.log(error);
       dispatch({
         type: CONTRACT_FAIL,
         payload: { msg: error.response.data.msg },
       });
     }
+  };
+
+  const updateContract = async (id) => {
+    dispatch({ type: LOADING });
+    const {
+      contractNo,
+      billToAddress,
+      shipToAddress,
+      shipToContact1,
+      shipToContact2,
+      shipToContact3,
+      billToContact1,
+      billToContact2,
+      billToContact3,
+      billingFrequency,
+      preferred,
+      startDate,
+      sales,
+    } = state;
+    try {
+      const res = await authFetch.patch(`/contracts/${id}`, {
+        contractNo,
+        sales: sales.toUpperCase(),
+        billToAddress,
+        shipToAddress,
+        shipToContact1,
+        shipToContact2,
+        shipToContact3,
+        billToContact1,
+        billToContact2,
+        billToContact3,
+        billingFrequency,
+        preferred,
+        startDate,
+      });
+      dispatch({ type: UPDATE_CONTRACT, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+    clearAlert();
   };
 
   const createCard = async (dueMonths, value, chemicals) => {
@@ -621,6 +659,7 @@ export const DataProvider = ({ children }) => {
         sendEmail,
         addServiceChemicals,
         deleteService,
+        updateContract,
       }}
     >
       {children}

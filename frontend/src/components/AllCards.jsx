@@ -37,7 +37,9 @@ const AllCards = ({ data, role, contractNo }) => {
                   <td>{`${service}`}</td>
                   <td>{area}</td>
                   <td className="frequency">{frequency}</td>
-                  {(role === "Back Office" || role === "Admin") && (
+                  {(role === "Back Office" ||
+                    role === "Admin" ||
+                    role === "Sales") && (
                     <td className="download">
                       <div className="row">
                         <div className="col-md-6 d-flex justify-content-around">

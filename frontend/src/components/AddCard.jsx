@@ -297,7 +297,6 @@ const AddCard = () => {
     return <Loading />;
   }
 
-  console.log(sendMail);
 
   return (
     <div className="container my-3">

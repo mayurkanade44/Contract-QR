@@ -9,10 +9,11 @@ import {
   BillToAddress,
   ShipToAddress,
 } from ".";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddContract = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [same, setSame] = useState(false);
   const [endDate, setEndDate] = useState(null);
   const {
@@ -34,6 +35,8 @@ const AddContract = () => {
     handleChange,
     adminList,
     allValues,
+    updateContract,
+    role,
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -267,6 +270,18 @@ const AddContract = () => {
             </button>
           </div>
           <div className="col-md-4">{showAlert && <Alert />}</div>
+          <div className="col-md-2">
+            {role === "Admin" && (
+              <div className="col-md-2">
+                <button
+                  className=" btn btn-secondary my-2"
+                  onClick={() => updateContract(id)}
+                >
+                  Update
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </form>
     </div>
