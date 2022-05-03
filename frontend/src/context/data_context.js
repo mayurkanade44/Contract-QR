@@ -622,7 +622,7 @@ export const DataProvider = ({ children }) => {
     let id = e.target.id;
     let value = e.target.value;
     if (id === "ContractNumber") {
-      value = e.target.value.replace(/[^\w/]/gi, "");
+      value = e.target.value.replace(/[^\w-/]/gi, "");
     }
 
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
