@@ -43,6 +43,7 @@ const AddCard = () => {
   const frequencyList = [
     "Daily",
     "Single",
+    "Alternate Days",
     "Thrice A Week",
     "Twice A Week",
     "Weekly",
@@ -245,6 +246,7 @@ const AddCard = () => {
         (frequency === "Daily" ||
           frequency === "Weekly" ||
           frequency === "Multi Frequency" ||
+          frequency === "Alternate Days" ||
           frequency === "As An When Called" ||
           frequency === "Twice A Week" ||
           frequency === "Thrice A Week" ||
@@ -296,7 +298,6 @@ const AddCard = () => {
   if (loading) {
     return <Loading />;
   }
-
 
   return (
     <div className="container my-3">

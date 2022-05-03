@@ -270,20 +270,20 @@ const AddContract = () => {
             </button>
           </div>
           <div className="col-md-4">{showAlert && <Alert />}</div>
-          <div className="col-md-2">
-            {role === "Admin" && (
-              <div className="col-md-2">
-                <button
-                  className=" btn btn-secondary my-2"
-                  onClick={() => updateContract(id)}
-                >
-                  Update
-                </button>
-              </div>
-            )}
-          </div>
         </div>
       </form>
+      <div className="col-md-2">
+        {role === "Admin" && (
+          <div className="col-md-2">
+            <button
+              className=" btn btn-secondary my-2"
+              onClick={() => updateContract(id)}
+            >
+              Update
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
