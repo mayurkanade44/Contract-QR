@@ -190,7 +190,7 @@ const createDoc = async (req, res) => {
     // if (type === "NC" && !sendMail) {
     //   sendContractEmail(emails, contractNo, allserv, allfreq);
     // }
-    
+
     // creatCont(id);
     res.status(200).json({ msg: "Cards created successfully" });
   } catch (error) {
@@ -447,7 +447,6 @@ const sendContractEmail = async (req, res) => {
 
       const msg = {
         to: emails,
-        cc: "clientproxymail@gmail.com",
         from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
         dynamic_template_data: {
           contractNo: contractNo,
@@ -468,7 +467,7 @@ const sendContractEmail = async (req, res) => {
           runValidators: true,
         }
       );
-    }  
+    }
     res.status(200).json({ msg: "Email has been sent" });
   } catch (error) {
     console.log(error);
