@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { InputSelect, Alert } from ".";
+import { InputSelect, Alert, InputRow } from ".";
 import { useDataContext } from "../context/data_context";
 
 const UpdateCard = ({ id }) => {
@@ -13,6 +13,7 @@ const UpdateCard = ({ id }) => {
     displayAlert,
     adminList,
     allValues,
+    serviceDate
   } = useDataContext();
   const remarks = ["Completed", "Not Completed", "Partially Completed"];
 
@@ -42,6 +43,14 @@ const UpdateCard = ({ id }) => {
             <input type="file" accept="image/*" onChange={handleImage} />
           </div>
           <div className="col-lg-4 mb-2">
+            <InputRow
+              label="Service Date :"
+              type="date"
+              name="serviceDate"
+              value={serviceDate}
+            />
+          </div>
+          <div className="col-lg-4 mb-2">
             <InputSelect
               label="Completion"
               name="completion"
@@ -49,6 +58,7 @@ const UpdateCard = ({ id }) => {
               data={remarks}
             />
           </div>
+
           <div className="col-lg-4 mb-2">
             <InputSelect
               label="Comments"

@@ -31,6 +31,8 @@ import {
   SEND_MAIL,
   DELETE_SERVICE,
   UPDATE_CONTRACT,
+  SERVICE_REPORT,
+  CLOSE_MODAL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -514,6 +516,25 @@ const data_reducer = (state, action) => {
         showAlert: true,
       };
     }
+
+    case SERVICE_REPORT: {
+      return {
+        ...state,
+        loading: false,
+        serviceReport: action.payload,
+        modal: true,
+      };
+    }
+
+    case CLOSE_MODAL: {
+      return {
+        ...state,
+        loading: false,
+        modal: false,
+        serviceReport: "",
+      };
+    }
+
     case ALL_VALUES: {
       return {
         ...state,

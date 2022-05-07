@@ -35,6 +35,8 @@ import {
   SEND_MAIL,
   DELETE_SERVICE,
   UPDATE_CONTRACT,
+  SERVICE_REPORT,
+  CLOSE_MODAL,
 } from "./action";
 
 const DataContext = createContext();
@@ -130,6 +132,8 @@ export const initialState = {
   treatmentLocation: "",
   completion: "Completed",
   image: "",
+  serviceDate: new Date().toISOString().slice(0, 10),
+  serviceReport: "",
   search: "",
   searchSD: "",
   searchED: "",
@@ -146,6 +150,7 @@ export const initialState = {
     value: "",
     chemical: "",
   },
+  modal: false,
   adminList: [],
 };
 
@@ -604,17 +609,35 @@ export const DataProvider = ({ children }) => {
   const updateCard = async (id) => {
     dispatch({ type: LOADING });
     try {
-      const { comments, image, completion } = state;
+      const { comments, image, completion, serviceDate, card } = state;
       await authFetch.patch(`/service/${id}`, {
+        contract: card[0].contract.contractNo,
+        serviceName: card[0].service.toString(),
         comments,
         completion,
         image,
+        serviceDate,
       });
       dispatch({ type: UPDATE_CARD });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const generateReport = async (id) => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await authFetch.get(`/service/report/${id}`);
+      console.log(res);
+      dispatch({ type: SERVICE_REPORT, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const closeModal = () => {
+    dispatch({ type: CLOSE_MODAL });
   };
 
   const handleChange = (e) => {
@@ -660,6 +683,8 @@ export const DataProvider = ({ children }) => {
         addServiceChemicals,
         deleteService,
         updateContract,
+        generateReport,
+        closeModal
       }}
     >
       {children}

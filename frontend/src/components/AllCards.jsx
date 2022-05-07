@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { saveAs } from "file-saver";
+import { useDataContext } from "../context/data_context";
 
 const AllCards = ({ data, role, contractNo }) => {
+  const { serviceReport, generateReport, modal, closeModal } = useDataContext();
   const downloadImage = (url, name) => {
     saveAs(url, `${name}.png`); // Put your image url here.
   };
 
   return (
     <div>
+      {modal && (
+        <div className="modal">
+          <div className="modal-content">
+            <button
+              className="btn-primary"
+              onClick={closeModal}
+              disabled={serviceReport ? false : true}
+            >
+              <a
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
+                href={serviceReport}
+              >
+                Download
+              </a>
+            </button>
+          </div>
+        </div>
+      )}
       {data && (
         <table className="table table-striped table-bordered border-dark ">
           <thead>
@@ -19,9 +42,9 @@ const AllCards = ({ data, role, contractNo }) => {
                 Area
               </th>
               <th className="text-center">Frequency</th>
-              {(role === "Back Office" || role === "Admin") && (
-                <th className="text-center">Download</th>
-              )}
+              {(role === "Back Office" ||
+                role === "Admin" ||
+                role === "Sales") && <th className="text-center">Download</th>}
               {(role === "Operator" || role === "Admin") && (
                 <th className="text-center">Update</th>
               )}
@@ -29,7 +52,7 @@ const AllCards = ({ data, role, contractNo }) => {
           </thead>
           <tbody>
             {data.map((data, index) => {
-              const { frequency, service, _id, card, qr, area } = data;
+              const { frequency, service, _id, card, qr, area, image } = data;
               const temp = `${contractNo}_${frequency}`;
               return (
                 <tr key={index}>
@@ -41,8 +64,8 @@ const AllCards = ({ data, role, contractNo }) => {
                     role === "Admin" ||
                     role === "Sales") && (
                     <td className="download">
-                      <div className="row">
-                        <div className="col-md-6 d-flex justify-content-around">
+                      <div className="row ">
+                        <div className="col-md-4 d-flex justify-content-around ">
                           <button
                             className="btn btn-success"
                             disabled={card ? false : true}
@@ -58,7 +81,7 @@ const AllCards = ({ data, role, contractNo }) => {
                             </a>
                           </button>
                         </div>
-                        <div className="col-md-6 d-flex justify-content-around">
+                        <div className="col-md-4 d-flex justify-content-around">
                           <button
                             className="btn btn-outline-success"
                             disabled={qr ? false : true}
@@ -67,6 +90,17 @@ const AllCards = ({ data, role, contractNo }) => {
                             QR Code
                           </button>
                         </div>
+                        {role === "Admin" && (
+                          <div className="col-md-4 d-flex justify-content-around ">
+                            <button
+                              className="btn btn-success"
+                              onClick={() => generateReport(_id)}
+                              disabled={image ? false : true}
+                            >
+                              Service Report
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </td>
                   )}
