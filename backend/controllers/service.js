@@ -630,7 +630,7 @@ const generateReport = async (req, res) => {
   try {
     const data = await ServiceReport.find({ service: id });
     const contractNo = data[0].contract.replaceAll("/", "");
-    const filename = `Service Report Of ${contractNo} ${data[0].serviceName}.csv`;
+    const filename = `Service Report Of ${contractNo}.csv`;
     const fields = [
       { label: "Contract Number", value: "contract" },
       { label: "Service Name", value: "serviceName" },
