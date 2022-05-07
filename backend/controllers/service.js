@@ -10,7 +10,8 @@ const newdoc = require("docx-templates");
 const moment = require("moment");
 const pizzip = require("pizzip");
 const doctemp = require("docxtemplater");
-const { BadRequestError } = require("../errors");
+const ServiceReport = require("../models/serviceReport");
+const { Parser } = require("json2csv");
 
 const getAllService = async (req, res) => {
   try {
@@ -570,13 +571,17 @@ const singleService = async (req, res) => {
 const updateCard = async (req, res) => {
   const {
     params: { id: serviceId },
-    body: { image, comments, completion },
+    body: { image, comments, completion, serviceDate },
   } = req;
+  const date = moment(new Date()).format("DD/MM/YYYY");
   try {
-    const service = await Service.findByIdAndUpdate(
+    const service = await Service.findOneAndUpdate(
       { _id: serviceId },
-      req.body,
-      { new: true, runValidators: true }
+      { image: image },
+      {
+        new: true,
+        runValidators: true,
+      }
     ).populate({
       path: "contract",
       select:
@@ -610,11 +615,95 @@ const updateCard = async (req, res) => {
       const serv = service.service.toString();
       sendEmail(emails, image, emailSub, serv, completion, comments);
     }
+
+    req.body.service = serviceId;
+    req.body.serviceDate = moment(serviceDate).format("DD/MM/YYYY");
+    const serviceReport = await ServiceReport.create(req.body);
     res.status(200).json({ service });
   } catch (error) {
     console.log(error);
   }
 };
+
+const generateReport = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await ServiceReport.find({ service: id });
+    const contractNo = data[0].contract.replaceAll("/", "");
+    const filename = `Service Report Of ${contractNo} ${data[0].serviceName}.csv`;
+    const fields = [
+      { label: "Contract Number", value: "contract" },
+      { label: "Service Name", value: "serviceName" },
+      { label: "Service Done Date", value: "serviceDate" },
+      { label: "Done/Not Done", value: "completion" },
+      { label: "Comments By Operator", value: "comments" },
+      { label: "Service Card", value: "image" },
+    ];
+
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(data);
+
+    fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+    const result = await cloudinary.uploader.upload(`files/${filename}`, {
+      resource_type: "raw",
+      use_filename: true,
+      folder: "service-reports",
+    });
+    fs.unlinkSync(`./files/${filename}`);
+    res.status(200).json({ msg: result.secure_url });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// const updateCard = async (req, res) => {
+//   const {
+//     params: { id: serviceId },
+//     body: { image, comments, completion },
+//   } = req;
+//   try {
+//     const service = await Service.findByIdAndUpdate(
+//       { _id: serviceId },
+//       req.body,
+//       { new: true, runValidators: true }
+//     ).populate({
+//       path: "contract",
+//       select:
+//         "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo",
+//     });
+
+//     if (service) {
+//       const temails = new Set();
+//       const first = service.contract.billToContact1.email;
+//       const second = service.contract.shipToContact1.email;
+//       const fifth = service.contract.billToContact2.email;
+//       const six = service.contract.billToContact3.email;
+//       const third = service.contract.shipToContact2.email;
+//       const fourth = service.contract.shipToContact3.email;
+//       temails.add(first);
+//       temails.add(second);
+//       if (third) {
+//         temails.add(third);
+//       }
+//       if (fourth) {
+//         temails.add(fourth);
+//       }
+//       if (fifth) {
+//         temails.add(fifth);
+//       }
+//       if (six) {
+//         temails.add(six);
+//       }
+//       const emails = [...temails];
+//       const emailSub = service.contract.contractNo;
+//       const serv = service.service.toString();
+//       sendEmail(emails, image, emailSub, serv, completion, comments);
+//     }
+//     res.status(200).json({ service });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const uploadImage = async (req, res) => {
   const result = await cloudinary.uploader.upload(
@@ -648,4 +737,5 @@ module.exports = {
   createDoc,
   sendContractEmail,
   deleteService,
+  generateReport,
 };

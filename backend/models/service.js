@@ -13,12 +13,6 @@ const ServiceSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  comments: {
-    type: String,
-  },
-  completion: {
-    type: String,
-  },
   card: {
     type: String,
   },
