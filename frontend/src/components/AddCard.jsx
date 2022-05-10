@@ -84,48 +84,6 @@ const AddCard = () => {
     "Bungalow",
   ];
 
-  // const serviceList = [
-  //   { label: "Green Shield", value: "Green Shield" },
-  //   { label: "Green Shield - CA", value: "Green Shield - CA" },
-  //   { label: "Termiproof - CS", value: "Termiproof - CS" },
-  //   { label: "Termiproof - DISP", value: "Termiproof - DISP" },
-  //   {
-  //     label: "Post Construction Termite",
-  //     value: "Post Construction Anti Termite Treatment",
-  //   },
-  //   { label: "Rat Rid", value: "Rat Rid, , ,R B Place,W T Place" },
-  //   { label: "Bugfree", value: "Bugfree" },
-  //   { label: "Flyban", value: "Flyban" },
-  //   { label: "Woodsafe", value: "Woodsafe" },
-  //   { label: "Antron", value: "Antron" },
-  //   { label: "Rapron", value: "Rapron" },
-  //   { label: "FX1", value: "FX1" },
-  //   {
-  //     label: "Civil Work",
-  //     value:
-  //       "Civil Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Floor Spray",
-  //   },
-  //   { label: "Interior", value: "Interior, *Wood Work" },
-  //   {
-  //     label: "Civil & Interior",
-  //     value:
-  //       "Civil & Interior Wood Work,Drilling Injecting & Spraying Process,*Wall Spray,*Ceiling Spray,*Floor Spray,*Wood Work",
-  //   },
-  //   { label: "Mosquit - Thermal Fogging", value: "Mosquit - Thermal Fogging" },
-  //   { label: "Mosquit - Cold Fogging", value: "Mosquit - Cold Fogging" },
-  //   { label: "Mosquit - Chemical Spray", value: "Mosquit - Chemical Spray" },
-  //   {
-  //     label: "Mosquit - Chemical Spray(ULV)",
-  //     value: "Mosquit - Chemical Spray(ULV)",
-  //   },
-  //   {
-  //     label: "Mosquit - Larvicidal Spray",
-  //     value: "Mosquit - Larvicidal Spray",
-  //   },
-  //   { label: "Mosquit - CA", value: "Mosquit - CA" },
-  //   { label: "Others", value: "Others" },
-  // ];
-
   const addChemicals = () => {
     const temp = [];
     const value1 = value.split(",");
@@ -135,67 +93,7 @@ const AddCard = () => {
         return item1.label === item && temp.push(item1.chemical);
       });
     });
-    // serviceChemicalsList.map(
-    //   (item) => value.includes(item.value) && temp.push(item.chemical)
-    // );
 
-    // if (value.includes("Green Shield")) {
-    //   temp.push("GEL          ODL          OB          MORT          ROCX");
-    // }
-    // if (value.includes("Green Shield - CA")) {
-    //   temp.push("E3          PB          HOOK");
-    // }
-    // if (value.includes("Termiproof - CS")) {
-    //   temp.push("WBTM          WBPR          OBTM          TM           IMD");
-    // }
-    // if (value.includes("Post Construction Anti Termite Treatment")) {
-    //   temp.push("WBTM");
-    // }
-    // if (value.includes("Termiproof - DISP") || value.includes("Civil Work")) {
-    //   temp.push("WBTM          TM           IMD");
-    // }
-    // if (value.includes("Rat Rid")) {
-    //   temp.push("BAIT-Z BAIT-R TRAY CAKE GRAIN GPS GBB PNC PSB");
-    // }
-    // if (value.includes("Bugfree")) {
-    //   temp.push("WBBB          OBBB");
-    // }
-    // if (value.includes("Rapron")) {
-    //   temp.push("CBA");
-    // }
-    // if (value.includes("Woodsafe")) {
-    //   temp.push("WAX          TM");
-    // }
-    // if (value.includes("Flyban")) {
-    //   temp.push("FLYCO          OD          E3");
-    // }
-    // if (value.includes("Mosquit - CA")) {
-    //   temp.push("PB          OD          E3          HOOK          POW");
-    // }
-    // if (value.includes("Mosquit - Thermal Fogging")) {
-    //   temp.push("MF");
-    // }
-    // if (
-    //   value.includes("Mosquit - Chemical Spray") ||
-    //   value.includes("Mosquit - Chemical Spray(ULV)")
-    // ) {
-    //   temp.push("E3          OD");
-    // }
-    // if (value.includes("Mosquit - Larvicidal Spray")) {
-    //   temp.push("LAVA          PYRO");
-    // }
-    // if (value.includes("Antron")) {
-    //   temp.push("TM          OD          AC");
-    // }
-    // if (value.includes("Mosquit - Cold Fogging")) {
-    //   temp.push("ULV");
-    // }
-    // if (value.includes("Interior") || value.includes("Civil & Interior")) {
-    //   temp.push("WBTM          OBTM          TM          IMD");
-    // }
-    // if (value.includes("Others") || value.includes("FX1")) {
-    //   temp.push(" ");
-    // }
     return setChemicals(temp);
   };
 
@@ -211,7 +109,7 @@ const AddCard = () => {
     var months = [start.format("MMM YY")];
     end.subtract(1, "month"); //Substract one month to exclude endDate itself
 
-    var month = moment(start); //clone the startDate
+    var month = moment(start);
     while (month < end) {
       month.add(1, "month");
       months.push(month.format("MMM YY"));

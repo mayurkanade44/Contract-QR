@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { saveAs } from "file-saver";
 import { useDataContext } from "../context/data_context";
@@ -52,7 +51,7 @@ const AllCards = ({ data, role, contractNo }) => {
           </thead>
           <tbody>
             {data.map((data, index) => {
-              const { frequency, service, _id, card, qr, area, image } = data;
+              const { frequency, service, _id, card, qr, area, serviceReport } = data;
               const temp = `${contractNo}_${frequency}`;
               return (
                 <tr key={index}>
@@ -95,7 +94,7 @@ const AllCards = ({ data, role, contractNo }) => {
                             <button
                               className="btn btn-success"
                               onClick={() => generateReport(_id)}
-                              disabled={image ? false : true}
+                              disabled={serviceReport ? false : true}
                             >
                               Service Report
                             </button>

@@ -270,7 +270,7 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contract: 1,
-        alertText: "Card has been deleted",
+        alertText: "Contract has been deleted",
         alertType: "danger",
         showAlert: true,
         del: true,
