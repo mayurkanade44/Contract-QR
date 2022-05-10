@@ -30,6 +30,10 @@ const Admin = () => {
   }, [del]);
 
   const [showUser, setShowUser] = useState(false);
+  const [showComment, setShowComment] = useState(false);
+  const [showSales, setShowSales] = useState(false);
+  const [showService, setShowService] = useState(false);
+  const [showBusiness, setShowBusiness] = useState(false);
 
   const deleteUser = (id) => {
     removeUser(id);
@@ -58,9 +62,33 @@ const Admin = () => {
       {showAlert && <Alert />}
       <button
         onClick={() => setShowUser(!showUser)}
-        className="btn my-3 btn-info btn-lg"
+        className="btn my-3 me-3 btn-info btn-lg"
       >
         All Users
+      </button>
+      <button
+        onClick={() => setShowSales(!showSales)}
+        className="btn m-3 btn-info btn-lg"
+      >
+        Add Sales Person
+      </button>
+      <button
+        onClick={() => setShowBusiness(!showBusiness)}
+        className="btn m-3 btn-info btn-lg"
+      >
+        Add Business
+      </button>
+      <button
+        onClick={() => setShowService(!showService)}
+        className="btn m-3 btn-info btn-lg"
+      >
+        Add Service &amp; Chemical
+      </button>
+      <button
+        onClick={() => setShowComment(!showComment)}
+        className="btn m-3 btn-info btn-lg"
+      >
+        Add Service Comment
       </button>
       {showUser && (
         <table className="table">
@@ -99,58 +127,59 @@ const Admin = () => {
         </table>
       )}
       <div className="row">
-        <div className="col-md-5">
-          <InputRow label="Comment" name="addComment" value={addComment} />
-        </div>
-        <div className="col-md-1">
-          <button onClick={saveValues} className="btn mt-1 btn-info ">
-            Save
-          </button>
-        </div>
-        <div className="col-md-5">
-          <InputRow label="Sales Person" name="addSale" value={addSale} />
-        </div>
-        <div className="col-md-1">
-          <button onClick={saveValues} className="btn mt-1 btn-info ">
-            Save
-          </button>
-        </div>
-        <div className="col-md-5">
-          <InputRow label="Business" name="addBusines" value={addBusines} />
-        </div>
-        <div className="col-md-1">
-          <button onClick={saveValues} className="btn mt-1 btn-info ">
-            Save
-          </button>
-        </div>
-        <div className="col-md-6"></div>
-        <div className="col-md-4">
-          <InputRow
-            label="Service Name:"
-            id="serviceChemicals"
-            type="text"
-            name="label"
-            value={label}
-          />
-        </div>
-        <div className="col-md-3">
-          <InputRow
-            label="Value:"
-            id="serviceChemicals"
-            type="text"
-            name="value"
-            value={value}
-          />
-        </div>
-        <div className="col-md-5">
-          <InputRow
-            label="Chemicals:"
-            id="serviceChemicals"
-            type="text"
-            name="chemical"
-            value={chemical}
-          />
-        </div>
+        {showComment && (
+          <div className="col-md-5">
+            <InputRow label="Comment" name="addComment" value={addComment} />
+          </div>
+        )}
+        {showSales && (
+          <div className="col-md-5">
+            <InputRow label="Sales Person" name="addSale" value={addSale} />
+          </div>
+        )}
+        {showBusiness && (
+          <div className="col-md-5">
+            <InputRow label="Business" name="addBusines" value={addBusines} />
+          </div>
+        )}
+        {showService && (
+          <>
+            <div className="col-md-4">
+              <InputRow
+                label="Service Name:"
+                id="serviceChemicals"
+                type="text"
+                name="label"
+                value={label}
+              />
+            </div>
+            <div className="col-md-3">
+              <InputRow
+                label="Value:"
+                id="serviceChemicals"
+                type="text"
+                name="value"
+                value={value}
+              />
+            </div>
+            <div className="col-md-4">
+              <InputRow
+                label="Chemicals:"
+                id="serviceChemicals"
+                type="text"
+                name="chemical"
+                value={chemical}
+              />
+            </div>
+          </>
+        )}
+        {(showComment || showSales || showService || showBusiness) && (
+          <div className="col-md-1">
+            <button onClick={saveValues} className="btn mt-1 btn-info ">
+              Save
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
