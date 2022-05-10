@@ -27,6 +27,10 @@ const ServiceSchema = new mongoose.Schema({
   business: {
     type: String,
   },
+  serviceReport: {
+    type: Boolean,
+    default: false,
+  },
   treatmentLocation: {
     type: String,
     required: [true, "Please provide treatment location"],

@@ -577,7 +577,7 @@ const updateCard = async (req, res) => {
   try {
     const service = await Service.findOneAndUpdate(
       { _id: serviceId },
-      { image: image },
+      { serviceReport: true },
       {
         new: true,
         runValidators: true,
@@ -655,55 +655,6 @@ const generateReport = async (req, res) => {
     console.log(error);
   }
 };
-
-// const updateCard = async (req, res) => {
-//   const {
-//     params: { id: serviceId },
-//     body: { image, comments, completion },
-//   } = req;
-//   try {
-//     const service = await Service.findByIdAndUpdate(
-//       { _id: serviceId },
-//       req.body,
-//       { new: true, runValidators: true }
-//     ).populate({
-//       path: "contract",
-//       select:
-//         "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo",
-//     });
-
-//     if (service) {
-//       const temails = new Set();
-//       const first = service.contract.billToContact1.email;
-//       const second = service.contract.shipToContact1.email;
-//       const fifth = service.contract.billToContact2.email;
-//       const six = service.contract.billToContact3.email;
-//       const third = service.contract.shipToContact2.email;
-//       const fourth = service.contract.shipToContact3.email;
-//       temails.add(first);
-//       temails.add(second);
-//       if (third) {
-//         temails.add(third);
-//       }
-//       if (fourth) {
-//         temails.add(fourth);
-//       }
-//       if (fifth) {
-//         temails.add(fifth);
-//       }
-//       if (six) {
-//         temails.add(six);
-//       }
-//       const emails = [...temails];
-//       const emailSub = service.contract.contractNo;
-//       const serv = service.service.toString();
-//       sendEmail(emails, image, emailSub, serv, completion, comments);
-//     }
-//     res.status(200).json({ service });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const uploadImage = async (req, res) => {
   const result = await cloudinary.uploader.upload(
