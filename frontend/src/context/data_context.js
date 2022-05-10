@@ -573,19 +573,19 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const sendEmail = async (id) => {
-    dispatch({ type: LOADING });
-    try {
-      const res = await authFetch.get(`/service/sendmail/${id}`);
-      dispatch({ type: SEND_MAIL, payload: res.data.msg });
-    } catch (error) {
-      dispatch({
-        type: CONTRACT_FAIL,
-        payload: { msg: error.response.data.msg },
-      });
-    }
-    clearAlert();
-  };
+  // const sendEmail = async (id) => {
+  //   dispatch({ type: LOADING });
+  //   try {
+  //     const res = await authFetch.get(`/service/sendmail/${id}`);
+  //     dispatch({ type: SEND_MAIL, payload: res.data.msg });
+  //   } catch (error) {
+  //     dispatch({
+  //       type: CONTRACT_FAIL,
+  //       payload: { msg: error.response.data.msg },
+  //     });
+  //   }
+  //   clearAlert();
+  // };
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
@@ -679,12 +679,11 @@ export const DataProvider = ({ children }) => {
         allValues,
         addSales,
         addBusiness,
-        sendEmail,
         addServiceChemicals,
         deleteService,
         updateContract,
         generateReport,
-        closeModal
+        closeModal,
       }}
     >
       {children}

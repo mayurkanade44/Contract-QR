@@ -316,15 +316,15 @@ const data_reducer = (state, action) => {
       };
     }
 
-    case SEND_MAIL: {
-      return {
-        ...state,
-        loading: false,
-        alertText: action.payload,
-        alertType: "success",
-        showAlert: true,
-      };
-    }
+    // case SEND_MAIL: {
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     alertText: action.payload,
+    //     alertType: "success",
+    //     showAlert: true,
+    //   };
+    // }
 
     case RENEW_CONTRACT: {
       return {

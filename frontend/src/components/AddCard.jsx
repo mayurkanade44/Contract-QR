@@ -32,7 +32,6 @@ const AddCard = () => {
     area,
     business,
     allValues,
-    sendEmail,
     deleteService,
     del,
   } = useDataContext();
@@ -334,14 +333,6 @@ const AddCard = () => {
                 Create Cards
               </button>
             </div>
-            {role === "Admin" && !sendMail && (
-              <div className="col-md-2">
-                <button className="btn btn-info" onClick={() => sendEmail(id)}>
-                  Send Email
-                </button>
-              </div>
-            )}
-
             <div className="col-md-5">
               <h5>{showAlert && <Alert />}</h5>
             </div>
