@@ -32,7 +32,6 @@ import {
   COPY_CONTRACT,
   ALL_VALUES,
   ADD_VALUE,
-  SEND_MAIL,
   DELETE_SERVICE,
   UPDATE_CONTRACT,
   SERVICE_REPORT,
@@ -572,20 +571,6 @@ export const DataProvider = ({ children }) => {
       console.log(error);
     }
   };
-
-  // const sendEmail = async (id) => {
-  //   dispatch({ type: LOADING });
-  //   try {
-  //     const res = await authFetch.get(`/service/sendmail/${id}`);
-  //     dispatch({ type: SEND_MAIL, payload: res.data.msg });
-  //   } catch (error) {
-  //     dispatch({
-  //       type: CONTRACT_FAIL,
-  //       payload: { msg: error.response.data.msg },
-  //     });
-  //   }
-  //   clearAlert();
-  // };
 
   const handleImage = async (e) => {
     const file = e.target.files[0];

@@ -28,7 +28,6 @@ import {
   COPY_CONTRACT,
   ALL_VALUES,
   ADD_VALUE,
-  SEND_MAIL,
   DELETE_SERVICE,
   UPDATE_CONTRACT,
   SERVICE_REPORT,
@@ -315,16 +314,6 @@ const data_reducer = (state, action) => {
         showAlert: true,
       };
     }
-
-    // case SEND_MAIL: {
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     alertText: action.payload,
-    //     alertType: "success",
-    //     showAlert: true,
-    //   };
-    // }
 
     case RENEW_CONTRACT: {
       return {
