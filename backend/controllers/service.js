@@ -433,7 +433,8 @@ const sendEmail = async (
   contractNo,
   serv,
   completion,
-  comments
+  comments,
+  serviceDate
 ) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   request.get(image, { encoding: null }, (err, res) => {
@@ -447,6 +448,7 @@ const sendEmail = async (
         service: serv,
         completion: completion,
         comments: comments,
+        serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
       },
       template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
       attachments: [
@@ -565,7 +567,15 @@ const updateCard = async (req, res) => {
       const emails = [...temails];
       const emailSub = service.contract.contractNo;
       const serv = service.service.toString();
-      sendEmail(emails, image, emailSub, serv, completion, comments);
+      sendEmail(
+        emails,
+        image,
+        emailSub,
+        serv,
+        completion,
+        comments,
+        serviceDate
+      );
     }
 
     req.body.service = serviceId;
