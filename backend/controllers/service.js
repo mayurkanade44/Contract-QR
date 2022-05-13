@@ -216,7 +216,7 @@ const sendContractEmail = async (
 
     const msg = {
       to: emails,
-      cc: "clientproxymail@gmail.com",
+      cc: "exteam.epcorn@gmail.com",
       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
       dynamic_template_data: {
         contractNo: contractNo,
@@ -441,7 +441,7 @@ const sendEmail = async (
     const base64File = Buffer.from(res.body).toString("base64");
     const msg = {
       to: emails,
-      cc: "clientproxymail@gmail.com",
+      cc: "exteam.epcorn@gmail.com",
       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
       dynamic_template_data: {
         contractNo: contractNo,
