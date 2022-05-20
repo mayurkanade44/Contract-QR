@@ -541,7 +541,12 @@ export const DataProvider = ({ children }) => {
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
-      if (serv.includes("Rat Rid") && serv.length > 5) {
+      if (
+        business !== "Special(Ratrid + Other Services)" &&
+        serv.includes("Rat Rid") &&
+        serv.length > 5
+        
+      ) {
         return dispatch({ type: CARD_FAIL });
       }
       await authFetch.post("/service", {
