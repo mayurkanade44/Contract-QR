@@ -151,6 +151,7 @@ export const initialState = {
   },
   modal: false,
   adminList: [],
+  ratrid: "No",
 };
 
 export const DataProvider = ({ children }) => {
@@ -537,16 +538,11 @@ export const DataProvider = ({ children }) => {
       "Bungalow",
     ];
     try {
-      const { frequency, contract, treatmentLocation, area, business } = state;
+      const { frequency, contract, treatmentLocation, area, business, ratrid } = state;
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
-      if (
-        business !== "Special(Ratrid + Other Services)" &&
-        serv.includes("Rat Rid") &&
-        serv.length > 5
-        
-      ) {
+      if (ratrid === "No" && serv.includes("Rat Rid") && serv.length > 5) {
         return dispatch({ type: CARD_FAIL });
       }
       await authFetch.post("/service", {

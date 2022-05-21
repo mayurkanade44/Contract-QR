@@ -294,6 +294,7 @@ const data_reducer = (state, action) => {
         alertText: "Card has been saved",
         alertType: "success",
         showAlert: true,
+        ratrid: "No",
       };
     }
     case CARD_FAIL: {

@@ -34,6 +34,7 @@ const AddCard = () => {
     allValues,
     deleteService,
     del,
+    ratrid
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services, type, sendMail } =
@@ -82,6 +83,8 @@ const AddCard = () => {
     "5 BHK",
     "Bungalow",
   ];
+
+  const ratridOp = ["No", "Yes"];
 
   const addChemicals = () => {
     const temp = [];
@@ -264,7 +267,30 @@ const AddCard = () => {
                   />
                 </div>
               )}
-              <div className="col-md-5"></div>
+              <div className="col-md-5">
+                <div className="row my-2">
+                  <div className="col-md-8">
+                    <h4>Ratrid with other services:</h4>
+                  </div>
+                  <div className="col-md-3">
+                    <select
+                      className="form-select"
+                      aria-label="Default select example"
+                      name="ratrid"
+                      value={ratrid}
+                      onChange={handleChange}
+                    >
+                      {ratridOp.map((data) => {
+                        return (
+                          <option value={data} key={data}>
+                            {data}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              </div>
 
               <div className="col-lg-4">
                 <InputSelect
