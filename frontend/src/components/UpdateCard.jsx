@@ -13,7 +13,7 @@ const UpdateCard = ({ id }) => {
     displayAlert,
     adminList,
     allValues,
-    serviceDate
+    serviceDate,
   } = useDataContext();
   const remarks = ["Completed", "Not Completed", "Partially Completed"];
 
@@ -40,7 +40,12 @@ const UpdateCard = ({ id }) => {
       <form className="my-4 ">
         <div className="row">
           <div className="col-lg-3 my-2">
-            <input type="file" accept="image/*" onChange={handleImage} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImage}
+              multiple
+            />
           </div>
           <div className="col-lg-4 mb-2">
             <InputRow
@@ -72,7 +77,7 @@ const UpdateCard = ({ id }) => {
               className="btn btn-dark"
               type="submit"
               onClick={handleSubmit}
-              disabled={image ? false : true}
+              disabled={image.length > 0 ? false : true}
             >
               Save
             </button>

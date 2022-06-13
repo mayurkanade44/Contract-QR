@@ -130,7 +130,7 @@ export const initialState = {
   comments: "All job done",
   treatmentLocation: "",
   completion: "Completed",
-  image: "",
+  image: [],
   serviceDate: new Date().toISOString().slice(0, 10),
   serviceReport: "",
   search: "",
@@ -538,7 +538,8 @@ export const DataProvider = ({ children }) => {
       "Bungalow",
     ];
     try {
-      const { frequency, contract, treatmentLocation, area, business, ratrid } = state;
+      const { frequency, contract, treatmentLocation, area, business, ratrid } =
+        state;
       value.split(",").map((ser) => {
         return serv.push(ser.trim());
       });
@@ -574,10 +575,12 @@ export const DataProvider = ({ children }) => {
   };
 
   const handleImage = async (e) => {
-    const file = e.target.files[0];
+    const file = Array.from(e.target.files);
 
     const form = new FormData();
-    form.append("image", file);
+    file.forEach((image) => {
+      form.append("image", image);
+    });
 
     try {
       const config = {

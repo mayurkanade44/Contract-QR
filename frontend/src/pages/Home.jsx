@@ -1,4 +1,3 @@
-import React from "react";
 import { AllContracts } from "../components";
 
 const Home = () => {

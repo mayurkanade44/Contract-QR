@@ -406,7 +406,7 @@ const data_reducer = (state, action) => {
         comments: "All job done",
         type: "NC",
         completion: "Completed",
-        image: "",
+        image: [],
         contractNo: "",
         sales: "PTL",
         business: "1 RK",
@@ -501,7 +501,7 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        alertText: "Email Has Benn Sent",
+        alertText: "Email Has Been Sent",
         alertType: "success",
         showAlert: true,
       };
