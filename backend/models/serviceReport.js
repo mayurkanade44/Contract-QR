@@ -14,7 +14,7 @@ const ServiceReportSchema = new moongoose.Schema({
     type: String,
   },
   image: {
-    type: String,
+    type: [String],
   },
   service: {
     type: moongoose.Types.ObjectId,

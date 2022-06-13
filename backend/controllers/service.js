@@ -1,17 +1,17 @@
 const Service = require("../models/service");
 const Contract = require("../models/contract");
+const ServiceReport = require("../models/serviceReport");
 const QRCode = require("qrcode");
 const fs = require("fs");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const sgMail = require("@sendgrid/mail");
-const request = require("request");
 const newdoc = require("docx-templates");
 const moment = require("moment");
 const pizzip = require("pizzip");
 const doctemp = require("docxtemplater");
-const ServiceReport = require("../models/serviceReport");
 const { Parser } = require("json2csv");
+const axios = require("axios");
 
 const getAllService = async (req, res) => {
   try {
@@ -216,7 +216,6 @@ const sendContractEmail = async (
 
     const msg = {
       to: emails,
-      cc: "exteam.epcorn@gmail.com",
       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
       dynamic_template_data: {
         contractNo: contractNo,
@@ -437,31 +436,59 @@ const sendEmail = async (
   serviceDate
 ) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  request.get(image, { encoding: null }, (err, res) => {
-    const base64File = Buffer.from(res.body).toString("base64");
-    const msg = {
-      to: emails,
-      cc: "exteam.epcorn@gmail.com",
-      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-      dynamic_template_data: {
-        contractNo: contractNo,
-        service: serv,
-        completion: completion,
-        comments: comments,
-        serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
-      },
-      template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
-      attachments: [
-        {
-          content: base64File,
-          filename: "attachment.jpg",
-          type: "application/jpg",
-          disposition: "attachment",
-        },
-      ],
+  const att = [];
+  for (let file of image) {
+    const response = await axios.get(file, { responseType: "arraybuffer" });
+    const base64File = Buffer.from(response.data, "binary").toString("base64");
+    const attachObj = {
+      content: base64File,
+      filename: "attachment.jpg",
+      type: "application/jpg",
+      disposition: "attachment",
     };
-    sgMail.send(msg);
-  });
+    att.push(attachObj);
+  }
+  const msg = {
+    to: emails,
+    cc: "exteam.epcorn@gmail.com",
+    from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+    dynamic_template_data: {
+      contractNo: contractNo,
+      service: serv,
+      completion: completion,
+      comments: comments,
+      serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
+    },
+    template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
+    attachments: att,
+  };
+  await sgMail.send(msg);
+
+  // request.get(image, { encoding: null }, (err, res) => {
+  //   const base64File = Buffer.from(res.body).toString("base64");
+  //   const msg = {
+  //     to: emails,
+  //     cc: "exteam.epcorn@gmail.com",
+  //     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+  //     dynamic_template_data: {
+  //       contractNo: contractNo,
+  //       service: serv,
+  //       completion: completion,
+  //       comments: comments,
+  //       serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
+  //     },
+  //     template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
+  //     attachments: [
+  //       {
+  //         content: base64File,
+  //         filename: "attachment.jpg",
+  //         type: "application/jpg",
+  //         disposition: "attachment",
+  //       },
+  //     ],
+  //   };
+  //   sgMail.send(msg);
+  // });
 };
 
 const generateQr = async (isValidContract, services) => {
@@ -619,16 +646,26 @@ const generateReport = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
-  const result = await cloudinary.uploader.upload(
-    req.files.image.tempFilePath,
-    {
+  let images = [];
+
+  if (req.files.image.length > 0) {
+    images = req.files.image;
+  } else {
+    images.push(req.files.image);
+  }
+
+  const imageLinks = [];
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.uploader.upload(images[i].tempFilePath, {
       use_filename: true,
       folder: "contract",
       quality: 30,
-    }
-  );
-  fs.unlinkSync(req.files.image.tempFilePath);
-  return res.status(200).json({ image: result.secure_url });
+    });
+    fs.unlinkSync(images[i].tempFilePath);
+    imageLinks.push(result.secure_url);
+  }
+
+  return res.status(200).json({ image: imageLinks });
 };
 
 const deleteService = async (req, res) => {

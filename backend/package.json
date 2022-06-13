@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.6.0",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.28.1",
     "docx-templates": "^4.9.1",
@@ -26,8 +27,7 @@
     "mongoose": "^6.1.8",
     "morgan": "^1.10.0",
     "pizzip": "^3.1.1",
-    "qrcode": "^1.5.0",
-    "request": "^2.88.2"
+    "qrcode": "^1.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
