@@ -74,8 +74,8 @@ const SingleContract = () => {
         <div className="col-md-2 my-3">
           <Link to={`/renew/${id}`}>
             {role === "Admin" && (
-              <button onClick={renewContract} className="btn btn-info">
-                Renew Contract
+              <button onClick={renewContract} className="btn btn-info btn-sm">
+                Edit/Renew Contract
               </button>
             )}
           </Link>

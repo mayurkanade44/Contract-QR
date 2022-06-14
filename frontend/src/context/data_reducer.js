@@ -328,8 +328,9 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contractNo: state.singleContract.contractNo,
-        type: "RC",
+        type: state.singleContract.type,
         sales: state.singleContract.sales,
+        startDate: state.singleContract.startDate.slice(0, 10),
         business: state.singleContract.business,
         preferred: {
           day: state.singleContract.preferred.day,
