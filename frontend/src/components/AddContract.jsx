@@ -269,7 +269,7 @@ const AddContract = () => {
               type="submit"
               disabled={loading ? true : false}
             >
-              Save
+              New Contract
             </button>
           </div>
           <div className="col-md-4">{showAlert && <Alert />}</div>
