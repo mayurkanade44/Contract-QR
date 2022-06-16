@@ -34,7 +34,7 @@ const AddCard = () => {
     allValues,
     deleteService,
     del,
-    ratrid
+    ratrid,
   } = useDataContext();
 
   const { contractNo, startDate, endDate, services, type, sendMail } =
@@ -118,6 +118,9 @@ const AddCard = () => {
     }
     const due = [];
     months.forEach((date, index) => {
+      if (startDate === endDate && index === 0) {
+        return due.push(`${date}, Onwards`);
+      }
       if (
         frequency &&
         frequency === "3 Services Once In 4 Months" &&

@@ -71,6 +71,7 @@ const AddContract = () => {
     "10 Months (300 Days)",
     "11 Months (330 Days)",
     "1 Year",
+    "Onwards"
   ];
 
   const lastDate = async (startDate) => {
@@ -112,6 +113,8 @@ const AddContract = () => {
     ) {
       let ss = await new Date(date.getFullYear(), date.getMonth() + 2, 0);
       return setEndDate(ss);
+    } else if (endContract && endContract === 'Onwards'){
+      return setEndDate(date)
     }
   };
 
