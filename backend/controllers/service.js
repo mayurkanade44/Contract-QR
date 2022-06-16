@@ -222,7 +222,7 @@ const sendContractEmail = async (
         service: allserv.toString(),
         frequency: allfreq.toString(),
         start: start,
-        end: end,
+        end: start === end ? "Onwards" : end,
       },
       template_id: "d-8db487f4b19147a896ae2ed220f5d1ec",
     };
