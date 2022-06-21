@@ -28,6 +28,6 @@ router
   .route("/:id")
   .get(authorizeUser("Operator", "Admin"), singleService)
   .patch(authorizeUser("Operator", "Admin"), updateCard)
-  .delete(authorizeUser("Admin"), deleteService);
+  .delete(authorizeUser("Admin", "Sales"), deleteService);
 
 module.exports = router;

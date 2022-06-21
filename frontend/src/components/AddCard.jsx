@@ -100,7 +100,7 @@ const AddCard = () => {
   };
 
   const { id } = useParams();
-
+    
   const dueRange = (startDate, endDate) => {
     const startMonth = startDate.split("T")[0];
     const endMonth = endDate.split("T")[0];

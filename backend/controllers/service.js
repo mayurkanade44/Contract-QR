@@ -245,6 +245,7 @@ const creatCont = async (id, req, res) => {
   const isValidContract = await Contract.findOne({ _id: id }).populate(
     "services"
   );
+
   const {
     contractNo,
     startDate,
