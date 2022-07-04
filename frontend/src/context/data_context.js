@@ -485,7 +485,7 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const updateContract = async (id) => {
+  const updateContract = async ({ id, endDate }) => {
     dispatch({ type: LOADING });
     const {
       contractNo,
@@ -517,6 +517,7 @@ export const DataProvider = ({ children }) => {
         billingFrequency,
         preferred,
         startDate,
+        endDate,
       });
       dispatch({ type: UPDATE_CONTRACT, payload: res.data });
     } catch (error) {
