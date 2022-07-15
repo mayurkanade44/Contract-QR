@@ -434,7 +434,9 @@ const sendEmail = async (
   serv,
   completion,
   comments,
-  serviceDate
+  serviceDate,
+  shipAddress,
+  treatmentLocation
 ) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const att = [];
@@ -455,6 +457,8 @@ const sendEmail = async (
     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
     dynamic_template_data: {
       contractNo: contractNo,
+      shipAddress: shipAddress,
+      treatmentLocation: treatmentLocation,
       service: serv,
       completion: completion,
       comments: comments,
@@ -567,7 +571,7 @@ const updateCard = async (req, res) => {
     ).populate({
       path: "contract",
       select:
-        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo",
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress",
     });
 
     if (service) {
@@ -593,6 +597,9 @@ const updateCard = async (req, res) => {
         temails.add(six);
       }
       const emails = [...temails];
+      const addre = service.contract.shipToAddress;
+      const treatmentLocation = service.treatmentLocation;
+      const shipAddress = `${addre.address1}, ${addre.address2}, ${addre.address3}, ${addre.address4}, ${addre.city}`;
       const emailSub = service.contract.contractNo;
       const serv = service.service.toString();
       sendEmail(
@@ -602,7 +609,9 @@ const updateCard = async (req, res) => {
         serv,
         completion,
         comments,
-        serviceDate
+        serviceDate,
+        shipAddress,
+        treatmentLocation
       );
     }
 
