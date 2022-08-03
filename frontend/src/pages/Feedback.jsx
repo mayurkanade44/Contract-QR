@@ -15,10 +15,10 @@ const initialState = {
 const Feedback = () => {
   const [formValue, setFormValue] = useState(initialState);
   const [show, setShow] = useState(false);
+  const [thanks, setThanks] = useState(false);
   const { efficiency, work, behavior, equipment, services } = formValue;
   const { feedback } = useDataContext();
   const { id } = useParams();
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,11 +30,13 @@ const Feedback = () => {
     e.preventDefault();
     feedback({ formValue, id });
     setFormValue(initialState);
+    setThanks(true);
+    setShow(false);
   };
 
   return (
     <div className="container my-2">
-      {!show ? (
+      {!show && !thanks ? (
         <div className="position-absolute top-50 start-50 translate-middle p-2 mt-4">
           <button
             className="btn btn-primary mb-5 d-block"
@@ -48,7 +50,7 @@ const Feedback = () => {
             </button>
           </Link>
         </div>
-      ) : (
+      ) : show ? (
         <>
           <h2 className="text-center text-info mb-3">
             <u>Feedback Form</u>
@@ -95,7 +97,7 @@ const Feedback = () => {
                   onChange={handleChange}
                 />
                 <label
-                  className="form-check-label ms-1"
+                  className="form-check-label ms-2"
                   htmlFor="flexCheckChecked"
                 >
                   <img src={ugly} alt="ugly" width={30} />
@@ -281,14 +283,27 @@ const Feedback = () => {
                   <b>Termite</b>
                 </label>
               </div>
-              <div className="col-12 d-flex justify-content-center mt-1">
-                <button type="submit" className="btn btn-primary">
+              <div className="col-12 d-flex justify-content-center mt-3">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={
+                    efficiency && work && behavior && equipment ? false : true
+                  }
+                >
                   Submit
                 </button>
               </div>
             </div>
           </form>
         </>
+      ) : (
+        <div className="text-center" style={{ marginTop: 100 }}>
+          <h2 className="text-success">
+            Thank You For Your Valuable Feedback.
+          </h2>
+          <img className="mt-1" src={smile} alt="good" width={60} />
+        </div>
       )}
     </div>
   );

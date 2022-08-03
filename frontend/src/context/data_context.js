@@ -615,6 +615,17 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const feedback = async ({ formValue, id }) => {
+    console.log(formValue);
+    dispatch({ type: LOADING });
+    try {
+      const res = await axios.post(`/api/feedback/${id}`, formValue);
+      // dispatch({ type: FEEDBACK, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const generateReport = async (id) => {
     dispatch({ type: LOADING });
     try {
@@ -674,6 +685,7 @@ export const DataProvider = ({ children }) => {
         updateContract,
         generateReport,
         closeModal,
+        feedback,
       }}
     >
       {children}
