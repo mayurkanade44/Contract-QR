@@ -688,6 +688,41 @@ const deleteService = async (req, res) => {
   }
 };
 
+const feedback = async (req, res) => {
+  const { id } = req.params;
+  const { services } = req.body;
+
+  try {
+    const service = await Service.findOne({ _id: id }).populate({
+      path: "contract",
+      select: "contractNo",
+    });
+
+    if (services) {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+      const msg = {
+        to: "sm.agarbati@gmail.com",
+        from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+        subject: `${service.contract.contractNo} need additional services`,
+        html: `<div>Hi Sales Team,<br></br><br></br>and easy to do anywhere, even with Node.js with ${services}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team</div>`,
+      };
+      await sgMail.send(msg);
+    }
+
+    req.body.feedbackDate = moment(new Date()).format("DD/MM/YYYY");
+    req.body.contract = service.contract.contractNo;
+    req.body.serviceName = service.service.toString();
+    req.body.service = id;
+    req.body.extraServices = services;
+
+    await ServiceReport.create(req.body);
+    res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -698,4 +733,5 @@ module.exports = {
   sendContractEmail,
   deleteService,
   generateReport,
+  feedback,
 };
