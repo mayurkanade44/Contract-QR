@@ -10,6 +10,7 @@ import {
   Login,
   ProtectedRoute,
   Admin,
+  Feedback,
 } from "./pages";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register></Register>} />
         <Route path="/login" element={<Login></Login>} />
+        <Route path="/feedback/:id" element={<Feedback />} />
         <Route
           path="/"
           element={
