@@ -36,7 +36,6 @@ import {
   UPDATE_CONTRACT,
   SERVICE_REPORT,
   CLOSE_MODAL,
-  BUSINESS_COUNT,
   JOB_STATS,
 } from "./action";
 
@@ -658,13 +657,13 @@ export const DataProvider = ({ children }) => {
   
 
   const generateBusinessReport = async (name) => {
-    // dispatch({ type: LOADING });
-    // try {
-    //   const res = await authFetch.get(`/service/businessDump/${name}`);
-    //   dispatch({ type: SERVICE_REPORT, payload: res.data.msg });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    dispatch({ type: LOADING });
+    try {
+      const res = await authFetch.get(`/service/businessDump/${name}`);
+      dispatch({ type: SERVICE_REPORT, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getJobStats = async () => {

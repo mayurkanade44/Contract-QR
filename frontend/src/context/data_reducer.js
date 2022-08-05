@@ -32,7 +32,6 @@ import {
   UPDATE_CONTRACT,
   SERVICE_REPORT,
   CLOSE_MODAL,
-  BUSINESS_COUNT,
   JOB_STATS,
 } from "./action";
 
@@ -560,7 +559,7 @@ const data_reducer = (state, action) => {
         loading: false,
         jobStats: action.payload.allJobs,
         serviceStats: action.payload.allService,
-        businessCount: action.payload.allBusinessCount
+        businessCount: action.payload.allBusinessCount,
       };
     }
 
