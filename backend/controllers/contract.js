@@ -32,14 +32,14 @@ const getAllContracts = async (req, res) => {
     // const limit = 5;
     // const skip = (page - 1) * limit;
 
-    contracts = contracts.slice(0,300)
+    contracts = contracts.slice(0, 300);
 
     res.status(200).json({ contracts, len: contracts.length });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
   }
-};
+};      
 
 const createContract = async (req, res) => {
   const { contractNo, type } = req.body;

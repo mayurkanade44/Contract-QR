@@ -12,6 +12,10 @@ const {
   sendContractEmail,
   deleteService,
   generateReport,
+  getBusinessCount,
+  generateBusinessFile,
+  dailyReport,
+  getAllStats,
 } = require("../controllers/service");
 
 router
@@ -19,6 +23,10 @@ router
   .post(authorizeUser("Sales", "Admin", "Back Office"), createService)
   .get(getAllService);
 router.route("/upload").post(authorizeUser("Operator", "Admin"), uploadImage);
+router.route("/businessCount").get(getBusinessCount);
+router.route("/allStats").get(getAllStats);
+router.route("/dailyReport").get(dailyReport);
+router.route("/businessDump/:name").get(generateBusinessFile);
 router.route("/report/:id").get(authorizeUser("Admin"), generateReport);
 router.route("/sendmail/:id").get(authorizeUser("Admin"), sendContractEmail);
 router

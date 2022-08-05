@@ -12,6 +12,7 @@ const pizzip = require("pizzip");
 const doctemp = require("docxtemplater");
 const { Parser } = require("json2csv");
 const axios = require("axios");
+const Admin = require("../models/admin");
 
 const getAllService = async (req, res) => {
   try {
@@ -689,39 +690,224 @@ const deleteService = async (req, res) => {
 };
 
 const feedback = async (req, res) => {
-  const { id } = req.params;
-  const { services } = req.body;
+  // const { id } = req.params;
+  // const { services } = req.body;
 
+  // try {
+  //   const service = await Service.findOne({ _id: id }).populate({
+  //     path: "contract",
+  //     select: "contractNo billToAddress",
+  //   });
+
+  //   if (services) {
+  //     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  //     const msg = {
+  //       to: "sm.agarbati@gmail.com",
+  //       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+  //       subject: `${service.contract.contractNo} need additional services`,
+  //       html: `<div>Hi Sales Team,<br></br><br></br>and easy to do anywhere, even with Node.js with ${services}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team</div>`,
+  //     };
+  //     await sgMail.send(msg);
+  //   }
+
+  //   req.body.contract = service.contract.contractNo;
+  //   req.body.serviceName = service.service.toString();
+  //   req.body.service = id;
+  //   req.body.extraServices = services;
+
+  //   await ServiceReport.create(req.body);
+  //   res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
+const getBusinessCount = async (req, res) => {
+  // try {
+  //   const allServices = await Service.find();
+  //   const admin = await Admin.find();
+
+  //   const business = admin
+  //     .map((item) => item.business)
+  //     .filter((item) => item !== undefined);
+
+  //   const allCount = {};
+  //   for (let name of business) {
+  //     const count = allServices.filter((item) => item.business === name);
+  //     allCount[name] = count.length;
+  //   }
+
+  //   res.status(200).json(allCount);
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
+const generateBusinessFile = async (req, res) => {
+  // const { name } = req.params;
+  // try {
+  //   const data = await Service.find({ business: name }).populate({
+  //     path: "contract",
+  //     select: "contractNo type startDate endDate",
+  //   });
+
+  //   const filename = `All contract of ${name}.csv`;
+  //   const fields = [
+  //     { label: "Business", value: "business" },
+  //     { label: "Contract Number", value: "contract.contractNo" },
+  //     { label: "Contract Type", value: "contract.type" },
+  //     { label: "Start Date", value: "contract.startDate" },
+  //     { label: "End Date", value: "contract.endDate" },
+  //     { label: "Frequency", value: "frequency" },
+  //     { label: "Service Name", value: "service" },
+  //   ];
+
+  //   const json2csvParser = new Parser({ fields });
+  //   const csv = json2csvParser.parse(data);
+
+  //   fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+  //   const result = await cloudinary.uploader.upload(`files/${filename}`, {
+  //     resource_type: "raw",
+  //     use_filename: true,
+  //     folder: "service-reports",
+  //   });
+  //   fs.unlinkSync(`./files/${filename}`);
+  //   res.status(200).json({ msg: result.secure_url });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
+const getAllStats = async (req, res) => {
   try {
-    const service = await Service.findOne({ _id: id }).populate({
-      path: "contract",
-      select: "contractNo",
-    });
+    const services = await Service.find();
+    const admin = await Admin.find();
 
-    if (services) {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
-      const msg = {
-        to: "sm.agarbati@gmail.com",
-        from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-        subject: `${service.contract.contractNo} need additional services`,
-        html: `<div>Hi Sales Team,<br></br><br></br>and easy to do anywhere, even with Node.js with ${services}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team</div>`,
-      };
-      await sgMail.send(msg);
+    const allJobs = [];
+    const year = moment(new Date()).format("YY");
+    for (let month of months) {
+      const count = services.filter((item) =>
+        item.serviceDue.includes(`${month} ${year}`)
+      ).length;
+      allJobs.push({ x: month, y: count });
     }
 
-    req.body.feedbackDate = moment(new Date()).format("DD/MM/YYYY");
-    req.body.contract = service.contract.contractNo;
-    req.body.serviceName = service.service.toString();
-    req.body.service = id;
-    req.body.extraServices = services;
+    const allService = [];
+    const service = admin
+      .map((item) => item.serviceChemicals.label)
+      .filter((item) => item !== undefined);
 
-    await ServiceReport.create(req.body);
-    res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
+    for (let serv of service) {
+      const count = services.filter((item) =>
+        item.service.includes(serv)
+      ).length;
+      allService.push({ x: serv, y: count });
+    }
+
+    res.status(200).json({ allJobs, allService });
   } catch (error) {
     console.log(error);
   }
 };
+
+const dailyReport = async (req, res) => {
+  // try {
+  //   const date = new Date();
+  //   date.setDate(date.getDate() - 1);
+  //   const yesterday = moment(date).format("DD/MM/YYYY");
+
+  //   const data = await ServiceReport.find({ createdDate: yesterday });
+
+  //   const filename = "Report.csv";
+
+  //   const allFields = [
+  //     [
+  //       { label: "Contract Number", value: "contract" },
+  //       { label: "Service Name", value: "serviceName" },
+  //       { label: "Service Done Date", value: "serviceDate" },
+  //       { label: "Done/Not Done", value: "completion" },
+  //       { label: "Comments By Operator", value: "comments" },
+  //       { label: "Service Card", value: "image" },
+  //     ],
+  //     [
+  //       { label: "Contract Number", value: "contract" },
+  //       { label: "Service Name", value: "serviceName" },
+  //       { label: "Work Efficiency", value: "efficiency" },
+  //       { label: "Know His Work", value: "work" },
+  //       { label: "His Behavior", value: "behavior" },
+  //       { label: "Equipment", value: "equipment" },
+  //     ],
+  //   ];
+
+  //   const image = [];
+
+  //   for (let fields of allFields) {
+  //     const json2csvParser = new Parser({ fields });
+  //     const csv = json2csvParser.parse(data);
+  //     fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+  //     const result = await cloudinary.uploader.upload(`files/${filename}`, {
+  //       resource_type: "raw",
+  //       use_filename: true,
+  //       folder: "service-reports",
+  //     });
+  //     fs.unlinkSync(`./files/${filename}`);
+  //     image.push(result.secure_url);
+  //   }
+
+  //   const files = {
+  //     "Service Report.csv": image[0],
+  //     "Feedback Report.csv": image[1],
+  //   };
+
+  //   const att = [];
+
+  //   for (let file in files) {
+  //     const response = await axios.get(files[file], {
+  //       responseType: "arraybuffer",
+  //     });
+  //     const base64File = Buffer.from(response.data, "binary").toString(
+  //       "base64"
+  //     );
+  //     const attachObj = {
+  //       content: base64File,
+  //       filename: file,
+  //       type: "application/json",
+  //       disposition: "attachment",
+  //     };
+  //     att.push(attachObj);
+  //   }
+  //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  //   const msg = {
+  //     to: "sm.agarbati@gmail.com",
+  //     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+  //     subject: `Scheduled Daily Reports of ${yesterday}`,
+  //     html: "<div>Hi Team,<br></br><br></br>and easy to do anywhere, even with Node.js with</div>",
+  //     attachments: att,
+  //   };
+  //   await sgMail.send(msg);
+  //   res.status(200).json({ msg: "ok" });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
 
 module.exports = {
   getAllService,
@@ -734,4 +920,8 @@ module.exports = {
   deleteService,
   generateReport,
   feedback,
+  getBusinessCount,
+  generateBusinessFile,
+  getAllStats,
+  dailyReport,
 };
