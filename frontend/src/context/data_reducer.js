@@ -308,13 +308,6 @@ const data_reducer = (state, action) => {
         showAlert: true,
       };
     }
-    case BUSINESS_COUNT: {
-      return {
-        ...state,
-        loading: false,
-        businessCount: action.payload,
-      };
-    }
     case CREATE_CARDS: {
       return {
         ...state,
@@ -566,7 +559,8 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         jobStats: action.payload.allJobs,
-        serviceStats: action.payload.allService
+        serviceStats: action.payload.allService,
+        businessCount: action.payload.allBusinessCount
       };
     }
 

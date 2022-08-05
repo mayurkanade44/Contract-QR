@@ -9,7 +9,6 @@ const Dashboard = () => {
     allServices,
     fetchServices,
     frequency,
-    getBusinessCount,
     businessCount,
     serviceReport,
     generateBusinessReport,
@@ -90,7 +89,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     // fetchServices();
-    getBusinessCount();
     getJobStats();
     // eslint-disable-next-line
   }, [frequency]);
@@ -143,7 +141,7 @@ const Dashboard = () => {
         >
           <h4 className="text-info">Create New Contract</h4>
         </Link>
-        {/* <h3 className="text-center my-2">All Business Count</h3>
+        <h3 className="text-center my-2">All Business Count</h3>
         {businessCount &&
           Object.entries(businessCount).map((item, index) => {
             return (
@@ -159,7 +157,7 @@ const Dashboard = () => {
                 >{`${item[0]} - ${item[1]}`}</button>
               </div>
             );
-          })} */}
+          })}
         <hr className="my-2" />
         <div className="col-md-12">
           <div className="text-center">

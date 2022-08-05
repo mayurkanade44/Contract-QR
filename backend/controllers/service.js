@@ -692,16 +692,13 @@ const deleteService = async (req, res) => {
 const feedback = async (req, res) => {
   // const { id } = req.params;
   // const { services } = req.body;
-
   // try {
   //   const service = await Service.findOne({ _id: id }).populate({
   //     path: "contract",
   //     select: "contractNo billToAddress",
   //   });
-
   //   if (services) {
   //     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
   //     const msg = {
   //       to: "sm.agarbati@gmail.com",
   //       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
@@ -710,12 +707,10 @@ const feedback = async (req, res) => {
   //     };
   //     await sgMail.send(msg);
   //   }
-
   //   req.body.contract = service.contract.contractNo;
   //   req.body.serviceName = service.service.toString();
   //   req.body.service = id;
   //   req.body.extraServices = services;
-
   //   await ServiceReport.create(req.body);
   //   res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
   // } catch (error) {
@@ -723,26 +718,7 @@ const feedback = async (req, res) => {
   // }
 };
 
-const getBusinessCount = async (req, res) => {
-  // try {
-  //   const allServices = await Service.find();
-  //   const admin = await Admin.find();
 
-  //   const business = admin
-  //     .map((item) => item.business)
-  //     .filter((item) => item !== undefined);
-
-  //   const allCount = {};
-  //   for (let name of business) {
-  //     const count = allServices.filter((item) => item.business === name);
-  //     allCount[name] = count.length;
-  //   }
-
-  //   res.status(200).json(allCount);
-  // } catch (error) {
-  //   console.log(error);
-  // }
-};
 
 const generateBusinessFile = async (req, res) => {
   // const { name } = req.params;
@@ -751,7 +727,6 @@ const generateBusinessFile = async (req, res) => {
   //     path: "contract",
   //     select: "contractNo type startDate endDate",
   //   });
-
   //   const filename = `All contract of ${name}.csv`;
   //   const fields = [
   //     { label: "Business", value: "business" },
@@ -762,10 +737,8 @@ const generateBusinessFile = async (req, res) => {
   //     { label: "Frequency", value: "frequency" },
   //     { label: "Service Name", value: "service" },
   //   ];
-
   //   const json2csvParser = new Parser({ fields });
   //   const csv = json2csvParser.parse(data);
-
   //   fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
   //   const result = await cloudinary.uploader.upload(`files/${filename}`, {
   //     resource_type: "raw",
@@ -820,7 +793,16 @@ const getAllStats = async (req, res) => {
       allService.push({ x: serv, y: count });
     }
 
-    res.status(200).json({ allJobs, allService });
+    const allBusinessCount = {};
+    const business = admin
+      .map((item) => item.business)
+      .filter((item) => item !== undefined);
+    for (let name of business) {
+      const count = services.filter((item) => item.business === name).length;
+      allBusinessCount[name] = count;
+    }
+
+    res.status(200).json({ allJobs, allService, allBusinessCount });
   } catch (error) {
     console.log(error);
   }
@@ -831,11 +813,8 @@ const dailyReport = async (req, res) => {
   //   const date = new Date();
   //   date.setDate(date.getDate() - 1);
   //   const yesterday = moment(date).format("DD/MM/YYYY");
-
   //   const data = await ServiceReport.find({ createdDate: yesterday });
-
   //   const filename = "Report.csv";
-
   //   const allFields = [
   //     [
   //       { label: "Contract Number", value: "contract" },
@@ -854,9 +833,7 @@ const dailyReport = async (req, res) => {
   //       { label: "Equipment", value: "equipment" },
   //     ],
   //   ];
-
   //   const image = [];
-
   //   for (let fields of allFields) {
   //     const json2csvParser = new Parser({ fields });
   //     const csv = json2csvParser.parse(data);
@@ -869,14 +846,11 @@ const dailyReport = async (req, res) => {
   //     fs.unlinkSync(`./files/${filename}`);
   //     image.push(result.secure_url);
   //   }
-
   //   const files = {
   //     "Service Report.csv": image[0],
   //     "Feedback Report.csv": image[1],
   //   };
-
   //   const att = [];
-
   //   for (let file in files) {
   //     const response = await axios.get(files[file], {
   //       responseType: "arraybuffer",
@@ -893,7 +867,6 @@ const dailyReport = async (req, res) => {
   //     att.push(attachObj);
   //   }
   //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
   //   const msg = {
   //     to: "sm.agarbati@gmail.com",
   //     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
@@ -908,7 +881,6 @@ const dailyReport = async (req, res) => {
   // }
 };
 
-
 module.exports = {
   getAllService,
   createService,
@@ -920,7 +892,6 @@ module.exports = {
   deleteService,
   generateReport,
   feedback,
-  getBusinessCount,
   generateBusinessFile,
   getAllStats,
   dailyReport,

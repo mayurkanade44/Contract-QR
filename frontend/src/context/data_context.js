@@ -655,15 +655,7 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
   };
 
-  const getBusinessCount = async () => {
-    // dispatch({ type: LOADING });
-    // try {
-    //   const res = await authFetch.get("/service/businessCount");
-    //   dispatch({ type: BUSINESS_COUNT, payload: res.data });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
+  
 
   const generateBusinessReport = async (name) => {
     // dispatch({ type: LOADING });
@@ -719,7 +711,6 @@ export const DataProvider = ({ children }) => {
         generateReport,
         closeModal,
         feedback,
-        getBusinessCount,
         generateBusinessReport,
         getJobStats,
       }}
