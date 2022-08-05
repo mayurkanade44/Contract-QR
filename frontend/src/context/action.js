@@ -33,3 +33,5 @@ export const ADD_VALUE = "ADD_VALUE";
 export const DELETE_SERVICE = "DELETE_SERVICE";
 export const SERVICE_REPORT = "SERVICE_REPORT";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const BUSINESS_COUNT = "BUSINESS_COUNT";
+export const JOB_STATS = "JOB_STATS";

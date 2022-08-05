@@ -36,6 +36,8 @@ import {
   UPDATE_CONTRACT,
   SERVICE_REPORT,
   CLOSE_MODAL,
+  BUSINESS_COUNT,
+  JOB_STATS,
 } from "./action";
 
 const DataContext = createContext();
@@ -152,6 +154,9 @@ export const initialState = {
   modal: false,
   adminList: [],
   ratrid: "No",
+  businessCount: [],
+  jobStats: [],
+  serviceStats: [],
 };
 
 export const DataProvider = ({ children }) => {
@@ -616,21 +621,19 @@ export const DataProvider = ({ children }) => {
   };
 
   const feedback = async ({ formValue, id }) => {
-    console.log(formValue);
-    dispatch({ type: LOADING });
-    try {
-      const res = await axios.post(`/api/feedback/${id}`, formValue);
-      // dispatch({ type: FEEDBACK, payload: res.data });
-    } catch (error) {
-      console.log(error);
-    }
+    // dispatch({ type: LOADING });
+    // try {
+    //   const res = await axios.post(`/api/feedback/${id}`, formValue);
+    //   // dispatch({ type: FEEDBACK, payload: res.data });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const generateReport = async (id) => {
     dispatch({ type: LOADING });
     try {
       const res = await authFetch.get(`/service/report/${id}`);
-      console.log(res);
       dispatch({ type: SERVICE_REPORT, payload: res.data.msg });
     } catch (error) {
       console.log(error);
@@ -650,6 +653,36 @@ export const DataProvider = ({ children }) => {
     }
 
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
+  };
+
+  const getBusinessCount = async () => {
+    // dispatch({ type: LOADING });
+    // try {
+    //   const res = await authFetch.get("/service/businessCount");
+    //   dispatch({ type: BUSINESS_COUNT, payload: res.data });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
+  const generateBusinessReport = async (name) => {
+    // dispatch({ type: LOADING });
+    // try {
+    //   const res = await authFetch.get(`/service/businessDump/${name}`);
+    //   dispatch({ type: SERVICE_REPORT, payload: res.data.msg });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
+  const getJobStats = async () => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await authFetch.get("/service/allStats");
+      dispatch({ type: JOB_STATS, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -686,6 +719,9 @@ export const DataProvider = ({ children }) => {
         generateReport,
         closeModal,
         feedback,
+        getBusinessCount,
+        generateBusinessReport,
+        getJobStats,
       }}
     >
       {children}
