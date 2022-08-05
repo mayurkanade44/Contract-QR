@@ -100,13 +100,15 @@ const AddCard = () => {
   };
 
   const { id } = useParams();
-    
+
   const dueRange = (startDate, endDate) => {
     const startMonth = startDate.split("T")[0];
     const endMonth = endDate.split("T")[0];
 
     var start = moment(startMonth);
     var end = moment(endMonth);
+
+    const curDate = start.format("DD");
 
     var months = [start.format("MMM YY")];
     end.subtract(1, "month"); //Substract one month to exclude endDate itself
@@ -119,7 +121,7 @@ const AddCard = () => {
     const due = [];
     months.forEach((date, index) => {
       if (startDate === endDate && index === 0) {
-        return due.push(`${date}, Onwards`);
+        return due.push(`${curDate} ${date}, Onwards`);
       }
       if (
         frequency &&

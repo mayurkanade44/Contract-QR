@@ -51,7 +51,8 @@ const AllCards = ({ data, role, contractNo }) => {
           </thead>
           <tbody>
             {data.map((data, index) => {
-              const { frequency, service, _id, card, qr, area, serviceReport } = data;
+              const { frequency, service, _id, card, qr, area, serviceReport } =
+                data;
               const temp = `${contractNo}_${frequency}`;
               return (
                 <tr key={index}>

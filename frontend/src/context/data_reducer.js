@@ -32,6 +32,8 @@ import {
   UPDATE_CONTRACT,
   SERVICE_REPORT,
   CLOSE_MODAL,
+  BUSINESS_COUNT,
+  JOB_STATS,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -306,6 +308,13 @@ const data_reducer = (state, action) => {
         showAlert: true,
       };
     }
+    case BUSINESS_COUNT: {
+      return {
+        ...state,
+        loading: false,
+        businessCount: action.payload,
+      };
+    }
     case CREATE_CARDS: {
       return {
         ...state,
@@ -549,6 +558,15 @@ const data_reducer = (state, action) => {
         alertText: action.payload,
         alertType: "success",
         showAlert: true,
+      };
+    }
+
+    case JOB_STATS: {
+      return {
+        ...state,
+        loading: false,
+        jobStats: action.payload.allJobs,
+        serviceStats: action.payload.allService
       };
     }
 
