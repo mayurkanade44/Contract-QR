@@ -6,8 +6,6 @@ import moment from "moment";
 
 const Dashboard = () => {
   const {
-    allServices,
-    fetchServices,
     frequency,
     businessCount,
     serviceReport,
@@ -89,15 +87,9 @@ const Dashboard = () => {
   // };
 
   useEffect(() => {
-    // fetchServices();
     getJobStats();
     // eslint-disable-next-line
   }, [frequency]);
-
-  // useEffect(() => {
-  //   job();
-  //   // eslint-disable-next-line
-  // }, [allServices]);
 
   if (loading) {
     return <Loading />;
@@ -128,7 +120,7 @@ const Dashboard = () => {
       )}
       <h3 className="text-center">Dashboard</h3>
       <div className="row gx-2">
-        <div className="col-6">
+        <div className="col-md-6">
           <Link
             to="/"
             className="d-flex align-items-center justify-content-center bg-dark"
@@ -150,7 +142,7 @@ const Dashboard = () => {
         {businessCount &&
           Object.entries(businessCount).map((item, index) => {
             return (
-              <div className="col-3 my-2 text-center">
+              <div className="col-md-3 my-2 text-center" key={index}>
                 <div
                   className={`p-1 ${
                     index % 2 ? "bg-light border border-warning" : "bg-dark"
@@ -167,17 +159,6 @@ const Dashboard = () => {
                   </button>
                 </div>
               </div>
-              // <div className="col-md-3 bg-primary " key={index}>
-              //   <button
-              //     className={`my-2 btn btn-lg ${
-              //       index % 2 ? "btn-light border border-warning" : "btn-dark"
-              //     }`}
-              //     onClick={() => generateBusinessReport(item[0])}
-              //     disabled={role === "Admin" ? false : true}
-              //   >
-              //     {`${item[0]} - ${item[1]}`}
-              //   </button>
-              // </div>
             );
           })}
         <hr className="my-2" />

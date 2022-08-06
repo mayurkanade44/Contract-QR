@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   ComposedChart,
   Bar,
@@ -19,7 +19,7 @@ const VerticalChart = ({ data }) => {
           data={data}
           margin={{
             top: 20,
-            left: 50,
+            left: 40,
           }}
         >
           <CartesianGrid stroke="#f5f5f5" />
