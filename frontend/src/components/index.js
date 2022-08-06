@@ -18,9 +18,7 @@ import Pagination from "./Pagination";
 import BillToAddress from "./BillToAddress";
 import ShipToAddress from "./ShipToAddress";
 import Renew from "./Renew";
-
-
-
+import VerticalChart from "./VerticalChart";
 
 export {
   AllContracts,
@@ -43,4 +41,5 @@ export {
   BillToAddress,
   ShipToAddress,
   Renew,
+  VerticalChart,
 };
