@@ -18,6 +18,7 @@ const Dashboard = () => {
     getJobStats,
     loading,
     serviceStats,
+    role,
   } = useDataContext();
   const [switchStats, setSwitchStats] = useState(false);
   // const [jobs, setJobs] = useState({
@@ -126,14 +127,17 @@ const Dashboard = () => {
         </div>
       )}
       <h3 className="text-center">Dashboard</h3>
-      <div className="row my-2">
-        <Link
-          to="/"
-          className="col-md-6 d-flex align-items-center justify-content-center bg-dark"
-          style={{ height: 60, textDecoration: "none" }}
-        >
-          <h4 className="text-info">All Contracts</h4>
-        </Link>
+      <div className="row gx-2">
+        <div className="col-6">
+          <Link
+            to="/"
+            className="d-flex align-items-center justify-content-center bg-dark"
+            style={{ height: 60, textDecoration: "none" }}
+          >
+            <h4 className="text-info">All Contracts</h4>
+          </Link>
+        </div>
+
         <Link
           to="/create"
           className="col-md-6 d-flex align-items-center justify-content-center bg-secondary"
@@ -141,23 +145,41 @@ const Dashboard = () => {
         >
           <h4 className="text-info">Create New Contract</h4>
         </Link>
-        {/* <h3 className="text-center my-2">All Business Count</h3>
+
+        <h3 className="text-center my-2">All Business Count</h3>
         {businessCount &&
           Object.entries(businessCount).map((item, index) => {
             return (
-              <div
-                className="col-md-3 my-2 d-flex justify-content-center"
-                key={index}
-              >
-                <button
-                  onClick={() => generateBusinessReport(item[0])}
-                  className={`btn btn-lg ${
-                    index % 2 ? "btn-info" : "btn-success"
+              <div className="col-3 my-2 text-center">
+                <div
+                  className={`p-1 ${
+                    index % 2 ? "bg-light border border-warning" : "bg-dark"
                   }`}
-                >{`${item[0]} - ${item[1]}`}</button>
+                >
+                  <button
+                    className={`btn btn-lg ${
+                      index % 2 ? "btn-light" : "btn-dark"
+                    }`}
+                    onClick={() => generateBusinessReport(item[0])}
+                    disabled={role === "Admin" ? false : true}
+                  >
+                    {`${item[0]} - ${item[1]}`}
+                  </button>
+                </div>
               </div>
+              // <div className="col-md-3 bg-primary " key={index}>
+              //   <button
+              //     className={`my-2 btn btn-lg ${
+              //       index % 2 ? "btn-light border border-warning" : "btn-dark"
+              //     }`}
+              //     onClick={() => generateBusinessReport(item[0])}
+              //     disabled={role === "Admin" ? false : true}
+              //   >
+              //     {`${item[0]} - ${item[1]}`}
+              //   </button>
+              // </div>
             );
-          })} */}
+          })}
         <hr className="my-2" />
         <div className="col-md-12">
           <div className="text-center">

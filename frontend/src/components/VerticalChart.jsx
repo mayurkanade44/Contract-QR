@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import {
   ComposedChart,
-  Line,
-  Area,
   Bar,
   XAxis,
   YAxis,
@@ -15,12 +13,13 @@ import {
 const VerticalChart = ({ data }) => {
   return (
     <div>
-      <ResponsiveContainer width="100%" height={1000}>
+      <ResponsiveContainer width="100%" height={1500}>
         <ComposedChart
           layout="vertical"
           data={data}
           margin={{
             top: 20,
+            left: 50,
           }}
         >
           <CartesianGrid stroke="#f5f5f5" />

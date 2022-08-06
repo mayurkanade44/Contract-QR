@@ -25,7 +25,9 @@ router
 router.route("/upload").post(authorizeUser("Operator", "Admin"), uploadImage);
 router.route("/allStats").get(getAllStats);
 router.route("/dailyReport").get(dailyReport);
-router.route("/businessDump/:name").get(generateBusinessFile);
+router
+  .route("/businessDump/:name")
+  .get(authorizeUser("Admin"), generateBusinessFile);
 router.route("/report/:id").get(authorizeUser("Admin"), generateReport);
 router.route("/sendmail/:id").get(authorizeUser("Admin"), sendContractEmail);
 router
