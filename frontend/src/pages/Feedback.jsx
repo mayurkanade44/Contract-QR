@@ -207,7 +207,7 @@ const Feedback = () => {
               <h6 className="text-center">
                 Would you need any additional service?
               </h6>
-              <div className="col-5 d-flex justify-content-start">
+              <div className="col-5 d-flex justify-content-center">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -234,7 +234,7 @@ const Feedback = () => {
                   className="form-check-label ms-2"
                   htmlFor="flexCheckDefault"
                 >
-                  <b>Ant</b>
+                  <b>Termites</b>
                 </label>
               </div>
               <div className="col-4 d-flex justify-content-center">
@@ -252,7 +252,6 @@ const Feedback = () => {
                   <b>Bedbugs</b>
                 </label>
               </div>
-
               <div className="col-4 d-flex justify-content-center">
                 <input
                   className="form-check-input"
@@ -265,7 +264,22 @@ const Feedback = () => {
                   className="form-check-label ms-2"
                   htmlFor="flexCheckDefault"
                 >
-                  <b>Mosquito</b>
+                  <b>Rodent</b>
+                </label>
+              </div>
+              <div className="col-4 d-flex justify-content-center">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name="services"
+                  value="Mosquito"
+                  onChange={handleChange}
+                />
+                <label
+                  className="form-check-label ms-2"
+                  htmlFor="flexCheckDefault"
+                >
+                  <b>Ant</b>
                 </label>
               </div>
               <div className="col-4 d-flex justify-content-center">
@@ -280,7 +294,7 @@ const Feedback = () => {
                   className="form-check-label ms-2"
                   htmlFor="flexCheckDefault"
                 >
-                  <b>Termite</b>
+                  <b>Mosquito</b>
                 </label>
               </div>
               <div className="col-12 d-flex justify-content-center mt-3">

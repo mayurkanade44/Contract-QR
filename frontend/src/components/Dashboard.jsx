@@ -19,72 +19,8 @@ const Dashboard = () => {
     role,
   } = useDataContext();
   const [switchStats, setSwitchStats] = useState(false);
-  // const [jobs, setJobs] = useState({
-  //   Jan: "",
-  //   Feb: "",
-  //   Mar: "",
-  //   Apr: "",
-  //   May: "",
-  //   Jun: "",
-  //   Jul: "",
-  //   Aug: "",
-  //   Sep: "",
-  //   Oct: "",
-  //   Nov: "",
-  //   Dec: "",
-  // });
 
   const year = moment(new Date()).format("YY");
-  // const job = () => {
-  //   const jan = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`Jan ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Jan: jan.length }));
-  //   const feb = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`February ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Feb: feb.length }));
-  //   const mar = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`March ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Mar: mar.length }));
-  //   const apr = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`April ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Apr: apr.length }));
-  //   const may = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`May ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, May: may.length }));
-  //   const jun = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`June ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Jun: jun.length }));
-  //   const jul = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`July ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Jul: jul.length }));
-  //   const aug = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`August ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Aug: aug.length }));
-  //   const sep = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`September ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Sep: sep.length }));
-  //   const oct = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`October ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Oct: oct.length }));
-  //   const nov = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`November ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Nov: nov.length }));
-  //   const dec = allServices.filter((ser) =>
-  //     ser.serviceDue.includes(`December ${year}`)
-  //   );
-  //   setJobs((jobs) => ({ ...jobs, Dec: dec.length }));
-  // };
 
   useEffect(() => {
     getJobStats();
@@ -118,7 +54,6 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-      <h3 className="text-center">Dashboard</h3>
       <div className="row gx-2">
         <div className="col-md-6">
           <Link

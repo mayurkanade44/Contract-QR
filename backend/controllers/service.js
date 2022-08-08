@@ -454,7 +454,6 @@ const sendEmail = async (
   }
   const msg = {
     to: emails,
-    cc: "exteam.epcorn@gmail.com",
     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
     dynamic_template_data: {
       contractNo: contractNo,
@@ -718,38 +717,36 @@ const feedback = async (req, res) => {
   // }
 };
 
-
-
 const generateBusinessFile = async (req, res) => {
-  // const { name } = req.params;
-  // try {
-  //   const data = await Service.find({ business: name }).populate({
-  //     path: "contract",
-  //     select: "contractNo type startDate endDate",
-  //   });
-  //   const filename = `All contract of ${name}.csv`;
-  //   const fields = [
-  //     { label: "Business", value: "business" },
-  //     { label: "Contract Number", value: "contract.contractNo" },
-  //     { label: "Contract Type", value: "contract.type" },
-  //     { label: "Start Date", value: "contract.startDate" },
-  //     { label: "End Date", value: "contract.endDate" },
-  //     { label: "Frequency", value: "frequency" },
-  //     { label: "Service Name", value: "service" },
-  //   ];
-  //   const json2csvParser = new Parser({ fields });
-  //   const csv = json2csvParser.parse(data);
-  //   fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
-  //   const result = await cloudinary.uploader.upload(`files/${filename}`, {
-  //     resource_type: "raw",
-  //     use_filename: true,
-  //     folder: "service-reports",
-  //   });
-  //   fs.unlinkSync(`./files/${filename}`);
-  //   res.status(200).json({ msg: result.secure_url });
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  const { name } = req.params;
+  try {
+    const data = await Service.find({ business: name }).populate({
+      path: "contract",
+      select: "contractNo type startDate endDate",
+    });
+    const filename = `All contract of ${name}.csv`;
+    const fields = [
+      { label: "Business", value: "business" },
+      { label: "Contract Number", value: "contract.contractNo" },
+      { label: "Contract Type", value: "contract.type" },
+      { label: "Start Date", value: "contract.startDate" },
+      { label: "End Date", value: "contract.endDate" },
+      { label: "Frequency", value: "frequency" },
+      { label: "Service Name", value: "service" },
+    ];
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(data);
+    fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+    const result = await cloudinary.uploader.upload(`files/${filename}`, {
+      resource_type: "raw",
+      use_filename: true,
+      folder: "service-reports",
+    });
+    fs.unlinkSync(`./files/${filename}`);
+    res.status(200).json({ msg: result.secure_url });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getAllStats = async (req, res) => {
@@ -801,7 +798,6 @@ const getAllStats = async (req, res) => {
       const count = services.filter((item) => item.business === name).length;
       allBusinessCount[name] = count;
     }
-
     res.status(200).json({ allJobs, allService, allBusinessCount });
   } catch (error) {
     console.log(error);
