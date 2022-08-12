@@ -689,32 +689,32 @@ const deleteService = async (req, res) => {
 };
 
 const feedback = async (req, res) => {
-  // const { id } = req.params;
-  // const { services } = req.body;
-  // try {
-  //   const service = await Service.findOne({ _id: id }).populate({
-  //     path: "contract",
-  //     select: "contractNo billToAddress",
-  //   });
-  //   if (services) {
-  //     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  //     const msg = {
-  //       to: "sm.agarbati@gmail.com",
-  //       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-  //       subject: `${service.contract.contractNo} need additional services`,
-  //       html: `<div>Hi Sales Team,<br></br><br></br>and easy to do anywhere, even with Node.js with ${services}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team</div>`,
-  //     };
-  //     await sgMail.send(msg);
-  //   }
-  //   req.body.contract = service.contract.contractNo;
-  //   req.body.serviceName = service.service.toString();
-  //   req.body.service = id;
-  //   req.body.extraServices = services;
-  //   await ServiceReport.create(req.body);
-  //   res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  const { id } = req.params;
+  const { services } = req.body;
+  try {
+    const service = await Service.findOne({ _id: id }).populate({
+      path: "contract",
+      select: "contractNo billToContact1 shipToContact1",
+    });
+    if (services) {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      const msg = {
+        to: "sm.agarbati@gmail.com",
+        from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+        subject: `Request For Service - ${service.contract.contractNo}`,
+        html: `<div>Hi Sales Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
+      };
+      await sgMail.send(msg);
+    }
+    req.body.contract = service.contract.contractNo;
+    req.body.serviceName = service.service.toString();
+    req.body.service = id;
+    req.body.extraServices = services;
+    await ServiceReport.create(req.body);
+    res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const generateBusinessFile = async (req, res) => {

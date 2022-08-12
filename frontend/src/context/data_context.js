@@ -620,13 +620,13 @@ export const DataProvider = ({ children }) => {
   };
 
   const feedback = async ({ formValue, id }) => {
-    // dispatch({ type: LOADING });
-    // try {
-    //   const res = await axios.post(`/api/feedback/${id}`, formValue);
-    //   // dispatch({ type: FEEDBACK, payload: res.data });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    dispatch({ type: LOADING });
+    try {
+      await axios.post(`/api/feedback/${id}`, formValue);
+      // dispatch({ type: FEEDBACK, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const generateReport = async (id) => {
@@ -653,8 +653,6 @@ export const DataProvider = ({ children }) => {
 
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
   };
-
-  
 
   const generateBusinessReport = async (name) => {
     dispatch({ type: LOADING });
