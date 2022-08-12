@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AddCard, Navbar, Dashboard, Renew } from "./components";
+import { AddCard, Navbar, Dashboard, Renew, AddContract } from "./components";
 import {
   Home,
   SingleContract,
   SingleCard,
-  CreateContract,
   NotFound,
   Register,
   Login,
@@ -49,7 +48,7 @@ function App() {
           path="/create"
           element={
             <ProtectedRoute>
-              <CreateContract />
+              <AddContract />
             </ProtectedRoute>
           }
         />

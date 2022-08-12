@@ -151,7 +151,7 @@ const AddContract = () => {
   }, [contractCreated]);
 
   return (
-    <div>
+    <div className="container">
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-4">

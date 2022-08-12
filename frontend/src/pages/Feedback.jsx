@@ -16,7 +16,7 @@ const Feedback = () => {
   const [formValue, setFormValue] = useState(initialState);
   const [show, setShow] = useState(false);
   const [thanks, setThanks] = useState(false);
-  const { efficiency, work, behavior, equipment, services } = formValue;
+  const { efficiency, work, behavior, equipment } = formValue;
   const { feedback } = useDataContext();
   const { id } = useParams();
 
@@ -55,7 +55,11 @@ const Feedback = () => {
           <h2 className="text-center text-info mb-3">
             <u>Feedback Form</u>
           </h2>
-          <form onSubmit={handleSubmit} className="form-check">
+          <form
+            onSubmit={handleSubmit}
+            className="form-check"
+            style={{ paddingLeft: 0 }}
+          >
             <div className="row">
               <h6 className="text-center">Rate work efficiency?</h6>
               <div className="col-4 d-flex justify-content-center">
