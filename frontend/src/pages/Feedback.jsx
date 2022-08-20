@@ -30,8 +30,11 @@ const Feedback = () => {
     e.preventDefault();
     feedback({ formValue, id });
     setFormValue(initialState);
-    setThanks(true);
-    setShow(false);
+    setTimeout(() => {
+      setThanks(true);
+
+      setShow(false);
+    }, 1000);
   };
 
   return (

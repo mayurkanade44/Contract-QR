@@ -66,7 +66,7 @@ const AllContracts = () => {
         <div className="col-md-4">
           <InputRow label="Search" type="text" name="search" value={search} />
         </div>
-        <div className="col-md-3">
+        <div className="col-md-3 mobile-table">
           <InputRow
             label="From :"
             type="date"
@@ -75,7 +75,7 @@ const AllContracts = () => {
             width={170}
           />
         </div>
-        <div className="col-md-3">
+        <div className="col-md-3 mobile-table">
           <InputRow
             label="To :"
             type="date"
@@ -94,7 +94,7 @@ const AllContracts = () => {
             Search
           </button>
         </div>
-        <div className="col-md-1 mt-1">
+        <div className="col-md-1 my-1">
           <button className="btn btn-dark" onClick={handleSubmit}>
             Reset
           </button>
@@ -107,10 +107,10 @@ const AllContracts = () => {
         <thead>
           <tr>
             <th>Contract No</th>
-            <th>Created At</th>
-            <th>Ship To Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
+            <th className="mobile-table">Created At</th>
+            <th className="mobile-table">Ship To Name</th>
+            <th className="mobile-table">Start Date</th>
+            <th className="mobile-table">End Date</th>
           </tr>
         </thead>
 
@@ -130,14 +130,14 @@ const AllContracts = () => {
               return (
                 <tr key={_id}>
                   <td style={{ width: 200 }}>{`${contractNo} - ${type}`}</td>
-                  <td style={{ width: 130 }}>
+                  <td className="mobile-table" style={{ width: 130 }}>
                     {moment(createdAt).format("DD/MM/YYYY")}
                   </td>
-                  <td>{name}</td>
-                  <td style={{ width: 130 }}>
+                  <td className="mobile-table">{name}</td>
+                  <td className="mobile-table" style={{ width: 130 }}>
                     {moment(startDate).format("DD/MM/YYYY")}
                   </td>
-                  <td style={{ width: 130 }}>
+                  <td className="mobile-table" style={{ width: 130 }}>
                     {moment(endDate).format("DD/MM/YYYY")}
                   </td>
                   <td className="text-center" style={{ width: 120 }}>

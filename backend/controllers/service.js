@@ -437,7 +437,8 @@ const sendEmail = async (
   comments,
   serviceDate,
   shipAddress,
-  treatmentLocation
+  treatmentLocation,
+  serviceId
 ) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const att = [];
@@ -463,6 +464,7 @@ const sendEmail = async (
       completion: completion,
       comments: comments,
       serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
+      link: `http://localhost:3000/feedback/${serviceId}`,
     },
     template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
     attachments: att,
@@ -559,7 +561,6 @@ const updateCard = async (req, res) => {
     params: { id: serviceId },
     body: { image, comments, completion, serviceDate },
   } = req;
-  const date = moment(new Date()).format("DD/MM/YYYY");
   try {
     const service = await Service.findOneAndUpdate(
       { _id: serviceId },
@@ -611,7 +612,8 @@ const updateCard = async (req, res) => {
         comments,
         serviceDate,
         shipAddress,
-        treatmentLocation
+        treatmentLocation,
+        serviceId
       );
     }
 
@@ -674,7 +676,6 @@ const uploadImage = async (req, res) => {
     fs.unlinkSync(images[i].tempFilePath);
     imageLinks.push(result.secure_url);
   }
-
   return res.status(200).json({ image: imageLinks });
 };
 
@@ -702,7 +703,7 @@ const feedback = async (req, res) => {
         to: "sm.agarbati@gmail.com",
         from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
         subject: `Request For Service - ${service.contract.contractNo}`,
-        html: `<div>Hi Sales Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
+        html: `<div>Dear Sales Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
       };
       await sgMail.send(msg);
     }
