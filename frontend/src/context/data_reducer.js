@@ -339,7 +339,7 @@ const data_reducer = (state, action) => {
         },
         area: state.singleContract.area,
         billingFrequency: state.singleContract.billingFrequency,
-        specialInstruction: state.singleContract.specialInstruction,
+        specialInstruction: state.singleContract.specialInstruction.toString(),
         billToAddress: {
           prefix: state.singleContract.billToAddress.prefix,
           name: state.singleContract.billToAddress.name,
