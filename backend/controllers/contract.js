@@ -1,12 +1,14 @@
 const Contract = require("../models/contract");
 const { BadRequestError } = require("../errors");
+const fs = require("fs");
+const path = require("path");
+const cloudinary = require("cloudinary").v2;
+const { Parser } = require("json2csv");
+const moment = require("moment");
 
 const getAllContracts = async (req, res) => {
   const { search, searchSD, searchED } = req.query;
-  // const queryObject = {};
-  // if (search) {
-  //   queryObject.contractNo = { $regex: search, $options: "i" };
-  // }
+  
   try {
     let contracts = await Contract.find({}).sort("-createdAt");
     if (search) {
@@ -19,6 +21,7 @@ const getAllContracts = async (req, res) => {
         ],
       }).sort("-createdAt");
     }
+    let renewalLink;
     if (searchSD && searchED) {
       contracts = await Contract.find({
         endDate: {
@@ -26,20 +29,40 @@ const getAllContracts = async (req, res) => {
           $lte: new Date(searchED),
         },
       }).sort("-createdAt");
+      // renewalLink = await generateRenewalFile(contracts);
     }
-
-    // const page = Number(req.query.page) || 1;
-    // const limit = 5;
-    // const skip = (page - 1) * limit;
 
     contracts = contracts.slice(0, 300);
 
-    res.status(200).json({ contracts, len: contracts.length });
+    res.status(200).json({ contracts, len: contracts.length, renewalLink });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
   }
-};      
+};
+
+// const generateRenewalFile = async (contracts) => {
+//   const month = moment(contracts.endDate).format("MMMM YYYY");
+//   const fileName = `Renewal report of ${month}.csv`;
+
+//   const fields = [
+//     { label: "Contract Number", value: "contractNo" },
+//     { label: "Contractee Name", value: "billToAddress.name" },
+//     { label: "Sales Associate", value: "sales" },
+//   ];
+
+//   const json2csvParser = new Parser({ fields });
+//   const csv = json2csvParser.parse(contracts);
+
+//   fs.writeFileSync(path.resolve(__dirname, "../files/", fileName), csv);
+//   const result = await cloudinary.uploader.upload(`files/${fileName}`, {
+//     resource_type: "raw",
+//     use_filename: true,
+//     folder: "service-reports",
+//   });
+//   fs.unlinkSync(`./files/${fileName}`);
+//   return result.secure_url;
+// };
 
 const createContract = async (req, res) => {
   const { contractNo, type } = req.body;
@@ -51,6 +74,43 @@ const createContract = async (req, res) => {
   try {
     const contract = await Contract.create({ ...req.body });
     res.status(201).json({ contract });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
+};
+
+const fileUpload = async (req, res) => {
+  const { id } = req.params;
+  const { date, fileName, description } = req.body;
+  try {
+    if (!req.files) {
+      return res.status(400).json({ msg: "No file found" });
+    }
+
+    const docFile = req.files.doc;
+    const docPath = path.join(__dirname, "../files/" + `${docFile.name}`);
+    await docFile.mv(docPath);
+
+    const result = await cloudinary.uploader.upload(`files/${docFile.name}`, {
+      resource_type: "raw",
+      use_filename: true,
+      folder: "mcd",
+    });
+
+    const contact = await Contract.findOne({ _id: id });
+
+    contact.document.push({
+      date: date,
+      fileName: fileName,
+      description: description,
+      file: result.secure_url,
+    });
+
+    await contact.save();
+
+    fs.unlinkSync(`./files/${docFile.name}`);
+    return res.status(200).json({ msg: "File has been uploaded" });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);
@@ -107,4 +167,5 @@ module.exports = {
   getContract,
   deleteContract,
   updateContract,
+  fileUpload,
 };

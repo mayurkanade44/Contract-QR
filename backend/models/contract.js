@@ -84,6 +84,7 @@ const ContractSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    document: [Object],
     createdAt: {
       type: Date,
       default: Date.now(),
