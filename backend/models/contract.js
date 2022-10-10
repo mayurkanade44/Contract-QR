@@ -12,6 +12,7 @@ const ContractSchema = new mongoose.Schema(
     sales: {
       type: String,
     },
+    company: { type: String },
     billToAddress: {
       prefix: String,
       name: String,

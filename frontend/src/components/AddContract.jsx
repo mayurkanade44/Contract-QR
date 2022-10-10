@@ -37,6 +37,7 @@ const AddContract = () => {
     allValues,
     updateContract,
     role,
+    company,
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -73,6 +74,7 @@ const AddContract = () => {
     "1 Year",
     "Onwards",
   ];
+  const companyNames = ["EXPC", "EPPL", "PMO"];
 
   const lastDate = async (startDate) => {
     const date = new Date(startDate);
@@ -182,13 +184,32 @@ const AddContract = () => {
               })}
             </select>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-2">
+            <select
+              className="form-select"
+              style={{ marginTop: 6, width:130 }}
+              aria-label="Default select example"
+              name="company"
+              value={company}
+              onChange={handleChange}
+            >
+              {companyNames.map((data) => {
+                return (
+                  <option value={data} key={data}>
+                    {data}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="col-md-5">
             <InputSelect
               label="Sales Person :"
               name="sales"
               value={sales}
               data={representativeList}
               width={150}
+              w
             />
           </div>
           <hr className="mt-3" />

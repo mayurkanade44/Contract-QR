@@ -1,11 +1,11 @@
 import React from "react";
 import { useDataContext } from "../context/data_context";
 
-const InputSelect = ({ label, data, name, value, id, width }) => {
+const InputSelect = ({ label, data, name, value, id, width, w }) => {
   const { handleChange } = useDataContext();
   return (
     <div className="row mt-2">
-      <div className="col-md-4">
+      <div className={w ? "col-md-5" : "col-md-4"}>
         <h4>{label}</h4>
       </div>
       <div className="col-md-7">
