@@ -9,6 +9,7 @@ const {
   deleteContract,
   updateContract,
   fileUpload,
+  deleteFile,
 } = require("../controllers/contract");
 
 router
@@ -20,6 +21,6 @@ router
   .get(getContract)
   .delete(authorizeUser("Admin"), deleteContract)
   .patch(authorizeUser("Admin"), updateContract);
-router.route("/uploadDoc/:id").post(fileUpload);
+router.route("/uploadDoc/:id").post(fileUpload).patch(deleteFile);
 
 module.exports = router;

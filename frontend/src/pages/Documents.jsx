@@ -1,15 +1,22 @@
 import { useState } from "react";
 import moment from "moment";
 import { useDataContext } from "../context/data_context";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert } from "../components";
 
 const Documents = () => {
-  const { documentUpload, singleContract, displayAlert, showAlert } = useDataContext();
+  const {
+    documentUpload,
+    singleContract,
+    displayAlert,
+    showAlert,
+    deleteDocFile,
+  } = useDataContext();
   const [filename, setFilename] = useState("");
   const [description, setDescription] = useState("");
   const [doc, setDoc] = useState("");
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,6 +32,17 @@ const Documents = () => {
     setFilename("");
     setDoc("");
     displayAlert();
+  };
+
+  const handleDelete = (num) => {
+    const filterDocs = singleContract.document?.filter(
+      (item, index) => index !== num
+    );
+    deleteDocFile({ id, filterDocs });
+    displayAlert();
+    setTimeout(() => {
+      navigate(`/contract/${id}`);
+    }, 2000);
   };
 
   return (
@@ -102,6 +120,12 @@ const Documents = () => {
                   >
                     Download
                   </a>
+                </button>
+                <button
+                  className="btn btn-danger ms-4"
+                  onClick={() => handleDelete(index)}
+                >
+                  Delete
                 </button>
               </td>
             </tr>

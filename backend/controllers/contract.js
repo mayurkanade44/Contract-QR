@@ -8,7 +8,7 @@ const moment = require("moment");
 
 const getAllContracts = async (req, res) => {
   const { search, searchSD, searchED } = req.query;
-  
+
   try {
     let contracts = await Contract.find({}).sort("-createdAt");
     if (search) {
@@ -117,6 +117,19 @@ const fileUpload = async (req, res) => {
   }
 };
 
+const deleteFile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const contact = await Contract.findOne({ _id: id });
+    contact.document = req.body;
+
+    await contact.save();
+    return res.status(200).json({ msg: "File has been deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getContract = async (req, res) => {
   try {
     const { id } = req.params;
@@ -168,4 +181,5 @@ module.exports = {
   deleteContract,
   updateContract,
   fileUpload,
+  deleteFile,
 };
