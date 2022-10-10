@@ -19,6 +19,7 @@ import BillToAddress from "./BillToAddress";
 import ShipToAddress from "./ShipToAddress";
 import Renew from "./Renew";
 import VerticalChart from "./VerticalChart";
+import Modal from "./Modal";
 
 export {
   AllContracts,
@@ -42,4 +43,5 @@ export {
   ShipToAddress,
   Renew,
   VerticalChart,
+  Modal,
 };

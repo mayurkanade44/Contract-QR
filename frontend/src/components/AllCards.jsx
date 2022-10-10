@@ -1,36 +1,17 @@
 import { Link } from "react-router-dom";
 import { saveAs } from "file-saver";
 import { useDataContext } from "../context/data_context";
+import Modal from "./Modal";
 
 const AllCards = ({ data, role, contractNo }) => {
-  const { serviceReport, generateReport, modal, closeModal } = useDataContext();
+  const { generateReport, modal } = useDataContext();
   const downloadImage = (url, name) => {
     saveAs(url, `${name}.png`); // Put your image url here.
   };
 
   return (
     <div>
-      {modal && (
-        <div className="modal">
-          <div className="modal-content">
-            <button
-              className="btn-primary"
-              onClick={closeModal}
-              disabled={serviceReport ? false : true}
-            >
-              <a
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                }}
-                href={serviceReport}
-              >
-                Download
-              </a>
-            </button>
-          </div>
-        </div>
-      )}
+      {modal && <Modal />}
       {data && (
         <table className="table table-striped table-bordered border-dark ">
           <thead>

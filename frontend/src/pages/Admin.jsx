@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Alert, InputRow, Loading } from "../components";
+import { Alert, InputRow, Loading, Modal } from "../components";
 import { useDataContext } from "../context/data_context";
 
 const Admin = () => {
@@ -20,6 +20,10 @@ const Admin = () => {
     addBusiness,
     serviceChemicals,
     addServiceChemicals,
+    searchSD,
+    searchED,
+    allJobData,
+    modal,
   } = useDataContext();
 
   const { label, value, chemical } = serviceChemicals;
@@ -34,10 +38,16 @@ const Admin = () => {
   const [showSales, setShowSales] = useState(false);
   const [showService, setShowService] = useState(false);
   const [showBusiness, setShowBusiness] = useState(false);
+  const [showJobFile, setShowJobFile] = useState(false);
 
   const deleteUser = (id) => {
     removeUser(id);
     displayAlert();
+  };
+
+  const generateFile = (e) => {
+    e.preventDefault();
+    allJobData();
   };
 
   const saveValues = () => {
@@ -60,6 +70,7 @@ const Admin = () => {
   return (
     <div className="container">
       {showAlert && <Alert />}
+      {modal && <Modal />}
       <button
         onClick={() => setShowUser(!showUser)}
         className="btn my-3 me-3 btn-info btn-lg"
@@ -89,6 +100,12 @@ const Admin = () => {
         className="btn m-3 btn-info btn-lg"
       >
         Add Service Comment
+      </button>
+      <button
+        onClick={() => setShowJobFile(!showJobFile)}
+        className="btn my-3 me-3 btn-info btn-lg"
+      >
+        All Job Report
       </button>
       {showUser && (
         <table className="table">
@@ -181,6 +198,31 @@ const Admin = () => {
           </div>
         )}
       </div>
+      {showJobFile && (
+        <form className="row" onSubmit={generateFile}>
+          <div className="col-md-4">
+            <InputRow
+              label="From :"
+              type="date"
+              name="searchSD"
+              value={searchSD}
+              width={200}
+            />
+          </div>
+          <div className="col-md-4">
+            <InputRow
+              label="To :"
+              type="date"
+              name="searchED"
+              value={searchED}
+              width={200}
+            />
+          </div>
+          <div className="col-md-2">
+            <button className="btn btn-primary">Generate File</button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };
