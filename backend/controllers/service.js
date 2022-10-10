@@ -10,7 +10,10 @@ const newdoc = require("docx-templates");
 const moment = require("moment");
 const pizzip = require("pizzip");
 const doctemp = require("docxtemplater");
-const { Parser } = require("json2csv");
+const {
+  Parser,
+  transforms: { unwind },
+} = require("json2csv");
 const axios = require("axios");
 const Admin = require("../models/admin");
 
@@ -553,7 +556,10 @@ const singleService = async (req, res) => {
       select: "contractNo billToAddress.name",
     });
     res.status(200).json({ service });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
 };
 
 const updateCard = async (req, res) => {
@@ -561,19 +567,17 @@ const updateCard = async (req, res) => {
     params: { id: serviceId },
     body: { image, comments, completion, serviceDate },
   } = req;
+
   try {
-    const service = await Service.findOneAndUpdate(
-      { _id: serviceId },
-      { serviceReport: true },
-      {
-        new: true,
-        runValidators: true,
-      }
-    ).populate({
+    const service = await Service.findOne({ _id: serviceId }).populate({
       path: "contract",
       select:
         "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress",
     });
+
+    service.serviceReport = true;
+
+    await service.save();
 
     if (service) {
       const temails = new Set();
@@ -618,8 +622,7 @@ const updateCard = async (req, res) => {
     }
 
     req.body.service = serviceId;
-    req.body.serviceDate = moment(serviceDate).format("DD/MM/YYYY");
-    const serviceReport = await ServiceReport.create(req.body);
+    await ServiceReport.create(req.body);
     res.status(200).json({ service });
   } catch (error) {
     console.log(error);
@@ -805,6 +808,104 @@ const getAllStats = async (req, res) => {
   }
 };
 
+const serviceNotDoneReport = async (req, res) => {
+  const { start, end } = req.query;
+
+  try {
+    // const date = new Date();
+    // const less = new Date(date.getFullYear(), date.getMonth(), 1);
+    // const more = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+    // const serviceDue = moment(more).format("MMM YY");
+
+    const serviceDue = moment(start).format("MMM YY");
+
+    const services = await Service.find({ serviceDue })
+      .select("frequency service")
+      .populate({
+        path: "serviceReports",
+        match: {
+          serviceDate: {
+            $gte: new Date(start),
+            $lte: new Date(end),
+          },
+        },
+        select: "comments completion",
+      })
+      .populate({
+        path: "contract",
+        select: "contractNo",
+      });
+
+    const filename = `${serviceDue} Done-Not done job report.csv`;
+
+    const data = [];
+    services.forEach((item) =>
+      data.push({
+        contract: item.contract.contractNo,
+        service: item.service,
+        frequency: item.frequency,
+        serviceReports: item.serviceReports,
+      })
+    );
+
+    const fields = [
+      { label: "Contract Number", value: "contract" },
+      { label: "Service Name", value: "service" },
+      { label: "Frequency", value: "frequency" },
+      { label: "Completed/Not Completed", value: "serviceReports.completion" },
+    ];
+
+    const transforms = [unwind({ paths: ["serviceReports"] })];
+    const json2csvParser = new Parser({ fields, transforms });
+
+    const csv = json2csvParser.parse(data);
+
+    fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+    const result = await cloudinary.uploader.upload(`files/${filename}`, {
+      resource_type: "raw",
+      use_filename: true,
+      folder: "service-reports",
+    });
+    fs.unlinkSync(`./files/${filename}`);
+    res.status(200).json({ link: result.secure_url });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
+
+  // const services = await Service.find({ serviceDue: "Oct 22" }).populate({
+  //   path: "contract",
+  //   select: "contractNo",
+  // });
+
+  // const report = await ServiceReport.find({
+  //   serviceDate: {
+  //     $gte: new Date("2022-07-18"),
+  //     $lte: new Date("2022-07-25"),
+  //   },
+  // });
+
+  // const serviceReport = [];
+
+  // for (let service of services) {
+  //   for (let rep of report) {
+  //     if (service._id.equals(rep.service)) {
+  //       serviceReport.push({
+  //         "Contract No": rep.contract,
+  //         Completed: true,
+  //       });
+  //     } else {
+  //       serviceReport.push({
+  //         "Contract No": service.contract.contractNo,
+  //         Completed: false,
+  //       });
+  //     }
+  //   }
+  // }
+
+  // res.status(200).json(services);
+};
+
 const dailyReport = async (req, res) => {
   // try {
   //   const date = new Date();
@@ -892,4 +993,5 @@ module.exports = {
   generateBusinessFile,
   getAllStats,
   dailyReport,
+  serviceNotDoneReport,
 };

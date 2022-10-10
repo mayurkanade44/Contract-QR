@@ -16,6 +16,7 @@ const {
   generateBusinessFile,
   dailyReport,
   getAllStats,
+  serviceNotDoneReport,
 } = require("../controllers/service");
 
 router
@@ -24,6 +25,7 @@ router
   .get(getAllService);
 router.route("/upload").post(authorizeUser("Operator", "Admin"), uploadImage);
 router.route("/allStats").get(getAllStats);
+router.route("/serviceNotDone").get(serviceNotDoneReport);
 router.route("/dailyReport").get(dailyReport);
 router
   .route("/businessDump/:name")

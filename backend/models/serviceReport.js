@@ -7,7 +7,7 @@ const ServiceReportSchema = new moongoose.Schema({
   comments: { type: String },
   completion: { type: String },
   image: { type: [String] },
-  serviceDate: { type: String },
+  serviceDate: { type: Date },
   efficiency: { type: String },
   work: { type: String },
   behavior: { type: String },
