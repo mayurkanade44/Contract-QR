@@ -34,3 +34,6 @@ export const DELETE_SERVICE = "DELETE_SERVICE";
 export const SERVICE_REPORT = "SERVICE_REPORT";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const JOB_STATS = "JOB_STATS";
+export const DOCUMENTS_UPLOAD = "DOCUMENTS_UPLOAD";
+export const RENEWAL_FILE = "RENEWAL_FILE";
+export const JOB_NOT_FILE = "JOB_NOT_FILE";

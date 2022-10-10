@@ -62,8 +62,17 @@ const SingleContract = () => {
       <h5 className="text-center">{showAlert && <Alert />}</h5>
       <div className="row">
         <div className="col-md-6 my-3">
-          <h2 className="text-center">{`Contract Number: ${contractNo}`}</h2>
+          <h3 className="d-inline">{`Contract Number: ${contractNo}`}</h3>
+          {role === "Admin" && (
+            <button
+              onClick={deleteCont}
+              className="btn btn-danger d-inline ms-5 mb-2"
+            >
+              Delete Contract
+            </button>
+          )}
         </div>
+
         <div className="col-md-2 my-3">
           <Link to={`/addcard/${id}`}>
             {(role === "Sales" || role === "Admin") && (
@@ -73,7 +82,7 @@ const SingleContract = () => {
         </div>
         <div className="col-md-2 my-3">
           <Link to={`/renew/${id}`}>
-            {role === "Admin" && (
+            {(role === "Sales" || role === "Admin") && (
               <button onClick={renewContract} className="btn btn-info btn-sm">
                 Edit/Renew Contract
               </button>
@@ -81,12 +90,11 @@ const SingleContract = () => {
           </Link>
         </div>
         <div className="col-md-2 my-3">
-          {role === "Admin" && (
-            <button onClick={deleteCont} className="btn btn-danger">
-              Delete Contract
-            </button>
-          )}
+          <Link to={`/documents/${id}`}>
+            <button className="btn btn-success">Documents</button>
+          </Link>
         </div>
+
         <div className="col-md-6">
           <h2 className="text-center mb-4">Bill To Details</h2>
           {billToAddress && (

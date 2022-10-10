@@ -10,6 +10,7 @@ import {
   ProtectedRoute,
   Admin,
   Feedback,
+  Documents,
 } from "./pages";
 
 function App() {
@@ -57,6 +58,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AddCard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/documents/:id"
+          element={
+            <ProtectedRoute>
+              <Documents />
             </ProtectedRoute>
           }
         />
