@@ -29,7 +29,7 @@ const getAllContracts = async (req, res) => {
           $lte: new Date(searchED),
         },
       }).sort("-createdAt");
-      // renewalLink = await generateRenewalFile(contracts);
+      renewalLink = await generateRenewalFile(contracts);
     }
 
     contracts = contracts.slice(0, 300);
@@ -41,28 +41,28 @@ const getAllContracts = async (req, res) => {
   }
 };
 
-// const generateRenewalFile = async (contracts) => {
-//   const month = moment(contracts.endDate).format("MMMM YYYY");
-//   const fileName = `Renewal report of ${month}.csv`;
+const generateRenewalFile = async (contracts) => {
+  const month = moment(contracts.endDate).format("MMMM YYYY");
+  const fileName = `Renewal report of ${month}.csv`;
 
-//   const fields = [
-//     { label: "Contract Number", value: "contractNo" },
-//     { label: "Contractee Name", value: "billToAddress.name" },
-//     { label: "Sales Associate", value: "sales" },
-//   ];
+  const fields = [
+    { label: "Contract Number", value: "contractNo" },
+    { label: "Contractee Name", value: "billToAddress.name" },
+    { label: "Sales Associate", value: "sales" },
+  ];
 
-//   const json2csvParser = new Parser({ fields });
-//   const csv = json2csvParser.parse(contracts);
+  const json2csvParser = new Parser({ fields });
+  const csv = json2csvParser.parse(contracts);
 
-//   fs.writeFileSync(path.resolve(__dirname, "../files/", fileName), csv);
-//   const result = await cloudinary.uploader.upload(`files/${fileName}`, {
-//     resource_type: "raw",
-//     use_filename: true,
-//     folder: "service-reports",
-//   });
-//   fs.unlinkSync(`./files/${fileName}`);
-//   return result.secure_url;
-// };
+  fs.writeFileSync(path.resolve(__dirname, "../files/", fileName), csv);
+  const result = await cloudinary.uploader.upload(`files/${fileName}`, {
+    resource_type: "raw",
+    use_filename: true,
+    folder: "service-reports",
+  });
+  fs.unlinkSync(`./files/${fileName}`);
+  return result.secure_url;
+};
 
 const createContract = async (req, res) => {
   const { contractNo, type } = req.body;

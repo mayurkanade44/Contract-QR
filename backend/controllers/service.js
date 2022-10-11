@@ -872,38 +872,6 @@ const serviceNotDoneReport = async (req, res) => {
     res.status(500).json({ msg: error });
     console.log(error);
   }
-
-  // const services = await Service.find({ serviceDue: "Oct 22" }).populate({
-  //   path: "contract",
-  //   select: "contractNo",
-  // });
-
-  // const report = await ServiceReport.find({
-  //   serviceDate: {
-  //     $gte: new Date("2022-07-18"),
-  //     $lte: new Date("2022-07-25"),
-  //   },
-  // });
-
-  // const serviceReport = [];
-
-  // for (let service of services) {
-  //   for (let rep of report) {
-  //     if (service._id.equals(rep.service)) {
-  //       serviceReport.push({
-  //         "Contract No": rep.contract,
-  //         Completed: true,
-  //       });
-  //     } else {
-  //       serviceReport.push({
-  //         "Contract No": service.contract.contractNo,
-  //         Completed: false,
-  //       });
-  //     }
-  //   }
-  // }
-
-  // res.status(200).json(services);
 };
 
 const dailyReport = async (req, res) => {
