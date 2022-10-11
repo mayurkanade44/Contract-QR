@@ -16,6 +16,7 @@ const AllContracts = () => {
     del,
     searchSD,
     searchED,
+    renewalFile,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
   const [page, setPage] = useState(0);
@@ -53,13 +54,30 @@ const AllContracts = () => {
           <h2 className="text-center all-contracts">All Contracts</h2>
         </div>
         {(role === "Sales" || role === "Admin") && (
-          <div className="col-md-6 d-flex justify-content-center">
-            <Link to="/create">
-              <button className="btn btn-success btn-lg my-1">
-                Create Contract
-              </button>
-            </Link>
-          </div>
+          <>
+            <div className="col-md-3 d-flex justify-content-center">
+              <Link to="/create">
+                <button className="btn btn-success btn-lg my-1">
+                  Create Contract
+                </button>
+              </Link>
+            </div>
+            {renewalFile && (
+              <div className="col-md-3 d-flex justify-content-center">
+                <button className="btn btn-primary btn-sm my-1">
+                  <a
+                    style={{
+                      textDecoration: "none",
+                      color: "white",
+                    }}
+                    href={renewalFile}
+                  >
+                    Renewal Report
+                  </a>
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="row">

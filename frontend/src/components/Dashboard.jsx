@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
 import { Link } from "react-router-dom";
-import { BarChart, Loading, VerticalChart } from ".";
+import { BarChart, Loading, VerticalChart, Modal } from ".";
 import moment from "moment";
 
 const Dashboard = () => {
   const {
     frequency,
     businessCount,
-    serviceReport,
     generateBusinessReport,
     modal,
-    closeModal,
     jobStats,
     getJobStats,
     loading,
@@ -33,27 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className="container my-2">
-      {modal && (
-        <div className="modal">
-          <div className="modal-content">
-            <button
-              className="btn-primary"
-              onClick={closeModal}
-              disabled={serviceReport ? false : true}
-            >
-              <a
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                }}
-                href={serviceReport}
-              >
-                Download
-              </a>
-            </button>
-          </div>
-        </div>
-      )}
+      {modal && <Modal />}
       <div className="row gx-2">
         <div className="col-md-6">
           <Link
