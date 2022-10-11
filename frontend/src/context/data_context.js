@@ -37,6 +37,10 @@ import {
   SERVICE_REPORT,
   CLOSE_MODAL,
   JOB_STATS,
+  DOCUMENTS_UPLOAD,
+  RENEWAL_FILE,
+  JOB_NOT_FILE,
+  DOCUMENTS_DELETE,
 } from "./action";
 
 const DataContext = createContext();
@@ -60,6 +64,7 @@ export const initialState = {
   contractNo: "",
   type: "NC",
   sales: "PTL",
+  company: "EXPC",
   allServices: [],
   billToAddress: {
     prefix: "Mr",
@@ -156,6 +161,7 @@ export const initialState = {
   businessCount: [],
   jobStats: [],
   serviceStats: [],
+  renewalFile: "",
 };
 
 export const DataProvider = ({ children }) => {
@@ -272,6 +278,10 @@ export const DataProvider = ({ children }) => {
       dispatch({
         type: FETCH_CONTRACTS,
         payload: paginate(res.data.contracts),
+      });
+      dispatch({
+        type: RENEWAL_FILE,
+        payload: res.data.renewalLink,
       });
     } catch (error) {
       console.log(error);
@@ -449,6 +459,7 @@ export const DataProvider = ({ children }) => {
         preferred,
         specialInstruction,
         sales,
+        company,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       const instructions = [];
@@ -459,6 +470,7 @@ export const DataProvider = ({ children }) => {
       const res = await authFetch.post("/contracts", {
         contractNo: upper,
         type,
+        company,
         sales: sales.toUpperCase(),
         billToAddress,
         shipToContact1,
@@ -505,10 +517,12 @@ export const DataProvider = ({ children }) => {
       preferred,
       startDate,
       sales,
+      company,
     } = state;
     try {
       const res = await authFetch.patch(`/contracts/${id}`, {
         contractNo,
+        company,
         sales: sales.toUpperCase(),
         billToAddress,
         shipToAddress,
@@ -674,6 +688,52 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const documentUpload = async ({ id, form }) => {
+    dispatch({ type: LOADING });
+    try {
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      const res = await authFetch.post(
+        `/contracts/uploadDoc/${id}`,
+        form,
+        config
+      );
+      dispatch({ type: DOCUMENTS_UPLOAD, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteDocFile = async ({ id, filterDocs }) => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await authFetch.patch(
+        `/contracts/uploadDoc/${id}`,
+        filterDocs
+      );
+      dispatch({ type: DOCUMENTS_DELETE, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allJobData = async () => {
+    dispatch({ type: LOADING });
+    const { searchSD, searchED } = state;
+    try {
+      const res = await authFetch.get(
+        `/service/serviceNotDone/?start=${searchSD}&end=${searchED}`
+      );
+      console.log(res.data.link);
+      dispatch({ type: JOB_NOT_FILE, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -710,6 +770,9 @@ export const DataProvider = ({ children }) => {
         feedback,
         generateBusinessReport,
         getJobStats,
+        documentUpload,
+        allJobData,
+        deleteDocFile,
       }}
     >
       {children}

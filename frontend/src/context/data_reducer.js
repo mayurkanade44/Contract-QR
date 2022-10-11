@@ -33,6 +33,10 @@ import {
   SERVICE_REPORT,
   CLOSE_MODAL,
   JOB_STATS,
+  DOCUMENTS_UPLOAD,
+  RENEWAL_FILE,
+  JOB_NOT_FILE,
+  DOCUMENTS_DELETE,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -116,6 +120,13 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         contracts: action.payload,
+      };
+    }
+    case RENEWAL_FILE: {
+      return {
+        ...state,
+        loading: false,
+        renewalFile: action.payload,
       };
     }
     case FETCH_SERVICES: {
@@ -560,6 +571,37 @@ const data_reducer = (state, action) => {
         jobStats: action.payload.allJobs,
         serviceStats: action.payload.allService,
         businessCount: action.payload.allBusinessCount,
+      };
+    }
+
+    case DOCUMENTS_UPLOAD: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
+        alertType: "success",
+        showAlert: true,
+      };
+    }
+
+    case DOCUMENTS_DELETE: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
+        alertType: "danger",
+        showAlert: true,
+      };
+    }
+
+    case JOB_NOT_FILE: {
+      return {
+        ...state,
+        loading: false,
+        serviceReport: action.payload.link,
+        modal: true,
+        searchSD: "",
+        searchED: "",
       };
     }
 
