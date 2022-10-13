@@ -700,6 +700,10 @@ const feedback = async (req, res) => {
       path: "contract",
       select: "contractNo billToContact1 shipToContact1",
     });
+
+    if (service) {
+      return res.status(400).json({ msg: "No contract found" });
+    }
     if (services) {
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msg = {
@@ -718,6 +722,7 @@ const feedback = async (req, res) => {
     res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
   } catch (error) {
     console.log(error);
+    return res.status(400).json({ msg: "Some error try again later" });
   }
 };
 
