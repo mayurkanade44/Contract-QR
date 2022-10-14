@@ -15,6 +15,16 @@ const SingleCard = () => {
   if (loading) {
     return <Loading />;
   }
+
+  if (card.length < 1) {
+    return (
+      <div className="text-center mt-5">
+        <h3> No Card Found, Contact Admin.</h3>
+        <p>or else update through system.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="my-5">

@@ -575,6 +575,9 @@ const updateCard = async (req, res) => {
         "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress",
     });
 
+    if (!service)
+      return res.status(404).json({ msg: "Service Card Not Found" });
+
     service.serviceReport = true;
 
     await service.save();
@@ -707,10 +710,10 @@ const feedback = async (req, res) => {
     if (services) {
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msg = {
-        to: "sm.agarbati@gmail.com",
+        to: "epcorn@yahoo.in",
         from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
         subject: `Request For Service - ${service.contract.contractNo}`,
-        html: `<div>Dear Sales Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
+        html: `<div>Dear Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
       };
       await sgMail.send(msg);
     }

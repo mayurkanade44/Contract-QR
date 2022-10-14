@@ -19,8 +19,8 @@ const ServiceReportSchema = new moongoose.Schema({
     required: true,
   },
   createdDate: {
-    type: String,
-    default: moment(new Date()).format("DD/MM/YYYY"),
+    type: Date,
+    default: new Date(),
   },
 });
 
