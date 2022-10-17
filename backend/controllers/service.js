@@ -638,6 +638,21 @@ const generateReport = async (req, res) => {
     const data = await ServiceReport.find({ service: id });
     const contractNo = data[0].contract.replaceAll("/", "");
     const filename = `Service Report Of ${contractNo}.csv`;
+
+    const fields1 = [];
+    for (let item of data) {
+      if (item.image.length > 0) {
+        fields1.push({
+          contract: item.contract,
+          serviceName: item.serviceName,
+          serviceDate: item.serviceDate,
+          completion: item.completion,
+          comments: item.comments,
+          image: item.image,
+        });
+      }
+    }
+
     const fields = [
       { label: "Contract Number", value: "contract" },
       { label: "Service Name", value: "serviceName" },
@@ -648,7 +663,7 @@ const generateReport = async (req, res) => {
     ];
 
     const json2csvParser = new Parser({ fields });
-    const csv = json2csvParser.parse(data);
+    const csv = json2csvParser.parse(fields1);
 
     fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
     const result = await cloudinary.uploader.upload(`files/${filename}`, {
@@ -704,7 +719,7 @@ const feedback = async (req, res) => {
       select: "contractNo billToContact1 shipToContact1",
     });
 
-    if (service) {
+    if (!service) {
       return res.status(400).json({ msg: "No contract found" });
     }
     if (services) {
