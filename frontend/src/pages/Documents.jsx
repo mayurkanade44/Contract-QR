@@ -11,6 +11,7 @@ const Documents = () => {
     displayAlert,
     showAlert,
     deleteDocFile,
+    role,
   } = useDataContext();
   const [filename, setFilename] = useState("");
   const [description, setDescription] = useState("");
@@ -121,12 +122,14 @@ const Documents = () => {
                     Download
                   </a>
                 </button>
-                <button
-                  className="btn btn-danger ms-4"
-                  onClick={() => handleDelete(index)}
-                >
-                  Delete
-                </button>
+                {role === "Admin" && (
+                  <button
+                    className="btn btn-danger ms-4"
+                    onClick={() => handleDelete(index)}
+                  >
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
           ))}

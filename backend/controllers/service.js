@@ -52,6 +52,7 @@ const createDoc = async (req, res) => {
     type,
     sales,
     sendMail,
+    company,
   } = isValidContract;
   const shipToContact = [];
   shipToContact.push(shipToContact1, shipToContact2, shipToContact3);
@@ -168,8 +169,10 @@ const createDoc = async (req, res) => {
         },
       });
 
-      const contractName = contractNo.replaceAll("/", "");
-      const filename = `${contractName} ${element.frequency} ${index + 1}`;
+      const contractName = contractNo.replaceAll("/", "-");
+      const filename = `${contractName} ${element.frequency} ${
+        index + 1
+      } ${company}`;
       fs.writeFileSync(
         path.resolve(__dirname, "../files/", `${filename}.docx`),
         buffer

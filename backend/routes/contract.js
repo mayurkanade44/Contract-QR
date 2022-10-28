@@ -20,7 +20,10 @@ router
   .route("/:id")
   .get(getContract)
   .delete(authorizeUser("Admin"), deleteContract)
-  .patch(authorizeUser("Admin"), updateContract);
-router.route("/uploadDoc/:id").post(fileUpload).patch(deleteFile);
+  .patch(authorizeUser("Admin", "Sales"), updateContract);
+router
+  .route("/uploadDoc/:id")
+  .post(authorizeUser("Sales", "Admin"), fileUpload)
+  .patch(authorizeUser("Admin"), deleteFile);
 
 module.exports = router;

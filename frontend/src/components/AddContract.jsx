@@ -187,7 +187,7 @@ const AddContract = () => {
           <div className="col-md-2">
             <select
               className="form-select"
-              style={{ marginTop: 6, width:130 }}
+              style={{ marginTop: 6, width: 130 }}
               aria-label="Default select example"
               name="company"
               value={company}
@@ -297,7 +297,7 @@ const AddContract = () => {
         </div>
       </form>
       <div className="col-md-3">
-        {role === "Admin" && (
+        {(role === "Sales" || role === "Admin") && (
           <button
             className=" btn btn-secondary my-2"
             onClick={() => updateContract({ id, endDate })}

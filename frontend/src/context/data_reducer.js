@@ -578,7 +578,7 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        alertText: action.payload.msg,
+        alertText: "Document has been uploaded",
         alertType: "success",
         showAlert: true,
       };
