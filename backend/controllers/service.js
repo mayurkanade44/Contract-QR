@@ -113,7 +113,7 @@ const createDoc = async (req, res) => {
 
   try {
     services.forEach(async (element, index) => {
-      const z = element._id.toString().replace(/ObjectId\("(.*)"\)/, "$1");
+      const z = element._id.toString();
       const tp = await QRCode.toDataURL(
         `http://localhost:5000/api/service/${z}`
       );
@@ -446,68 +446,50 @@ const sendEmail = async (
   treatmentLocation,
   serviceId
 ) => {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const att = [];
-  for (let file of image) {
-    const response = await axios.get(file, { responseType: "arraybuffer" });
-    const base64File = Buffer.from(response.data, "binary").toString("base64");
-    const attachObj = {
-      content: base64File,
-      filename: "attachment.jpg",
-      type: "application/jpg",
-      disposition: "attachment",
+  try {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const att = [];
+    for (let file of image) {
+      const response = await axios.get(file, { responseType: "arraybuffer" });
+      const base64File = Buffer.from(response.data, "binary").toString(
+        "base64"
+      );
+      const attachObj = {
+        content: base64File,
+        filename: "attachment.jpg",
+        type: "application/jpg",
+        disposition: "attachment",
+      };
+      att.push(attachObj);
+    }
+    const msg = {
+      to: emails,
+      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+      dynamic_template_data: {
+        contractNo: contractNo,
+        shipAddress: shipAddress,
+        treatmentLocation: treatmentLocation,
+        service: serv,
+        completion: completion,
+        comments: comments,
+        serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
+        link: `http://localhost:3000/feedback/${serviceId}`,
+      },
+      template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
+      attachments: att,
     };
-    att.push(attachObj);
+    await sgMail.send(msg);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
-  const msg = {
-    to: emails,
-    from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-    dynamic_template_data: {
-      contractNo: contractNo,
-      shipAddress: shipAddress,
-      treatmentLocation: treatmentLocation,
-      service: serv,
-      completion: completion,
-      comments: comments,
-      serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
-      link: `http://localhost:3000/feedback/${serviceId}`,
-    },
-    template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
-    attachments: att,
-  };
-  await sgMail.send(msg);
-
-  // request.get(image, { encoding: null }, (err, res) => {
-  //   const base64File = Buffer.from(res.body).toString("base64");
-  //   const msg = {
-  //     to: emails,
-  //     cc: "exteam.epcorn@gmail.com",
-  //     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-  //     dynamic_template_data: {
-  //       contractNo: contractNo,
-  //       service: serv,
-  //       completion: completion,
-  //       comments: comments,
-  //       serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
-  //     },
-  //     template_id: "d-25ffbbb44072488093fa6dcb9bd3978a",
-  //     attachments: [
-  //       {
-  //         content: base64File,
-  //         filename: "attachment.jpg",
-  //         type: "application/jpg",
-  //         disposition: "attachment",
-  //       },
-  //     ],
-  //   };
-  //   sgMail.send(msg);
-  // });
 };
 
 const generateQr = async (isValidContract, services) => {
   try {
     const serviceId = await services._id;
-    const contractNo = isValidContract.contractNo;
+    const contractNo = await isValidContract.contractNo;
     const contractName = contractNo.replaceAll("/", "");
     const name = `${contractName} ${services.frequency} ${services.service.length}`;
 
@@ -613,7 +595,7 @@ const updateCard = async (req, res) => {
       const shipAddress = `${addre.address1}, ${addre.address2}, ${addre.address3}, ${addre.address4}, ${addre.city}`;
       const emailSub = service.contract.contractNo;
       const serv = service.service.toString();
-      sendEmail(
+      const suc = await sendEmail(
         emails,
         image,
         emailSub,
@@ -625,12 +607,14 @@ const updateCard = async (req, res) => {
         treatmentLocation,
         serviceId
       );
-    }
 
+      if (!suc) return res.status(400).json({ msg: "There is some error" });
+    }
     req.body.service = serviceId;
     await ServiceReport.create(req.body);
     res.status(200).json({ service });
   } catch (error) {
+    res.status(400).json({ msg: "There is some error" });
     console.log(error);
   }
 };
