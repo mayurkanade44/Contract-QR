@@ -37,6 +37,7 @@ import {
   RENEWAL_FILE,
   JOB_NOT_FILE,
   DOCUMENTS_DELETE,
+  UPDATE_CARD_FAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -516,6 +517,16 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: "Email Has Been Sent",
         alertType: "success",
+        showAlert: true,
+      };
+    }
+    case UPDATE_CARD_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText:
+          "Daily Email Limit Exceeded, Try Again Today/Tomorrow after 3 PM",
+        alertType: "danger",
         showAlert: true,
       };
     }

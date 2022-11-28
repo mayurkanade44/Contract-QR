@@ -41,6 +41,7 @@ import {
   RENEWAL_FILE,
   JOB_NOT_FILE,
   DOCUMENTS_DELETE,
+  UPDATE_CARD_FAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -629,6 +630,7 @@ export const DataProvider = ({ children }) => {
       dispatch({ type: UPDATE_CARD });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
+      dispatch({ type: UPDATE_CARD_FAIL });
       console.log(error);
     }
   };
