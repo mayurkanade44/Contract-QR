@@ -309,6 +309,7 @@ const data_reducer = (state, action) => {
         frequency: action.payload.frequency,
         business: action.payload.business,
         edit: true,
+        area: action.payload.area.split(" ")[0],
         cardId: action.payload._id,
       };
     }

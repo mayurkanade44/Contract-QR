@@ -446,11 +446,13 @@ export const DataProvider = ({ children }) => {
     business,
     treatmentLocation,
     _id,
+    area,
   }) => {
+    console.log(area);
     try {
       dispatch({
         type: EDIT_SERVICE,
-        payload: { frequency, business, treatmentLocation, _id },
+        payload: { frequency, business, treatmentLocation, _id, area },
       });
     } catch (error) {}
   };
@@ -743,6 +745,7 @@ export const DataProvider = ({ children }) => {
         form,
         config
       );
+      fetchSingleContract(id);
       dispatch({ type: DOCUMENTS_UPLOAD, payload: res.data });
     } catch (error) {
       console.log(error);

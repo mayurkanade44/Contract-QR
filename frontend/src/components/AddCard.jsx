@@ -231,7 +231,7 @@ const AddCard = () => {
           <tbody>
             {services &&
               services.map((data, index) => {
-                const { frequency, service, _id, treatmentLocation, business } =
+                const { frequency, service, _id, treatmentLocation, business, area } =
                   data;
                 return (
                   <tr key={index}>
@@ -252,6 +252,7 @@ const AddCard = () => {
                             frequency,
                             business,
                             treatmentLocation,
+                            area,
                             _id,
                           })
                         }
