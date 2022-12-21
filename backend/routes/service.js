@@ -17,6 +17,7 @@ const {
   dailyReport,
   getAllStats,
   serviceNotDoneReport,
+  editService,
 } = require("../controllers/service");
 
 router
@@ -34,7 +35,8 @@ router.route("/report/:id").get(authorizeUser("Admin"), generateReport);
 router.route("/sendmail/:id").get(authorizeUser("Admin"), sendContractEmail);
 router
   .route("/create/:id")
-  .get(authorizeUser("Sales", "Admin", "Back Office"), createDoc);
+  .get(authorizeUser("Sales", "Admin", "Back Office"), createDoc)
+  .patch(authorizeUser("Sales", "Admin"), editService);
 router
   .route("/:id")
   .get(authorizeUser("Operator", "Admin"), singleService)

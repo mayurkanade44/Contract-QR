@@ -697,6 +697,20 @@ const deleteService = async (req, res) => {
   }
 };
 
+const editService = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Service.findByIdAndUpdate({ _id: id }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({ msg: "Card has been updated" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const feedback = async (req, res) => {
   const { id } = req.params;
   const { services } = req.body;
@@ -972,4 +986,5 @@ module.exports = {
   getAllStats,
   dailyReport,
   serviceNotDoneReport,
+  editService,
 };
