@@ -38,6 +38,7 @@ import {
   JOB_NOT_FILE,
   DOCUMENTS_DELETE,
   UPDATE_CARD_FAIL,
+  EDIT_SERVICE,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -299,6 +300,18 @@ const data_reducer = (state, action) => {
         del: true,
       };
     }
+
+    case EDIT_SERVICE: {
+      return {
+        ...state,
+        loading: false,
+        treatmentLocation: action.payload.treatmentLocation,
+        frequency: action.payload.frequency,
+        business: action.payload.business,
+        edit: true,
+        cardId: action.payload._id,
+      };
+    }
     case CREATE_CARD: {
       return {
         ...state,
@@ -308,6 +321,8 @@ const data_reducer = (state, action) => {
         alertType: "success",
         showAlert: true,
         ratrid: "No",
+        edit: false,
+        cardId: "",
       };
     }
     case CARD_FAIL: {
