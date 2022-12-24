@@ -172,7 +172,7 @@ export const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const authFetch = axios.create({
-    baseURL: "/api",
+    baseURL: "http://localhost:5000/api",
   });
 
   authFetch.interceptors.request.use(
@@ -238,7 +238,10 @@ export const DataProvider = ({ children }) => {
   const loginUser = async (currentUser) => {
     dispatch({ type: LOADING });
     try {
-      const res = await axios.post("/api/login", currentUser);
+      const res = await axios.post(
+        "http://localhost:5000/api/login",
+        currentUser
+      );
       const { name, token, role } = res.data;
       dispatch({ type: LOGIN_SUCCESS, payload: { name, token, role } });
       addLocalStorage({ name, token, role });

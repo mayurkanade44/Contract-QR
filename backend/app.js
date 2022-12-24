@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("express-async-errors");
+const cors = require("cors");
 
 const express = require("express");
 const app = express();
@@ -23,6 +24,20 @@ const { authenticateUser } = require("./middleware/auth");
 
 const path = require("path");
 
+const whitelist = [
+  "http://localhost:3000",
+  "https://contractqr.herokuapp.com",
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
@@ -33,6 +48,7 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 app.use(express.static("./public"));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(uploadImage({ useTempFiles: true }));
 
