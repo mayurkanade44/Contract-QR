@@ -172,7 +172,7 @@ export const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const authFetch = axios.create({
-    baseURL: "http://localhost:5000/api",
+    baseURL: "/api",
   });
 
   authFetch.interceptors.request.use(

@@ -1,14 +1,11 @@
 require("dotenv").config();
 require("express-async-errors");
-const cors = require("cors");
 
 const express = require("express");
 const app = express();
 
 const morgan = require("morgan");
-
 const mongoose = require("mongoose");
-
 const cloudinary = require("cloudinary").v2;
 const uploadImage = require("express-fileupload");
 
@@ -24,20 +21,6 @@ const { authenticateUser } = require("./middleware/auth");
 
 const path = require("path");
 
-const whitelist = [
-  "http://localhost:3000",
-  "https://contractqr.herokuapp.com",
-];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
@@ -47,8 +30,10 @@ cloudinary.config({
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
+
+// app.use(express.static(path.join(__dirname, "/frontend/build")));
+
 app.use(express.static("./public"));
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(uploadImage({ useTempFiles: true }));
 
@@ -57,8 +42,6 @@ app.use("/api/contracts", authenticateUser, contractRouter);
 app.use("/api/service", authenticateUser, serviceRouter);
 app.use("/api/user", authenticateUser, userRouter);
 app.use("/api/admin", authenticateUser, adminRouter);
-
-// app.use(express.static(path.join(__dirname, "/frontend/build")));
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "/frontend/build", "index.html"));
