@@ -239,7 +239,7 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/login",
+        "/api/login",
         currentUser
       );
       const { name, token, role } = res.data;

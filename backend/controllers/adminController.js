@@ -15,11 +15,12 @@ const allValues = async (req, res) => {
 const serviceCards = async (req, res) => {
   const { contract } = req.query;
   try {
-    const cont = await ServiceReport.find({
-      contract: { contract, $options: "i" },
-    }).select("contract serviceName image serviceDate");
+    const cont = await ServiceReport.find({ contract }).select(
+      "contract serviceName image serviceDate"
+    );
     if (cont.length <= 0)
       return res.status(404).json({ msg: "No Contract Found" });
+
     const cards = [];
 
     for (let i = cont.length - 1; i >= 0; i--) {
