@@ -36,10 +36,10 @@ const AddCard = () => {
     del,
     ratrid,
     editService,
+    user,
   } = useDataContext();
 
-  const { contractNo, startDate, endDate, services, } =
-    singleContract;
+  const { contractNo, startDate, endDate, services } = singleContract;
 
   const frequencyList = [
     "Daily",
@@ -231,20 +231,28 @@ const AddCard = () => {
           <tbody>
             {services &&
               services.map((data, index) => {
-                const { frequency, service, _id, treatmentLocation, business, area } =
-                  data;
+                const {
+                  frequency,
+                  service,
+                  _id,
+                  treatmentLocation,
+                  business,
+                  area,
+                } = data;
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{`${service},`}</td>
                     <td>{frequency}</td>
                     <td>
-                      {/* <button
-                        className="btn btn-danger"
-                        onClick={() => deleteService(_id)}
-                      >
-                        Delete
-                      </button> */}
+                      {user === "mayur" && (
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => deleteService(_id)}
+                        >
+                          Delete
+                        </button>
+                      )}
                       <button
                         className="btn btn-primary"
                         onClick={() =>
