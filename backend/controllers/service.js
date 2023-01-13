@@ -16,6 +16,8 @@ const {
 } = require("json2csv");
 const axios = require("axios");
 const Admin = require("../models/admin");
+const Feedback = require("../models/feedback");
+const client = require("@sendgrid/client");
 
 const getAllService = async (req, res) => {
   try {
@@ -545,6 +547,22 @@ const singleService = async (req, res) => {
   }
 };
 
+const sendFeedbackMail = async (emails) => {
+  try {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    const msg = {
+      to: "exteam.epcorn@gmail.com",
+      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN Feedback" },
+      template_id: "d-fcb583cc5d554a2f894a6d2243d8490e",
+    };
+    await sgMail.send(msg);
+    console.log("Ok");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const updateCard = async (req, res) => {
   const {
     params: { id: serviceId },
@@ -555,7 +573,7 @@ const updateCard = async (req, res) => {
     const service = await Service.findOne({ _id: serviceId }).populate({
       path: "contract",
       select:
-        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress",
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress feedbackMail",
     });
 
     if (!service)
@@ -565,6 +583,37 @@ const updateCard = async (req, res) => {
 
     await service.save();
 
+    // client.setApiKey(process.env.SENDGRID_API_KEY);
+
+    // const data = {
+    //   contacts: [
+    //     {
+    //       email: "ea.epcorn@gmail.com",
+    //       line: "bacde789",
+    //     },
+    //     {
+    //       email: "clientproxymail@gmail.com",
+    //       line: "asdasdbacde",
+    //     },
+    //   ],
+    // };
+
+    // const request = {
+    //   url: `/v3/marketing/contacts`,
+    //   method: "PUT",
+    //   body: data,
+    // };
+
+    // client
+    //   .request(request)
+    //   .then(([response, body]) => {
+    //     console.log(response.statusCode);
+    //     console.log(response.body);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+
     if (service) {
       const temails = new Set();
       const first = service.contract.billToContact1.email;
@@ -573,40 +622,34 @@ const updateCard = async (req, res) => {
       const six = service.contract.billToContact3.email;
       const third = service.contract.shipToContact2.email;
       const fourth = service.contract.shipToContact3.email;
-      temails.add(first);
-      temails.add(second);
-      if (third) {
-        temails.add(third);
-      }
-      if (fourth) {
-        temails.add(fourth);
-      }
-      if (fifth) {
-        temails.add(fifth);
-      }
-      if (six) {
-        temails.add(six);
-      }
+      if (first && first !== "clientproxymail@gmail.com") temails.add(first);
+      if (second && second !== "clientproxymail@gmail.com") temails.add(second);
+      if (third && third !== "clientproxymail@gmail.com") temails.add(third);
+      if (fourth && fourth !== "clientproxymail@gmail.com") temails.add(fourth);
+      if (fifth && fifth !== "clientproxymail@gmail.com") temails.add(fifth);
+      if (six && six !== "clientproxymail@gmail.com") temails.add(six);
+
       const emails = [...temails];
       const addre = service.contract.shipToAddress;
       const treatmentLocation = service.treatmentLocation;
       const shipAddress = `${addre.address1}, ${addre.address2}, ${addre.address3}, ${addre.address4}, ${addre.city}`;
       const emailSub = service.contract.contractNo;
       const serv = service.service.toString();
-      const suc = await sendEmail(
-        emails,
-        image,
-        emailSub,
-        serv,
-        completion,
-        comments,
-        serviceDate,
-        shipAddress,
-        treatmentLocation,
-        serviceId
-      );
-
-      if (!suc) return res.status(400).json({ msg: "There is some error" });
+      if (emails.length > 0) {
+        const suc = await sendEmail(
+          emails,
+          image,
+          emailSub,
+          serv,
+          completion,
+          comments,
+          serviceDate,
+          shipAddress,
+          treatmentLocation,
+          serviceId
+        );
+        if (!suc) return res.status(400).json({ msg: "There is some error" });
+      }
     }
     req.body.service = serviceId;
     await ServiceReport.create(req.body);
@@ -897,73 +940,75 @@ const serviceNotDoneReport = async (req, res) => {
 };
 
 const dailyReport = async (req, res) => {
-  // try {
-  //   const date = new Date();
-  //   date.setDate(date.getDate() - 1);
-  //   const yesterday = moment(date).format("DD/MM/YYYY");
-  //   const data = await ServiceReport.find({ createdDate: yesterday });
-  //   const filename = "Report.csv";
-  //   const allFields = [
-  //     [
-  //       { label: "Contract Number", value: "contract" },
-  //       { label: "Service Name", value: "serviceName" },
-  //       { label: "Service Done Date", value: "serviceDate" },
-  //       { label: "Done/Not Done", value: "completion" },
-  //       { label: "Comments By Operator", value: "comments" },
-  //       { label: "Service Card", value: "image" },
-  //     ],
-  //     [
-  //       { label: "Contract Number", value: "contract" },
-  //       { label: "Service Name", value: "serviceName" },
-  //       { label: "Work Efficiency", value: "efficiency" },
-  //       { label: "Know His Work", value: "work" },
-  //       { label: "His Behavior", value: "behavior" },
-  //       { label: "Equipment", value: "equipment" },
-  //     ],
-  //   ];
-  //   const image = [];
-  //   for (let fields of allFields) {
-  //     const json2csvParser = new Parser({ fields });
-  //     const csv = json2csvParser.parse(data);
-  //     fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
-  //     const result = await cloudinary.uploader.upload(`files/${filename}`, {
-  //       resource_type: "raw",
-  //       use_filename: true,
-  //       folder: "service-reports",
-  //     });
-  //     fs.unlinkSync(`./files/${filename}`);
-  //     image.push(result.secure_url);
-  //   }
-  //   const files = {
-  //     "Service Report.csv": image[0],
-  //     "Feedback Report.csv": image[1],
-  //   };
-  //   const att = [];
-  //   for (let file in files) {
-  //     const response = await axios.get(files[file], {
-  //       responseType: "arraybuffer",
-  //     });
-  //     const base64File = Buffer.from(response.data, "binary").toString(
-  //       "base64"
-  //     );
-  //     const attachObj = {
-  //       content: base64File,
-  //       filename: file,
-  //       type: "application/json",
-  //       disposition: "attachment",
-  //     };
-  //     att.push(attachObj);
-  //   }
-  //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  //   const msg = {
-  //     to: "sm.agarbati@gmail.com",
-  //     from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-  //     subject: `Scheduled Daily Reports of ${yesterday}`,
-  //     html: "<div>Hi Team,<br></br><br></br>and easy to do anywhere, even with Node.js with</div>",
-  //     attachments: att,
-  //   };
-  //   await sgMail.send(msg);
-  //   res.status(200).json({ msg: "ok" });
+  // // try {
+  // //   const date = new Date();
+  // //   const new1 = date.setDate(date.getDate() - 7);
+  // //   const data = await ServiceReport.find({
+  // //     createdDate: { $gte: new Date(new1) },
+  // //   });
+  // //   const filename = "Report.csv";
+  // //   const allFields = [
+  // //     [
+  // //       { label: "Contract Number", value: "contract" },
+  // //       { label: "Service Name", value: "serviceName" },
+  // //       { label: "Service Done Date", value: "serviceDate" },
+  // //       { label: "Done/Not Done", value: "completion" },
+  // //       { label: "Comments By Operator", value: "comments" },
+  // //       { label: "Service Card", value: "image" },
+  // //     ],
+  // //     [
+  // //       { label: "Contract Number", value: "contract" },
+  // //       { label: "Service Name", value: "serviceName" },
+  // //       { label: "Work Efficiency", value: "efficiency" },
+  // //       { label: "Know His Work", value: "work" },
+  // //       { label: "His Behavior", value: "behavior" },
+  // //       { label: "Equipment", value: "equipment" },
+  // //     ],
+  // //   ];
+  // //   const image = [];
+  // //   for (let fields of allFields) {
+  // //     const json2csvParser = new Parser({ fields });
+  // //     const csv = json2csvParser.parse(data);
+  // //     fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+  // //     const result = await cloudinary.uploader.upload(`files/${filename}`, {
+  // //       resource_type: "raw",
+  // //       use_filename: true,
+  // //       folder: "service-reports",
+  // //     });
+  // //     fs.unlinkSync(`./files/${filename}`);
+  // //     image.push(result.secure_url);
+  // //   }
+  // //   console.log(image);
+  //   // const files = {
+  //   //   "Service Report.csv": image[0],
+  //   //   "Feedback Report.csv": image[1],
+  //   // };
+  //   // const att = [];
+  //   // for (let file in files) {
+  //   //   const response = await axios.get(files[file], {
+  //   //     responseType: "arraybuffer",
+  //   //   });
+  //   //   const base64File = Buffer.from(response.data, "binary").toString(
+  //   //     "base64"
+  //   //   );
+  //   //   const attachObj = {
+  //   //     content: base64File,
+  //   //     filename: file,
+  //   //     type: "application/json",
+  //   //     disposition: "attachment",
+  //   //   };
+  //   //   att.push(attachObj);
+  //   // }
+  //   // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  //   // const msg = {
+  //   //   to: "sm.agarbati@gmail.com",
+  //   //   from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+  //   //   subject: `Scheduled Daily Reports of ${yesterday}`,
+  //   //   html: "<div>Hi Team,<br></br><br></br>and easy to do anywhere, even with Node.js with</div>",
+  //   //   attachments: att,
+  //   // };
+  //   // await sgMail.send(msg);
+  //   res.status(200).json({ data });
   // } catch (error) {
   //   console.log(error);
   // }
