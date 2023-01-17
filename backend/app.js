@@ -43,7 +43,7 @@ app.use("/api/contracts", authenticateUser, contractRouter);
 app.use("/api/service", authenticateUser, serviceRouter);
 app.use("/api/user", authenticateUser, userRouter);
 app.use("/api/admin", authenticateUser, adminRouter);
-app.use("/api/feedback", feedbackRouter)
+app.use("/api/newFeedback", feedbackRouter)
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "/frontend/build", "index.html"));

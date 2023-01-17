@@ -1,14 +1,24 @@
 const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
+const Contract = require("../models/contract");
 client.setApiKey(process.env.SENDGRID_API_KEY);
 
 const createFeedback = async (req, res) => {
-  const { name, efficiency, work, behavior, equipment } = req.body;
+  const { rating, efficiency, work, behavior, equipment, pestService } =
+    req.body;
+  const { email, id } = req.params;
   try {
-    if (!name || !efficiency || !work || !behavior || !equipment)
+    if (!efficiency || !work || !behavior || !equipment || !pestService)
       return res.status(400).json({ msg: "Please provide all values" });
 
+    const contact = await Contract.findOne({ _id: id });
+    if (!contact) return res.status(404).json({ msg: "Contract Not Found" });
+
+    req.body.contract = contact.contractNo;
+    req.body.email = email;
+
     await Feedback.create(req.body);
+
     res.status(201).json({
       msg: "We thank you for your time spent taking this feedback. Your response has been recorded",
     });
