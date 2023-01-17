@@ -1,4 +1,5 @@
 import Admin from "./Admin";
+import Cart from "./Cart";
 import Documents from "./Documents";
 import Feedback from "./Feedback";
 import Home from "./Home";
@@ -20,4 +21,5 @@ export {
   Admin,
   Feedback,
   Documents,
+  Cart,
 };

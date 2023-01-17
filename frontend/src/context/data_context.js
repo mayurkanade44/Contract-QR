@@ -43,6 +43,10 @@ import {
   DOCUMENTS_DELETE,
   UPDATE_CARD_FAIL,
   EDIT_SERVICE,
+  ADD_EMAILS,
+  REMOVE_EMAILS,
+  CREATE_CONTACT_LIST,
+  SCHEDULE_MAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -166,6 +170,8 @@ export const initialState = {
   renewalFile: "",
   edit: false,
   cardId: "",
+  feedbackEmails: [],
+  listCreated: false,
 };
 
 export const DataProvider = ({ children }) => {
@@ -772,8 +778,37 @@ export const DataProvider = ({ children }) => {
       const res = await authFetch.get(
         `/service/serviceNotDone/?start=${searchSD}&end=${searchED}`
       );
-      console.log(res.data.link);
       dispatch({ type: JOB_NOT_FILE, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addEmails = (emails) => {
+    dispatch({
+      type: ADD_EMAILS,
+      payload: { emails },
+    });
+  };
+
+  const removeEmail = (email) => {
+    dispatch({ type: REMOVE_EMAILS, payload: { email } });
+  };
+
+  const createContactList = async () => {
+    const { feedbackEmails } = state;
+    try {
+      const res = await axios.put("/api/feedback/addContacts", feedbackEmails);
+      dispatch({ type: CREATE_CONTACT_LIST, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const scheduleMail = async () => {
+    try {
+      const res = await axios.put("/api/feedback/schedule");
+      dispatch({ type: SCHEDULE_MAIL, payload: res.data });
     } catch (error) {
       console.log(error);
     }
@@ -819,6 +854,10 @@ export const DataProvider = ({ children }) => {
         allJobData,
         deleteDocFile,
         editService,
+        addEmails,
+        removeEmail,
+        createContactList,
+        scheduleMail,
       }}
     >
       {children}

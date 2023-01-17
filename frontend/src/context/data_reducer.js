@@ -39,6 +39,10 @@ import {
   DOCUMENTS_DELETE,
   UPDATE_CARD_FAIL,
   EDIT_SERVICE,
+  ADD_EMAILS,
+  REMOVE_EMAILS,
+  CREATE_CONTACT_LIST,
+  SCHEDULE_MAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -629,6 +633,46 @@ const data_reducer = (state, action) => {
         modal: true,
         searchSD: "",
         searchED: "",
+      };
+    }
+    case ADD_EMAILS: {
+      const { emails } = action.payload;
+
+      return {
+        ...state,
+        feedbackEmails: state.feedbackEmails.concat(emails),
+      };
+    }
+
+    case REMOVE_EMAILS: {
+      return {
+        ...state,
+        feedbackEmails: state.feedbackEmails.filter(
+          (item) => item.email !== action.payload.email
+        ),
+      };
+    }
+
+    case CREATE_CONTACT_LIST: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Email Ids Added",
+        alertType: "success",
+        showAlert: true,
+        listCreated: true,
+      };
+    }
+
+    case SCHEDULE_MAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Email has been schedule for tonight at 7.30pm",
+        alertType: "success",
+        showAlert: true,
+        feedbackEmails: [],
+        listCreated: false,
       };
     }
 

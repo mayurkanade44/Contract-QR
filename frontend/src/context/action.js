@@ -40,4 +40,8 @@ export const RENEWAL_FILE = "RENEWAL_FILE";
 export const JOB_NOT_FILE = "JOB_NOT_FILE";
 export const UPDATE_CARD_FAIL = "UPDATE_CARD_FAIL";
 export const EDIT_SERVICE = "EDIT_SERVICE";
+export const ADD_EMAILS = "ADD_EMAILS"
+export const REMOVE_EMAILS = "REMOVE_EMAILS"
+export const CREATE_CONTACT_LIST = "CREATE_CONTACT_LIST";
+export const SCHEDULE_MAIL = "SCHEDULE_MAIL";
 

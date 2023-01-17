@@ -17,10 +17,12 @@ const AllContracts = () => {
     searchSD,
     searchED,
     renewalFile,
+    addEmails,
   } = useDataContext();
   const [toggle, setToggle] = useState(false);
   const [page, setPage] = useState(0);
   const [cont, setCont] = useState([]);
+  // const [emails, setEmails] = useState([]);
 
   useEffect(() => {
     fetchContracts();
@@ -41,6 +43,25 @@ const AllContracts = () => {
 
   const handleChnage = (index) => {
     setPage(index);
+  };
+
+  const add = (first, second, third, fourth, fifth, six, id, contractNo) => {
+    const temp = new Set();
+    const emails = [];
+    if (first && first !== "clientproxymail@gmail.com") temp.add(first);
+    if (second && second !== "clientproxymail@gmail.com") temp.add(second);
+    if (third && third !== "clientproxymail@gmail.com") temp.add(third);
+    if (fourth && fourth !== "clientproxymail@gmail.com") temp.add(fourth);
+    if (fifth && fifth !== "clientproxymail@gmail.com") temp.add(fifth);
+    if (six && six !== "clientproxymail@gmail.com") temp.add(six);
+    [...temp].map((item) => {
+      const tes = item.split("@")[0] + "_" + contractNo.replace("/", "");
+      return emails.push({
+        email: item,
+        line: `https://cqr.sat9.in/feedback/${tes}`,
+      });
+    });
+    addEmails(emails);
   };
 
   if (loading) {
@@ -143,6 +164,12 @@ const AllContracts = () => {
                 shipToAddress,
                 type,
                 createdAt,
+                billToContact1,
+                billToContact2,
+                billToContact3,
+                shipToContact1,
+                shipToContact2,
+                shipToContact3,
               } = contracts;
               const { name } = shipToAddress;
               return (
@@ -162,6 +189,25 @@ const AllContracts = () => {
                     <Link to={`/contract/${_id}`}>
                       <button className="btn btn-info">Details</button>
                     </Link>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() =>
+                        add(
+                          billToContact1.email,
+                          billToContact2.email,
+                          billToContact3.email,
+                          shipToContact1.email,
+                          shipToContact2.email,
+                          shipToContact3.email,
+                          _id,
+                          contractNo
+                        )
+                      }
+                    >
+                      Add
+                    </button>
                   </td>
                 </tr>
               );
