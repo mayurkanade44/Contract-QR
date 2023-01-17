@@ -12,6 +12,7 @@ import {
   Feedback,
   Documents,
   Cart,
+  NewFeedback,
 } from "./pages";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register></Register>} />
         <Route path="/login" element={<Login></Login>} />
         <Route path="/feedback/:id" element={<Feedback />} />
+        <Route path="/newFeedback/:email/:id" element={<NewFeedback />} />
         <Route
           path="/"
           element={

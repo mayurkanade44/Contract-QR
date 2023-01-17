@@ -4,6 +4,7 @@ import Documents from "./Documents";
 import Feedback from "./Feedback";
 import Home from "./Home";
 import Login from "./Login";
+import NewFeedback from "./NewFeedback";
 import NotFound from "./NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
@@ -22,4 +23,5 @@ export {
   Feedback,
   Documents,
   Cart,
+  NewFeedback,
 };

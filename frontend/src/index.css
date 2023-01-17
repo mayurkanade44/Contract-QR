@@ -72,3 +72,58 @@ input[type="number"] {
     display: none;
   }
 }
+
+.emo-name {
+  visibility: hidden;
+  opacity: 0;
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.emo:hover img {
+  cursor: pointer;
+  transition: all 1s;
+  transform: scale(1.2);
+}
+
+.emo:hover .emo-name {
+  visibility: visible !important;
+  transition: all 1s;
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  .textarea {
+    margin-top: 0px;
+  }
+
+  .name {
+    padding: 0px !important;
+  }
+
+  .name input {
+    width: 290px;
+  }
+}
+
+@media (max-width: 424px) {
+  .name input {
+    width: 250px;
+  }
+}
+
+@media (max-width: 374px) {
+  .name input {
+    width: 200px;
+  }
+}
+
+.feedback-banner {
+  height: 120px;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}

@@ -798,7 +798,10 @@ export const DataProvider = ({ children }) => {
   const createContactList = async () => {
     const { feedbackEmails } = state;
     try {
-      const res = await axios.put("/api/feedback/addContacts", feedbackEmails);
+      const res = await axios.put(
+        "/api/newFeedback/addContacts",
+        feedbackEmails
+      );
       dispatch({ type: CREATE_CONTACT_LIST, payload: res.data });
     } catch (error) {
       console.log(error);
@@ -807,8 +810,17 @@ export const DataProvider = ({ children }) => {
 
   const scheduleMail = async () => {
     try {
-      const res = await axios.put("/api/feedback/schedule");
+      const res = await axios.put("/api/newFeedback/schedule");
       dispatch({ type: SCHEDULE_MAIL, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const newFeedback = async (email, id, formValue) => {
+    try {
+      const res = await axios.post(`/api/newFeedback/${email}/${id}`, formValue);
+      console.log(res.data.msg);
     } catch (error) {
       console.log(error);
     }
@@ -858,6 +870,7 @@ export const DataProvider = ({ children }) => {
         removeEmail,
         createContactList,
         scheduleMail,
+        newFeedback,
       }}
     >
       {children}
