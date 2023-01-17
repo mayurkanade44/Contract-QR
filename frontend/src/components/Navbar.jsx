@@ -2,9 +2,10 @@ import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDataContext } from "../context/data_context";
+import bag from "../images/bag.png";
 
 const Navbar = () => {
-  const { user, logout, role } = useDataContext();
+  const { user, logout, role, feedbackEmails } = useDataContext();
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -41,6 +42,16 @@ const Navbar = () => {
                     </Link>
                   </li>
                 )}
+                <li className="nav-item me-4">
+                  <Link to="/cart" className="nav-link active" aria-current="page">
+                    <img src={bag} alt="cart" style={{ width: 30 }} />
+                    {feedbackEmails.length > 0 && (
+                      <span className="position-absolute top-25 start-75 translate-middle badge cart-badge rounded-pill bg-dark">
+                        {feedbackEmails.length}
+                      </span>
+                    )}
+                  </Link>
+                </li>
 
                 <li className="nav-item me-4">
                   <Link to="/" className="nav-link active" aria-current="page">

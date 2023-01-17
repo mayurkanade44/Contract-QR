@@ -11,6 +11,7 @@ import {
   Admin,
   Feedback,
   Documents,
+  Cart,
 } from "./pages";
 
 function App() {
@@ -50,6 +51,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AddContract />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
             </ProtectedRoute>
           }
         />
