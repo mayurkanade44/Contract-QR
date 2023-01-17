@@ -127,3 +127,7 @@ input[type="number"] {
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
+
+.feedbackbg {
+  margin-top: 0px !important;
+}

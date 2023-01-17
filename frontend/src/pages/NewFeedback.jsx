@@ -24,7 +24,6 @@ const initialState = {
 
 const NewFeedback = () => {
   const [formValue, setFormValue] = useState(initialState);
-  const [emoji, setEmoji] = useState(false);
   const [thanks, setThanks] = useState(false);
 
   const { newFeedback } = useDataContext();
@@ -38,7 +37,6 @@ const NewFeedback = () => {
     improvement,
     aspect,
     recommend,
-    rating,
   } = formValue;
 
   const service = [
@@ -88,8 +86,6 @@ const NewFeedback = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setEmoji(true);
-
     setFormValue({ ...formValue, [name]: value });
   };
 
@@ -106,16 +102,10 @@ const NewFeedback = () => {
   };
 
   return (
-    <div className="container my-2">
+    <div className="container my-2 bg-light feedbackbg">
       {!thanks ? (
         <>
-          <h2 className="text-center text-info">
-            <img
-              src={feedback}
-              alt="feedback"
-              className="feedback-banner mb-2"
-            />
-          </h2>
+          <img src={feedback} alt="feedback" className="feedback-banner mb-2" />
 
           <form
             onSubmit={handleSubmit}
@@ -124,7 +114,7 @@ const NewFeedback = () => {
           >
             <div className="row">
               <div className="col-12 d-flex justify-content-center">
-                <h5 className="me-4 pt-1">Select Service:-</h5>
+                <h6 className="me-4 pt-2">Select Service:-</h6>
                 <select
                   className="form-select d-inline"
                   style={{ width: 200 }}
@@ -166,86 +156,6 @@ const NewFeedback = () => {
                   </label>
                 </div>
               ))}
-              {/* <div className="col-2 d-flex justify-content-center emo">
-                <input
-                  className="form-check-input mt-2"
-                  type="radio"
-                  name="efficiency"
-                  value="Best"
-                  onChange={handleChange}
-                />
-                <label
-                  className="form-check-label ms-2"
-                  htmlFor="flexCheckChecked"
-                >
-                  <img src={best} alt="ugly" width={30} />
-                  <p className="emo-name">Best</p>
-                </label>
-              </div>
-              <div className="col-2 d-flex justify-content-center emo">
-                <input
-                  className="form-check-input mt-2"
-                  type="radio"
-                  name="efficiency"
-                  value="Good"
-                  onChange={handleChange}
-                />
-                <label
-                  className="form-check-label ms-2"
-                  htmlFor="flexCheckDefault"
-                >
-                  <img src={smile} alt="good" width={30} />
-                  <p className="emo-name">Good</p>
-                </label>
-              </div>
-              <div className="col-2 d-flex justify-content-center emo">
-                <input
-                  className="form-check-input mt-2"
-                  type="radio"
-                  name="efficiency"
-                  value="Average"
-                  onChange={handleChange}
-                />
-                <label
-                  className="form-check-label ms-2 "
-                  htmlFor="flexCheckChecked"
-                >
-                  <img src={bad} alt="bad" width={30} />
-                  <p className="emo-name">Avg</p>
-                </label>
-              </div>
-              <div className="col-2 d-flex justify-content-center emo">
-                <input
-                  className="form-check-input mt-2"
-                  type="radio"
-                  name="efficiency"
-                  value="Bad"
-                  onChange={handleChange}
-                />
-                <label
-                  className="form-check-label ms-2"
-                  htmlFor="flexCheckChecked"
-                >
-                  <img src={ugly} alt="ugly" width={30} />
-                  <p className="emo-name">Bad</p>
-                </label>
-              </div>
-              <div className="col-2 d-flex justify-content-center emo">
-                <input
-                  className="form-check-input mt-2"
-                  type="radio"
-                  name="efficiency"
-                  value="Worst"
-                  onChange={handleChange}
-                />
-                <label
-                  className="form-check-label ms-2 "
-                  htmlFor="flexCheckChecked"
-                >
-                  <img src={angry} alt="ugly" width={30} />
-                  <p className="emo-name">Worst</p>
-                </label>
-              </div> */}
               <hr className="mb-3" />
               <h6 className="text-center">Did our executive know his work?</h6>
               <div className="col-6 d-flex justify-content-center">
