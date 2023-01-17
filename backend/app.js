@@ -14,6 +14,7 @@ const serviceRouter = require("./routes/service");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoute");
 const adminRouter = require("./routes/adminRoute");
+const feedbackRouter = require("./routes/feedbackRoute");
 
 const notFound = require("./middleware/not-found");
 const errorHandler = require("./middleware/error-handler");
@@ -42,6 +43,7 @@ app.use("/api/contracts", authenticateUser, contractRouter);
 app.use("/api/service", authenticateUser, serviceRouter);
 app.use("/api/user", authenticateUser, userRouter);
 app.use("/api/admin", authenticateUser, adminRouter);
+app.use("/api/feedback", feedbackRouter)
 
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "/frontend/build", "index.html"));
