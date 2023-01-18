@@ -583,37 +583,7 @@ const updateCard = async (req, res) => {
 
     await service.save();
 
-    // client.setApiKey(process.env.SENDGRID_API_KEY);
-
-    // const data = {
-    //   contacts: [
-    //     {
-    //       email: "ea.epcorn@gmail.com",
-    //       line: "bacde789",
-    //     },
-    //     {
-    //       email: "clientproxymail@gmail.com",
-    //       line: "asdasdbacde",
-    //     },
-    //   ],
-    // };
-
-    // const request = {
-    //   url: `/v3/marketing/contacts`,
-    //   method: "PUT",
-    //   body: data,
-    // };
-
-    // client
-    //   .request(request)
-    //   .then(([response, body]) => {
-    //     console.log(response.statusCode);
-    //     console.log(response.body);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-
+    
     if (service) {
       const temails = new Set();
       const first = service.contract.billToContact1.email;

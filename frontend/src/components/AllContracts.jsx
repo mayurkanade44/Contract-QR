@@ -57,7 +57,7 @@ const AllContracts = () => {
     [...temp].map((item) => {
       return emails.push({
         email: item,
-        line: `https://cqr.sat9.in/feedback/${item}/${id}`,
+        line: `https://cqr.sat9.in/newFeedback/${item}/${id}`,
       });
     });
     addEmails(emails);

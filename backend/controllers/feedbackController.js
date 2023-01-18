@@ -77,7 +77,7 @@ const scheduleMail = async (req, res) => {
       name: "Feedback Mail",
       send_to: { all: true },
       email_config: {
-        design_id: "4c7a338a-c5d7-4a6b-9c31-a563bb5140ac",
+        design_id: "28b42ac5-d110-4484-b071-f41380d9b0c2",
         sender_id: 3405907,
         suppression_group_id: -1,
       },
