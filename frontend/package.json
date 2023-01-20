@@ -16,6 +16,7 @@
     "react-multiple-select-dropdown-lite": "^2.0.5",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-star-ratings": "^2.3.0",
     "recharts": "^2.1.9",
     "web-vitals": "^2.1.4"
   },

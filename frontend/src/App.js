@@ -13,6 +13,7 @@ import {
   Documents,
   Cart,
   NewFeedback,
+  FeedbackStats,
 } from "./pages";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register></Register>} />
         <Route path="/login" element={<Login></Login>} />
+        <Route path="/feedbackStats" element={<FeedbackStats />} />
         <Route path="/feedback/:id" element={<Feedback />} />
         <Route path="/newFeedback/:email/:id" element={<NewFeedback />} />
         <Route

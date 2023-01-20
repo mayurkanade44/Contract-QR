@@ -34,6 +34,10 @@ input[type="number"] {
   width: 250px !important;
 }
 
+.multiselect1 {
+  width: 300px !important;
+}
+
 .download {
   width: 280px;
 }
@@ -70,6 +74,10 @@ input[type="number"] {
 @media (max-width: 767px) {
   .mobile-table {
     display: none;
+  }
+
+  .multiselect1 {
+    width: 200px !important;
   }
 }
 
