@@ -28,6 +28,46 @@ const createFeedback = async (req, res) => {
   }
 };
 
+const getFeedback = async (req, res) => {
+  try {
+    const result = await Feedback.aggregate([
+    {
+      $unwind: {
+        path: "$pestService",
+      },
+    },
+    {
+      $group: {
+        _id: "$pestService",
+        avgRating: {
+          $avg: "$rating",
+        },
+        numOfRating: {
+          $sum: 1,
+        },
+      },
+    },
+  ]);
+    const result1 = await Feedback.aggregate([
+      {
+        $group: {
+          _id: null,
+          avgRating: {
+            $avg: "$rating",
+          },
+          numOfRating: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
+    return res.status(200).json({ result1, result });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
+};
+
 const addContacts = async (req, res) => {
   const { feedbackEmails } = req.body;
 
@@ -133,10 +173,31 @@ const reop = async () => {
     if (date.getMonth() === feedbackMonth.getMonth())
       return console.log("Already have feedback");
   }
+
+  //grouping by pestService array
+  [
+    {
+      $unwind: {
+        path: "$pestService",
+      },
+    },
+    {
+      $group: {
+        _id: "$pestService",
+        avgRating: {
+          $avg: "$rating",
+        },
+        numOfRating: {
+          $sum: 1,
+        },
+      },
+    },
+  ];
 };
 
 module.exports = {
   createFeedback,
   scheduleMail,
   addContacts,
+  getFeedback,
 };

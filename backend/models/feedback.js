@@ -9,7 +9,7 @@ const FeedbackSchema = new mongoose.Schema(
     work: { type: String, required: true },
     behavior: { type: String, required: true },
     equipment: { type: String, required: true },
-    pestService: { type: String, required: true },
+    pestService: { type: Array, required: true },
     improvement: { type: String },
     recommend: { type: String },
   },
