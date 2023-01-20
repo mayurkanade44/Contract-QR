@@ -2,6 +2,7 @@ import Admin from "./Admin";
 import Cart from "./Cart";
 import Documents from "./Documents";
 import Feedback from "./Feedback";
+import FeedbackStats from "./FeedbackStats";
 import Home from "./Home";
 import Login from "./Login";
 import NewFeedback from "./NewFeedback";
@@ -24,4 +25,5 @@ export {
   Documents,
   Cart,
   NewFeedback,
+  FeedbackStats,
 };

@@ -47,6 +47,8 @@ import {
   REMOVE_EMAILS,
   CREATE_CONTACT_LIST,
   SCHEDULE_MAIL,
+  FEEDBACK_STATS,
+  SUBMIT_FEEDBACK,
 } from "./action";
 
 const DataContext = createContext();
@@ -172,6 +174,8 @@ export const initialState = {
   cardId: "",
   feedbackEmails: [],
   listCreated: false,
+  allRatings: [],
+  pestRating: [],
 };
 
 export const DataProvider = ({ children }) => {
@@ -819,8 +823,20 @@ export const DataProvider = ({ children }) => {
 
   const newFeedback = async (email, id, formValue) => {
     try {
-      const res = await axios.post(`/api/newFeedback/${email}/${id}`, formValue);
-      console.log(res.data.msg);
+      const res = await axios.post(
+        `/api/newFeedback/${email}/${id}`,
+        formValue
+      );
+      dispatch({ type: SUBMIT_FEEDBACK, payload: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const feedbackStats = async () => {
+    try {
+      const res = await axios.get("/api/newFeedback/getFeedback");
+      dispatch({ type: FEEDBACK_STATS, payload: res.data });
     } catch (error) {
       console.log(error);
     }
@@ -871,6 +887,7 @@ export const DataProvider = ({ children }) => {
         createContactList,
         scheduleMail,
         newFeedback,
+        feedbackStats,
       }}
     >
       {children}

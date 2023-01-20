@@ -15,7 +15,7 @@ const initialState = {
   work: "",
   behavior: "",
   equipment: "",
-  pestService: "Green Shield",
+  pestService: [],
   improvement: "",
   recommend: "",
   aspect: "",
@@ -25,7 +25,7 @@ const initialState = {
 const NewFeedback = () => {
   const [formValue, setFormValue] = useState(initialState);
   const [thanks, setThanks] = useState(false);
-
+  const [value, setValue] = useState("");
   const { newFeedback } = useDataContext();
 
   const {
@@ -40,13 +40,17 @@ const NewFeedback = () => {
   } = formValue;
 
   const service = [
-    "Green Shield",
-    "Ratrid",
-    "Bugsfree",
-    "Mosquito",
-    "Termiproof",
-    "Antron",
+    { label: "Green Shield", value: "Green Shield" },
+    { label: "Ratrid", value: "Ratrid" },
+    { label: "Bugsfree", value: "Bugsfree" },
+    { label: "Mosquito", value: "Mosquito" },
+    { label: "Termiproof", value: "Termiproof" },
+    { label: "Antron", value: "Antron" },
   ];
+
+  const handleOnchange = (val) => {
+    setValue(val);
+  };
 
   const { email, id } = useParams();
 
@@ -94,6 +98,7 @@ const NewFeedback = () => {
     emo.map(
       (item) => item.value === efficiency && (formValue.rating = item.id)
     );
+    formValue.pestService = value.split(",");
     newFeedback(email, id, formValue);
     setFormValue(initialState);
     setTimeout(() => {
@@ -106,7 +111,6 @@ const NewFeedback = () => {
       {!thanks ? (
         <>
           <img src={feedback} alt="feedback" className="feedback-banner mb-2" />
-
           <form
             onSubmit={handleSubmit}
             className="form-check"
@@ -115,7 +119,7 @@ const NewFeedback = () => {
             <div className="row">
               <div className="col-12 d-flex justify-content-center">
                 <h6 className="me-4 pt-2">Select Service:-</h6>
-                <select
+                {/* <select
                   className="form-select d-inline"
                   style={{ width: 200 }}
                   aria-label="Default select example"
@@ -130,7 +134,13 @@ const NewFeedback = () => {
                       </option>
                     );
                   })}
-                </select>
+                </select> */}
+                <MultiSelect
+                  onChange={handleOnchange}
+                  options={service}
+                  className="multiselect1"
+                  required
+                />
               </div>
               <hr className="my-3" />
               <h6 className="text-center">Rate work efficiency</h6>
@@ -259,7 +269,7 @@ const NewFeedback = () => {
               <hr className="my-3" />
               <div className="col-md-5">
                 <h6 className="text-center textarea">
-                  Do you see a need to improve our service at site?
+                  Mention the improvements needed in our services.
                 </h6>
               </div>
               <div className="col-md-6">
@@ -288,7 +298,7 @@ const NewFeedback = () => {
               </div>
               <hr className="my-3" />
               <h6 className="text-center">
-                Would you recommend our services to an associate?
+                Would you recommend our services to an someone?
               </h6>
               <div className="col-6 d-flex justify-content-center">
                 <input

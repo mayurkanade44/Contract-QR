@@ -43,6 +43,8 @@ import {
   REMOVE_EMAILS,
   CREATE_CONTACT_LIST,
   SCHEDULE_MAIL,
+  FEEDBACK_STATS,
+  SUBMIT_FEEDBACK,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -673,6 +675,22 @@ const data_reducer = (state, action) => {
         showAlert: true,
         feedbackEmails: [],
         listCreated: false,
+      };
+    }
+
+    case FEEDBACK_STATS: {
+      return {
+        ...state,
+        loading: false,
+        allRatings: action.payload.result1,
+        pestRatings: action.payload.result,
+      };
+    }
+
+    case SUBMIT_FEEDBACK: {
+      return {
+        ...state,
+        feedbackSubmitted: true,
       };
     }
 
