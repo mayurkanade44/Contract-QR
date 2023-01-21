@@ -687,15 +687,15 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const feedback = async ({ formValue, id }) => {
-    dispatch({ type: LOADING });
-    try {
-      await axios.post(`/api/feedback/${id}`, formValue);
-      // dispatch({ type: FEEDBACK, payload: res.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const feedback = async ({ formValue, id }) => {
+  //   dispatch({ type: LOADING });
+  //   try {
+  //     await axios.post(`/api/feedback/${id}`, formValue);
+  //     // dispatch({ type: FEEDBACK, payload: res.data });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const generateReport = async (id) => {
     dispatch({ type: LOADING });
@@ -803,7 +803,7 @@ export const DataProvider = ({ children }) => {
     const { feedbackEmails } = state;
     try {
       const res = await axios.put(
-        "/api/newFeedback/addContacts",
+        "/api/feedback/addContacts",
         feedbackEmails
       );
       dispatch({ type: CREATE_CONTACT_LIST, payload: res.data });
@@ -814,17 +814,17 @@ export const DataProvider = ({ children }) => {
 
   const scheduleMail = async () => {
     try {
-      const res = await axios.put("/api/newFeedback/schedule");
+      const res = await axios.put("/api/feedback/schedule");
       dispatch({ type: SCHEDULE_MAIL, payload: res.data });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const newFeedback = async (email, id, formValue) => {
+  const newFeedback = async (id, formValue) => {
     try {
       const res = await axios.post(
-        `/api/newFeedback/${email}/${id}`,
+        `/api/feedback/${id}`,
         formValue
       );
       dispatch({ type: SUBMIT_FEEDBACK, payload: res.data });
@@ -835,7 +835,7 @@ export const DataProvider = ({ children }) => {
 
   const feedbackStats = async () => {
     try {
-      const res = await axios.get("/api/newFeedback/getFeedback");
+      const res = await axios.get("/api/feedback/getFeedback");
       dispatch({ type: FEEDBACK_STATS, payload: res.data });
     } catch (error) {
       console.log(error);
@@ -875,7 +875,6 @@ export const DataProvider = ({ children }) => {
         updateContract,
         generateReport,
         closeModal,
-        feedback,
         generateBusinessReport,
         getJobStats,
         documentUpload,

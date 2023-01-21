@@ -12,7 +12,6 @@ import {
   Feedback,
   Documents,
   Cart,
-  NewFeedback,
   FeedbackStats,
 } from "./pages";
 
@@ -25,7 +24,6 @@ function App() {
         <Route path="/login" element={<Login></Login>} />
         <Route path="/feedbackStats" element={<FeedbackStats />} />
         <Route path="/feedback/:id" element={<Feedback />} />
-        <Route path="/newFeedback/:email/:id" element={<NewFeedback />} />
         <Route
           path="/"
           element={

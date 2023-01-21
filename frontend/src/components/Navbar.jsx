@@ -11,7 +11,7 @@ const Navbar = () => {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          {location.pathname.split("/").length > 3 ? (
+          {location.pathname.split("/")[1] === 'feedback' ? (
             <h2 className="mx-auto text-success">Pest Service Feedback Form</h2>
           ) : (
             <>
