@@ -1,21 +1,32 @@
 const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
 const Contract = require("../models/contract");
+const Service = require("../models/service")
 client.setApiKey(process.env.SENDGRID_API_KEY);
 
 const createFeedback = async (req, res) => {
-  const { rating, efficiency, work, behavior, equipment, pestService } =
+  const { efficiency, work, behavior, equipment, pestService } =
     req.body;
-  const { email, id } = req.params;
+  const { id } = req.params;
   try {
+    const newId = id.split("-")[0]
+    const email = id.split("-")[1]
     if (!efficiency || !work || !behavior || !equipment || !pestService)
       return res.status(400).json({ msg: "Please provide all values" });
 
-    const contact = await Contract.findOne({ _id: id });
-    if (!contact) return res.status(404).json({ msg: "Contract Not Found" });
-
-    req.body.contract = contact.contractNo;
-    req.body.email = email;
+    if(email) {
+      const contract = await Contract.findOne({ _id: newId });
+      if (!contract) return res.status(404).json({ msg: "Contract Not Found" });
+      req.body.email = email;
+      req.body.contract = contract.contractNo;
+    } else {
+      const service = await Service.findOne({ _id: newId }).populate({
+        path: "contract",
+        select: "contractNo",
+      });
+      if (!service) return res.status(404).json({ msg: "Contract Not Found" });
+      req.body.contract = service.contract.contractNo;
+    } 
 
     await Feedback.create(req.body);
 
@@ -31,23 +42,23 @@ const createFeedback = async (req, res) => {
 const getFeedback = async (req, res) => {
   try {
     const result = await Feedback.aggregate([
-    {
-      $unwind: {
-        path: "$pestService",
-      },
-    },
-    {
-      $group: {
-        _id: "$pestService",
-        avgRating: {
-          $avg: "$rating",
-        },
-        numOfRating: {
-          $sum: 1,
+      {
+        $unwind: {
+          path: "$pestService",
         },
       },
-    },
-  ]);
+      {
+        $group: {
+          _id: "$pestService",
+          avgRating: {
+            $avg: "$rating",
+          },
+          numOfRating: {
+            $sum: 1,
+          },
+        },
+      },
+    ]);
     const result1 = await Feedback.aggregate([
       {
         $group: {
