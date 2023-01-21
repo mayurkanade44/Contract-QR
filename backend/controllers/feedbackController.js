@@ -1,20 +1,21 @@
 const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
 const Contract = require("../models/contract");
-const Service = require("../models/service")
+const Service = require("../models/service");
+const moment = require("moment");
+
 client.setApiKey(process.env.SENDGRID_API_KEY);
 
 const createFeedback = async (req, res) => {
-  const { efficiency, work, behavior, equipment, pestService } =
-    req.body;
+  const { efficiency, work, behavior, equipment, pestService } = req.body;
   const { id } = req.params;
   try {
-    const newId = id.split("-")[0]
-    const email = id.split("-")[1]
+    const newId = id.split("-")[0];
+    const email = id.split("-")[1];
     if (!efficiency || !work || !behavior || !equipment || !pestService)
       return res.status(400).json({ msg: "Please provide all values" });
 
-    if(email) {
+    if (email) {
       const contract = await Contract.findOne({ _id: newId });
       if (!contract) return res.status(404).json({ msg: "Contract Not Found" });
       req.body.email = email;
@@ -26,7 +27,7 @@ const createFeedback = async (req, res) => {
       });
       if (!service) return res.status(404).json({ msg: "Contract Not Found" });
       req.body.contract = service.contract.contractNo;
-    } 
+    }
 
     await Feedback.create(req.body);
 
@@ -42,11 +43,6 @@ const createFeedback = async (req, res) => {
 const getFeedback = async (req, res) => {
   try {
     const result = await Feedback.aggregate([
-      {
-        $unwind: {
-          path: "$pestService",
-        },
-      },
       {
         $group: {
           _id: "$pestService",
@@ -170,6 +166,70 @@ const scheduleMail = async (req, res) => {
   }
 };
 
+const sendMails = async (req, res) => {
+  const date = new Date(new Date().setDate(new Date().getDate() + 1));
+  try {
+    const curDate = date.toISOString().split("T")[0];
+    const time = new Date(curDate + "T02:30:00.542Z");
+    const month = date.getMonth();
+    const listName = moment(date).format("Do MMM");
+    const emails = [];
+    for (let email of req.body) {
+      const feedback = await Feedback.findOne({ contract: email.contract });
+      if (!feedback || month !== new Date(feedback.createdAt).getMonth())
+        emails.push(email);
+    }
+
+    client
+      .request({
+        url: `/v3/marketing/lists`,
+        method: "POST",
+        body: { name: listName },
+      })
+      .then(([response, body]) => {
+        client
+          .request({
+            url: `/v3/marketing/contacts`,
+            method: "PUT",
+            body: {
+              list_ids: [response.body.id],
+              contacts: emails,
+            },
+          })
+          .then(() => {
+            client
+              .request({
+                url: `/v3/marketing/singlesends`,
+                method: "POST",
+                body: {
+                  name: "Feedback Mail",
+                  send_to: { list_ids: [response.body.id] },
+                  email_config: {
+                    design_id: "28b42ac5-d110-4484-b071-f41380d9b0c2",
+                    sender_id: 3405907,
+                    suppression_group_id: -1,
+                  },
+                },
+              })
+              .then(([response, body]) => {
+                client.request({
+                  url: `/v3/marketing/singlesends/${response.body.id}/schedule`,
+                  method: "PUT",
+                  body: { send_at: time },
+                });
+              });
+          });
+      })
+
+      .catch((error) => {
+        console.error(error);
+      });
+    res.status(201).json({ msg: "created" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const reop = async () => {
   if (service.contract.feedbackMail) {
     const feedbackPresent = await Feedback.findOne({
@@ -179,8 +239,8 @@ const reop = async () => {
       await sendFeedbackMail(emails);
       return;
     }
-    const date = new Date();
-    const feedbackMonth = new Date(feedbackPresent.createdAt);
+
+    const feedbackMonth = new Date(feedbackPresent.createdAt).getMonth();
     if (date.getMonth() === feedbackMonth.getMonth())
       return console.log("Already have feedback");
   }
@@ -211,4 +271,5 @@ module.exports = {
   scheduleMail,
   addContacts,
   getFeedback,
+  sendMails,
 };

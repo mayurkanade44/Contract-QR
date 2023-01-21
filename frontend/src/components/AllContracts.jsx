@@ -45,7 +45,7 @@ const AllContracts = () => {
     setPage(index);
   };
 
-  const add = (first, second, third, fourth, fifth, six, id) => {
+  const add = (first, second, third, fourth, fifth, six, id, contractNo) => {
     const temp = new Set();
     const emails = [];
     if (first && first !== "clientproxymail@gmail.com") temp.add(first);
@@ -58,6 +58,7 @@ const AllContracts = () => {
       return emails.push({
         email: item,
         line: `https://cqr.sat9.in/feedback/${id}-${item.split("@")[0]}`,
+        contract: contractNo,
       });
     });
     addEmails(emails);
@@ -200,7 +201,8 @@ const AllContracts = () => {
                           shipToContact1.email,
                           shipToContact2.email,
                           shipToContact3.email,
-                          _id
+                          _id,
+                          contractNo
                         )
                       }
                     >
