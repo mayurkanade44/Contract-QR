@@ -3,20 +3,12 @@ import { useDataContext } from "../context/data_context";
 
 const Cart = () => {
   const {
-    loading,
     feedbackEmails,
     removeEmail,
-    createContactList,
     showAlert,
     displayAlert,
     scheduleMail,
-    listCreated,
   } = useDataContext();
-
-  const createList = () => {
-    createContactList();
-    displayAlert();
-  };
 
   const mailSend = () => {
     scheduleMail();
@@ -53,19 +45,13 @@ const Cart = () => {
           </table>
         </div>
         <div className="col-3">
-          {!listCreated ? (
-            <button
-              className="btn btn-primary m-5"
-              onClick={createList}
-              disabled={feedbackEmails.length === 0 ? true : false}
-            >
-              Create Contact List
-            </button>
-          ) : (
-            <button className="btn btn-success m-5" onClick={mailSend}>
-              Schedule Email
-            </button>
-          )}
+          <button
+            className="btn btn-primary m-5"
+            onClick={mailSend}
+            disabled={feedbackEmails.length === 0 ? true : false}
+          >
+            Schedule Mail
+          </button>
         </div>
       </div>
     </div>

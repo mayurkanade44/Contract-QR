@@ -45,7 +45,6 @@ import {
   EDIT_SERVICE,
   ADD_EMAILS,
   REMOVE_EMAILS,
-  CREATE_CONTACT_LIST,
   SCHEDULE_MAIL,
   FEEDBACK_STATS,
   SUBMIT_FEEDBACK,
@@ -173,7 +172,6 @@ export const initialState = {
   edit: false,
   cardId: "",
   feedbackEmails: [],
-  listCreated: false,
   allRatings: [],
   pestRating: [],
 };
@@ -799,27 +797,24 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: REMOVE_EMAILS, payload: { email } });
   };
 
-  const createContactList = async () => {
+  const scheduleMail = async () => {
     const { feedbackEmails } = state;
     try {
-      const res = await axios.put(
-        "/api/feedback/addContacts",
-        feedbackEmails
-      );
-      dispatch({ type: CREATE_CONTACT_LIST, payload: res.data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const scheduleMail = async () => {
-    try {
-      const res = await axios.put("/api/feedback/schedule");
+      const res = await axios.put("/api/feedback/sendMails", feedbackEmails);
       dispatch({ type: SCHEDULE_MAIL, payload: res.data });
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const scheduleMail1 = async () => {
+  //   try {
+  //     const res = await axios.put("/api/feedback/schedule");
+  //     dispatch({ type: SCHEDULE_MAIL, payload: res.data });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const newFeedback = async (id, formValue) => {
     try {
@@ -883,7 +878,6 @@ export const DataProvider = ({ children }) => {
         editService,
         addEmails,
         removeEmail,
-        createContactList,
         scheduleMail,
         newFeedback,
         feedbackStats,

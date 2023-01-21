@@ -41,7 +41,6 @@ import {
   EDIT_SERVICE,
   ADD_EMAILS,
   REMOVE_EMAILS,
-  CREATE_CONTACT_LIST,
   SCHEDULE_MAIL,
   FEEDBACK_STATS,
   SUBMIT_FEEDBACK,
@@ -655,26 +654,14 @@ const data_reducer = (state, action) => {
       };
     }
 
-    case CREATE_CONTACT_LIST: {
-      return {
-        ...state,
-        loading: false,
-        alertText: "Email Ids Added",
-        alertType: "success",
-        showAlert: true,
-        listCreated: true,
-      };
-    }
-
     case SCHEDULE_MAIL: {
       return {
         ...state,
         loading: false,
-        alertText: "Email has been schedule for tonight at 7.30pm",
+        alertText: "Email has been schedule for tomorrow at 8am",
         alertType: "success",
         showAlert: true,
         feedbackEmails: [],
-        listCreated: false,
       };
     }
 
