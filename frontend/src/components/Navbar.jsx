@@ -11,7 +11,7 @@ const Navbar = () => {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          {location.pathname.split("/")[1] === 'feedback' ? (
+          {location.pathname.split("/")[1] === "feedback" ? (
             <h2 className="mx-auto text-success">Pest Service Feedback Form</h2>
           ) : (
             <>
@@ -37,31 +37,32 @@ const Navbar = () => {
                 {user && (
                   <ul className="navbar-nav nav-item ms-auto dropdown">
                     {role === "Admin" && (
-                      <li className="nav-item me-4">
-                        <Link
-                          to="/admin"
-                          className="nav-link active"
-                          aria-current="page"
-                        >
-                          <h4>Admin</h4>
-                        </Link>
-                      </li>
+                      <>
+                        <li className="nav-item me-4">
+                          <Link
+                            to="/admin"
+                            className="nav-link active"
+                            aria-current="page"
+                          >
+                            <h4>Admin</h4>
+                          </Link>
+                        </li>
+                        <li className="nav-item me-4">
+                          <Link
+                            to="/cart"
+                            className="nav-link active"
+                            aria-current="page"
+                          >
+                            <img src={bag} alt="cart" style={{ width: 30 }} />
+                            {feedbackEmails.length > 0 && (
+                              <span className="position-absolute top-25 start-75 translate-middle badge cart-badge rounded-pill bg-dark">
+                                {feedbackEmails.length}
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      </>
                     )}
-                    <li className="nav-item me-4">
-                      <Link
-                        to="/cart"
-                        className="nav-link active"
-                        aria-current="page"
-                      >
-                        <img src={bag} alt="cart" style={{ width: 30 }} />
-                        {feedbackEmails.length > 0 && (
-                          <span className="position-absolute top-25 start-75 translate-middle badge cart-badge rounded-pill bg-dark">
-                            {feedbackEmails.length}
-                          </span>
-                        )}
-                      </Link>
-                    </li>
-
                     <li className="nav-item me-4">
                       <Link
                         to="/"

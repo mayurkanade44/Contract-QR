@@ -103,7 +103,6 @@ const getFeedback = async (req, res) => {
     fs.unlinkSync(`./files/${fileName}`);
 
     const link = result2.secure_url;
-    console.log(link);
 
     return res.status(200).json({ result1, result, link });
   } catch (error) {
