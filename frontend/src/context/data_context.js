@@ -174,6 +174,7 @@ export const initialState = {
   feedbackEmails: [],
   allRatings: [],
   pestRating: [],
+  feedbackFile: "",
 };
 
 export const DataProvider = ({ children }) => {
@@ -818,10 +819,7 @@ export const DataProvider = ({ children }) => {
 
   const newFeedback = async (id, formValue) => {
     try {
-      const res = await axios.post(
-        `/api/feedback/${id}`,
-        formValue
-      );
+      const res = await axios.post(`/api/feedback/${id}`, formValue);
       dispatch({ type: SUBMIT_FEEDBACK, payload: res.data });
     } catch (error) {
       console.log(error);

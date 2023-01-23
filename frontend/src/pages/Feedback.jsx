@@ -4,7 +4,7 @@ import ugly from "../images/sad.png";
 import angry from "../images/angry.png";
 import best from "../images/star.png";
 import feedback from "../images/feedback.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
 import { useParams, Link } from "react-router-dom";
 
@@ -21,10 +21,16 @@ const initialState = {
 };
 const Feedback = () => {
   const [formValue, setFormValue] = useState(initialState);
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [thanks, setThanks] = useState(false);
   const { newFeedback } = useDataContext();
   const { id } = useParams();
+
+  useEffect(() => {
+    if (id.split("-").length > 1) setShow(true);
+
+    // eslint-disable-next-line
+  }, []);
 
   const {
     pestService,
@@ -107,11 +113,11 @@ const Feedback = () => {
             className="btn btn-primary mb-5 d-block"
             onClick={() => setShow(true)}
           >
-            Feedback Form
+            Customer Feedback
           </button>
           <Link to={`/service/${id}`}>
-            <button className="btn btn-info" style={{ marginLeft: 11 }}>
-              Epcorn User
+            <button className="btn btn-info">
+              Service Card Report
             </button>
           </Link>
         </div>
@@ -358,8 +364,8 @@ const Feedback = () => {
       ) : (
         <div className="text-center" style={{ marginTop: 100 }}>
           <h2 className="text-success">
-            We thank you for your time spent taking this feedback. Your response
-            has been recorded.
+            We thank you for your time spent taking this feedback survey. Your
+            response has been recorded.
           </h2>
           <img className="mt-1" src={smile} alt="good" width={60} />
         </div>

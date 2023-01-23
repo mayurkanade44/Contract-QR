@@ -11,14 +11,14 @@ import {
 } from "recharts";
 
 const FeedbackStats = () => {
-  const { feedbackStats, allRatings, pestRatings } = useDataContext();
+  const { feedbackStats, allRatings, pestRatings, feedbackFile } =
+    useDataContext();
+
   useEffect(() => {
     feedbackStats();
 
     // eslint-disable-next-line
   }, []);
-
-  console.log(pestRatings);
 
   const pestBar = [];
 
@@ -30,16 +30,14 @@ const FeedbackStats = () => {
   return (
     <div>
       <div className="container">
-        <h4 className="text-center mt-3 ">
-          We thank you for your time spent taking this feedback.
-        </h4>
-        <div className="text-center my-5">
+        <div className="text-center mt-5" style={{ marginBottom: 100 }}>
           <StarRatings
             rating={allRatings[0]?.avgRating}
             starDimension="50px"
             starSpacing="15px"
             starRatedColor="gold"
           />
+          <button className="btn btn-primary ms-5">Feedback Report</button>
           <h3>given by {allRatings[0]?.numOfRating} clients</h3>
         </div>
         <ResponsiveContainer width="100%" height={300}>

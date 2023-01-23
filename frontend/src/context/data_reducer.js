@@ -671,6 +671,7 @@ const data_reducer = (state, action) => {
         loading: false,
         allRatings: action.payload.result1,
         pestRatings: action.payload.result,
+        feedbackFile:action.payload.link
       };
     }
 
