@@ -12,7 +12,7 @@ router.route("/getFeedback").get(getFeedback);
 router.route("/addContacts").put(addContacts);
 router.route("/schedule").put(scheduleMail);
 router.route("/sendMails").put(sendMails);
-router.route("/:id").put(createFeedback);
+router.route("/:id").post(createFeedback);
 
 
 module.exports = router;

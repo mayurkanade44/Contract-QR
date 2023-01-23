@@ -41,6 +41,22 @@ const getAllContracts = async (req, res) => {
   }
 };
 
+const createContract = async (req, res) => {
+  const { contractNo, type } = req.body;
+  const contractAlreadyExists = await Contract.findOne({ contractNo });
+  if (contractAlreadyExists && type === "NC") {
+    throw new BadRequestError("Contract Number Already Exists");
+  }
+
+  try {
+    const contract = await Contract.create({ ...req.body });
+    res.status(201).json({ contract });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
+};
+
 const generateRenewalFile = async (contracts) => {
   const month = moment(contracts.endDate).format("MMMM YYYY");
   const fileName = `Renewal report of ${month}.csv`;
@@ -62,22 +78,6 @@ const generateRenewalFile = async (contracts) => {
   });
   fs.unlinkSync(`./files/${fileName}`);
   return result.secure_url;
-};
-
-const createContract = async (req, res) => {
-  const { contractNo, type } = req.body;
-  const contractAlreadyExists = await Contract.findOne({ contractNo });
-  if (contractAlreadyExists && type === "NC") {
-    throw new BadRequestError("Contract Number Already Exists");
-  }
-
-  try {
-    const contract = await Contract.create({ ...req.body });
-    res.status(201).json({ contract });
-  } catch (error) {
-    res.status(500).json({ msg: error });
-    console.log(error);
-  }
 };
 
 const fileUpload = async (req, res) => {

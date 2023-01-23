@@ -2,6 +2,10 @@ const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
 const Contract = require("../models/contract");
 const Service = require("../models/service");
+const cloudinary = require("cloudinary").v2;
+const { Parser } = require("json2csv");
+const fs = require("fs");
+const path = require("path");
 const moment = require("moment");
 
 client.setApiKey(process.env.SENDGRID_API_KEY);
@@ -68,7 +72,40 @@ const getFeedback = async (req, res) => {
         },
       },
     ]);
-    return res.status(200).json({ result1, result });
+
+    const feedbacks = await Feedback.find();
+
+    const fields = [
+      { label: "Contract Number", value: "contract" },
+      { label: "Name", value: "email" },
+      { label: "Service Name", value: "pestService" },
+      { label: "Rating", value: "rating" },
+      { label: "Work Efficiency", value: "efficiency" },
+      { label: "Know His Work", value: "work" },
+      { label: "His Behavior", value: "behavior" },
+      { label: "Faulty Equipment", value: "equipment" },
+      { label: "Improvement Needed", value: "improvement" },
+      { label: "Good Aspect", value: "aspect" },
+      { label: "Recommendation", value: "recommend" },
+    ];
+
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(feedbacks);
+
+    const fileName = "Feedback Report.csv";
+
+    fs.writeFileSync(path.resolve(__dirname, "../files/", fileName), csv);
+    const result2 = await cloudinary.uploader.upload(`files/${fileName}`, {
+      resource_type: "raw",
+      use_filename: true,
+      folder: "service-reports",
+    });
+    fs.unlinkSync(`./files/${fileName}`);
+
+    const link = result2.secure_url;
+    console.log(link);
+
+    return res.status(200).json({ result1, result, link });
   } catch (error) {
     res.status(500).json({ msg: error });
     console.log(error);

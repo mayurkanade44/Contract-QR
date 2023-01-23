@@ -573,7 +573,7 @@ const updateCard = async (req, res) => {
     const service = await Service.findOne({ _id: serviceId }).populate({
       path: "contract",
       select:
-        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress feedbackMail",
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress ",
     });
 
     if (!service)
@@ -722,39 +722,39 @@ const editService = async (req, res) => {
   }
 };
 
-const feedback = async (req, res) => {
-  const { id } = req.params;
-  const { services } = req.body;
-  try {
-    const service = await Service.findOne({ _id: id }).populate({
-      path: "contract",
-      select: "contractNo billToContact1 shipToContact1",
-    });
+// const feedback = async (req, res) => {
+//   const { id } = req.params;
+//   const { services } = req.body;
+//   try {
+//     const service = await Service.findOne({ _id: id }).populate({
+//       path: "contract",
+//       select: "contractNo billToContact1 shipToContact1",
+//     });
 
-    if (!service) {
-      return res.status(400).json({ msg: "No contract found" });
-    }
-    if (services) {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-      const msg = {
-        to: "epcorn@yahoo.in",
-        from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-        subject: `Request For Service - ${service.contract.contractNo}`,
-        html: `<div>Dear Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
-      };
-      await sgMail.send(msg);
-    }
-    req.body.contract = service.contract.contractNo;
-    req.body.serviceName = service.service.toString();
-    req.body.service = id;
-    req.body.extraServices = services;
-    await ServiceReport.create(req.body);
-    res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({ msg: "Some error try again later" });
-  }
-};
+//     if (!service) {
+//       return res.status(400).json({ msg: "No contract found" });
+//     }
+//     if (services) {
+//       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+//       const msg = {
+//         to: "epcorn@yahoo.in",
+//         from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+//         subject: `Request For Service - ${service.contract.contractNo}`,
+//         html: `<div>Dear Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
+//       };
+//       await sgMail.send(msg);
+//     }
+//     req.body.contract = service.contract.contractNo;
+//     req.body.serviceName = service.service.toString();
+//     req.body.service = id;
+//     req.body.extraServices = services;
+//     await ServiceReport.create(req.body);
+//     res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(400).json({ msg: "Some error try again later" });
+//   }
+// };
 
 const generateBusinessFile = async (req, res) => {
   const { name } = req.params;
@@ -994,7 +994,6 @@ module.exports = {
   sendContractEmail,
   deleteService,
   generateReport,
-  feedback,
   generateBusinessFile,
   getAllStats,
   dailyReport,
