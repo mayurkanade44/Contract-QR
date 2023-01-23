@@ -174,13 +174,11 @@ const AllContracts = () => {
               const { name } = shipToAddress;
               return (
                 <tr key={_id}>
-                  <td style={{ width: 130 }}>{`${contractNo} - ${type}`}</td>
+                  <td style={{ width: 150 }}>{`${contractNo} - ${type}`}</td>
                   <td className="mobile-table" style={{ width: 110 }}>
                     {moment(createdAt).format("DD/MM/YYYY")}
                   </td>
-                  <td className="mobile-table" style={{ width: 450 }}>
-                    {name}
-                  </td>
+                  <td className="mobile-table">{name}</td>
                   <td className="mobile-table" style={{ width: 110 }}>
                     {moment(startDate).format("DD/MM/YYYY")}
                   </td>
@@ -193,7 +191,7 @@ const AllContracts = () => {
                     </Link>
                   </td>
                   {role === "Admin" && (
-                    <td className="text-center">
+                    <td className="text-center" style={{ width: 120 }}>
                       <button
                         className="btn btn-primary"
                         onClick={() =>
