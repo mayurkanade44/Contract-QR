@@ -190,25 +190,27 @@ const AllContracts = () => {
                       <button className="btn btn-info">Details</button>
                     </Link>
                   </td>
-                  <td>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() =>
-                        add(
-                          billToContact1.email,
-                          billToContact2.email,
-                          billToContact3.email,
-                          shipToContact1.email,
-                          shipToContact2.email,
-                          shipToContact3.email,
-                          _id,
-                          contractNo
-                        )
-                      }
-                    >
-                      Add
-                    </button>
-                  </td>
+                  {role === "Admin" && (
+                    <td>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          add(
+                            billToContact1.email,
+                            billToContact2.email,
+                            billToContact3.email,
+                            shipToContact1.email,
+                            shipToContact2.email,
+                            shipToContact3.email,
+                            _id,
+                            contractNo
+                          )
+                        }
+                      >
+                        Add
+                      </button>
+                    </td>
+                  )}
                 </tr>
               );
             })}

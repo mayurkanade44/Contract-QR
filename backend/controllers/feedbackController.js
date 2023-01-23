@@ -212,19 +212,21 @@ const sendMails = async (req, res) => {
                 },
               })
               .then(([response, body]) => {
-                client.request({
-                  url: `/v3/marketing/singlesends/${response.body.id}/schedule`,
-                  method: "PUT",
-                  body: { send_at: time },
-                });
+                client
+                  .request({
+                    url: `/v3/marketing/singlesends/${response.body.id}/schedule`,
+                    method: "PUT",
+                    body: { send_at: time },
+                  })
+                  .then(
+                    res.status(200).json({ msg: "Email has been schedule" })
+                  );
               });
           });
       })
-
       .catch((error) => {
         console.error(error);
       });
-    res.status(201).json({ msg: "created" });
   } catch (error) {
     console.log(error);
   }

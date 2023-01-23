@@ -5,12 +5,14 @@ const {
   addContacts,
   scheduleMail,
   getFeedback,
+  sendMails,
 } = require("../controllers/feedbackController");
 
 router.route("/getFeedback").get(getFeedback);
 router.route("/addContacts").put(addContacts);
 router.route("/schedule").put(scheduleMail);
-router.route("/:id").post(createFeedback);
+router.route("/sendMails").put(sendMails);
+router.route("/:id").put(createFeedback);
 
 
 module.exports = router;
