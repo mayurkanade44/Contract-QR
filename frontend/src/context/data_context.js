@@ -827,6 +827,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const feedbackStats = async () => {
+    dispatch({ type: LOADING });
     try {
       const res = await axios.get("/api/feedback/getFeedback");
       dispatch({ type: FEEDBACK_STATS, payload: res.data });

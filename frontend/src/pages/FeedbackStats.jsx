@@ -9,9 +9,10 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { Loading } from "../components";
 
 const FeedbackStats = () => {
-  const { feedbackStats, allRatings, pestRatings, feedbackFile } =
+  const { feedbackStats, allRatings, pestRatings, feedbackFile, loading } =
     useDataContext();
 
   useEffect(() => {
@@ -22,23 +23,37 @@ const FeedbackStats = () => {
 
   const pestBar = [];
 
-  pestRatings?.map(
-    (item) =>
-      item.avgRating > 3 && pestBar.push({ x: item._id, y: item.avgRating })
-  );
+  pestRatings?.map((item) => pestBar.push({ x: item._id, y: item.avgRating }));
+
+  pestBar.sort((a, b) => {
+    return a.x.localeCompare(b.x);
+  });
+
+  if (loading) return <Loading />;
 
   return (
     <div>
       <div className="container">
-        <div className="text-center mt-5" style={{ marginBottom: 100 }}>
+        <div className="d-flex justify-content-center mt-5">
           <StarRatings
             rating={allRatings[0]?.avgRating}
             starDimension="50px"
             starSpacing="15px"
             starRatedColor="gold"
           />
-          <button className="btn btn-primary ms-5">Feedback Report</button>
-          <h3>given by {allRatings[0]?.numOfRating} clients</h3>
+          <h3 className="ms-4 pt-1">
+            given by {allRatings[0]?.numOfRating} clients.
+          </h3>
+        </div>
+        <div className="d-flex justify-content-center">
+          <button className="btn btn-outline-success my-4 ">
+            <a
+              href={feedbackFile}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              Feedback Report
+            </a>
+          </button>
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={pestBar} margin={{ top: 10 }}>

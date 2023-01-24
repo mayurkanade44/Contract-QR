@@ -116,9 +116,7 @@ const Feedback = () => {
             Customer Feedback
           </button>
           <Link to={`/service/${id}`}>
-            <button className="btn btn-info">
-              Service Card Report
-            </button>
+            <button className="btn btn-info">Service Card Report</button>
           </Link>
         </div>
       ) : show ? (
@@ -364,8 +362,8 @@ const Feedback = () => {
       ) : (
         <div className="text-center" style={{ marginTop: 100 }}>
           <h2 className="text-success">
-            We thank you for your time spent taking this feedback survey. Your
-            response has been recorded.
+            Thank you for sharing your valuable feedback. Your feedback has been
+            recorded.
           </h2>
           <img className="mt-1" src={smile} alt="good" width={60} />
         </div>
