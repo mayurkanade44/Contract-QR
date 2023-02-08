@@ -9,7 +9,9 @@ Contract QR is a MERN web app used by Express Pesticides for pest control creati
 
 Project in action: [CQR](https://cqr.sat9.in/)
 
-Video: [Youtube](https://cqr.sat9.in/)
+Video: [Youtube](https://youtu.be/zoFy8X6zV4E)
+
+Documentation: [PDF](https://res.cloudinary.com/epcorn/image/upload/v1675857316/signature/Contract_QR_wm4giu.pdf)
 
 
 ## Tech Stack
