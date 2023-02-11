@@ -1,5 +1,6 @@
 const Admin = require("../models/admin");
 const ServiceReport = require("../models/serviceReport");
+const Contract = require("../models/contract");
 
 const addValues = async (req, res) => {
   const { addComment } = req.body;
@@ -39,4 +40,46 @@ const serviceCards = async (req, res) => {
   }
 };
 
-module.exports = { addValues, allValues, serviceCards };
+const contractDetails = async (req, res) => {
+  const { search } = req.query;
+  try {
+    const contract = await Contract.findOne({ contractNo: search })
+      .sort("-createdAt")
+      .select(
+        "contractNo billToAddress billToContact1 billToContact2 billToContact3 shipToAddress shipToContact1 shipToContact2 shipToContact3"
+      );
+    if (!contract) return res.status(404).json({ msg: "No Contract Found" });
+
+    let billEmail = [],
+      shipEmail = [];
+    if (contract.billToContact1.email)
+      billEmail.push(contract.billToContact1.email);
+    if (contract.billToContact2.email)
+      billEmail.push(contract.billToContact2.email);
+    if (contract.billToContact3.email)
+      billEmail.push(contract.billToContact3.email);
+
+    if (contract.shipToContact1.email)
+      shipEmail.push(contract.shipToContact1.email);
+    if (contract.shipToContact2.email)
+      shipEmail.push(contract.shipToContact2.email);
+    if (contract.shipToContact3.email)
+      shipEmail.push(contract.shipToContact3.email);
+
+    const details = {
+      number: contract.contractNo,
+      billToName: contract.billToAddress.name,
+      billToAddress: `${contract.billToAddress.address1},${contract.billToAddress.address2},${contract.billToAddress.address3},${contract.billToAddress.address4},${contract.billToAddress.nearBy},${contract.billToAddress.city},${contract.billToAddress.pincode}`,
+      billToEmails: billEmail,
+      shipToName: contract.shipToAddress.name,
+      shipToAddress: `${contract.shipToAddress.address1},${contract.shipToAddress.address2},${contract.shipToAddress.address3},${contract.shipToAddress.address4},${contract.shipToAddress.nearBy},${contract.shipToAddress.city},${contract.shipToAddress.pincode}`,
+      shipToEmails: shipEmail,
+    };
+
+    res.status(200).json({ details });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { addValues, allValues, serviceCards, contractDetails };
