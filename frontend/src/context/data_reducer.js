@@ -546,8 +546,8 @@ const data_reducer = (state, action) => {
         ...state,
         loading: false,
         alertText:
-          "Daily Email Limit Exceeded, Try Again Today/Tomorrow after 3 PM",
-        alertType: "danger",
+          "Input Updated. Email Not Sent",
+        alertType: "success",
         showAlert: true,
       };
     }
@@ -671,7 +671,7 @@ const data_reducer = (state, action) => {
         loading: false,
         allRatings: action.payload.result1,
         pestRatings: action.payload.result,
-        feedbackFile:action.payload.link
+        feedbackFile: action.payload.link,
       };
     }
 

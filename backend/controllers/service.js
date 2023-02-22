@@ -583,7 +583,9 @@ const updateCard = async (req, res) => {
 
     await service.save();
 
-    
+    req.body.service = serviceId;
+    await ServiceReport.create(req.body);
+
     if (service) {
       const temails = new Set();
       const first = service.contract.billToContact1.email;
@@ -621,8 +623,7 @@ const updateCard = async (req, res) => {
         if (!suc) return res.status(400).json({ msg: "There is some error" });
       }
     }
-    req.body.service = serviceId;
-    await ServiceReport.create(req.body);
+    
     res.status(200).json({ service });
   } catch (error) {
     res.status(400).json({ msg: "There is some error" });
@@ -910,79 +911,80 @@ const serviceNotDoneReport = async (req, res) => {
 };
 
 const dailyReport = async (req, res) => {
-  // // try {
-  // //   const date = new Date();
-  // //   const new1 = date.setDate(date.getDate() - 7);
-  // //   const data = await ServiceReport.find({
-  // //     createdDate: { $gte: new Date(new1) },
-  // //   });
-  // //   const filename = "Report.csv";
-  // //   const allFields = [
-  // //     [
-  // //       { label: "Contract Number", value: "contract" },
-  // //       { label: "Service Name", value: "serviceName" },
-  // //       { label: "Service Done Date", value: "serviceDate" },
-  // //       { label: "Done/Not Done", value: "completion" },
-  // //       { label: "Comments By Operator", value: "comments" },
-  // //       { label: "Service Card", value: "image" },
-  // //     ],
-  // //     [
-  // //       { label: "Contract Number", value: "contract" },
-  // //       { label: "Service Name", value: "serviceName" },
-  // //       { label: "Work Efficiency", value: "efficiency" },
-  // //       { label: "Know His Work", value: "work" },
-  // //       { label: "His Behavior", value: "behavior" },
-  // //       { label: "Equipment", value: "equipment" },
-  // //     ],
-  // //   ];
-  // //   const image = [];
-  // //   for (let fields of allFields) {
-  // //     const json2csvParser = new Parser({ fields });
-  // //     const csv = json2csvParser.parse(data);
-  // //     fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
-  // //     const result = await cloudinary.uploader.upload(`files/${filename}`, {
-  // //       resource_type: "raw",
-  // //       use_filename: true,
-  // //       folder: "service-reports",
-  // //     });
-  // //     fs.unlinkSync(`./files/${filename}`);
-  // //     image.push(result.secure_url);
-  // //   }
-  // //   console.log(image);
-  //   // const files = {
-  //   //   "Service Report.csv": image[0],
-  //   //   "Feedback Report.csv": image[1],
-  //   // };
-  //   // const att = [];
-  //   // for (let file in files) {
-  //   //   const response = await axios.get(files[file], {
-  //   //     responseType: "arraybuffer",
-  //   //   });
-  //   //   const base64File = Buffer.from(response.data, "binary").toString(
-  //   //     "base64"
-  //   //   );
-  //   //   const attachObj = {
-  //   //     content: base64File,
-  //   //     filename: file,
-  //   //     type: "application/json",
-  //   //     disposition: "attachment",
-  //   //   };
-  //   //   att.push(attachObj);
-  //   // }
-  //   // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  //   // const msg = {
-  //   //   to: "sm.agarbati@gmail.com",
-  //   //   from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-  //   //   subject: `Scheduled Daily Reports of ${yesterday}`,
-  //   //   html: "<div>Hi Team,<br></br><br></br>and easy to do anywhere, even with Node.js with</div>",
-  //   //   attachments: att,
-  //   // };
-  //   // await sgMail.send(msg);
-  //   res.status(200).json({ data });
-  // } catch (error) {
-  //   console.log(error);
-  // }
-};
+//   try {
+//     const date = new Date();
+//     const new1 = date.setDate(date.getDate() - 5);
+//     console.log(new Date(new1));
+//     const data = await ServiceReport.find({
+//       createdDate: { $gte: new Date(new1) },
+//     });
+//     const filename = "Report.csv";
+//     const allFields = [
+//       [
+//         { label: "Contract Number", value: "contract" },
+//         { label: "Service Name", value: "serviceName" },
+//         { label: "Service Done Date", value: "serviceDate" },
+//         { label: "Created", value: "createdDate" },
+//         { label: "Done/Not Done", value: "completion" },
+//         { label: "Comments By Operator", value: "comments" },
+//         { label: "Service Card", value: "image" },
+//       ],
+//       [
+//         { label: "Contract Number", value: "contract" },
+//         { label: "Service Name", value: "serviceName" },
+//         { label: "Work Efficiency", value: "efficiency" },
+//         { label: "Know His Work", value: "work" },
+//         { label: "His Behavior", value: "behavior" },
+//         { label: "Equipment", value: "equipment" },
+//       ],
+//     ];
+//     const image = [];
+//     for (let fields of allFields) {
+//       const json2csvParser = new Parser({ fields });
+//       const csv = json2csvParser.parse(data);
+//       fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+//       const result = await cloudinary.uploader.upload(`files/${filename}`, {
+//         resource_type: "raw",
+//         use_filename: true,
+//         folder: "service-reports",
+//       });
+//       fs.unlinkSync(`./files/${filename}`);
+//       image.push(result.secure_url);
+//     }
+//     const files = {
+//       "Service Report.csv": image[0],
+//       "Feedback Report.csv": image[1],
+//     };
+//     const att = [];
+//     for (let file in files) {
+//       const response = await axios.get(files[file], {
+//         responseType: "arraybuffer",
+//       });
+//       const base64File = Buffer.from(response.data, "binary").toString(
+//         "base64"
+//       );
+//       const attachObj = {
+//         content: base64File,
+//         filename: file,
+//         type: "application/json",
+//         disposition: "attachment",
+//       };
+//       att.push(attachObj);
+//     }
+//     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+//     const msg = {
+//       to: "exteam.epcorn@gmail.com",
+//       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+//       subject: `Scheduled Daily Reports of ${yesterday}`,
+//       html: "<div>Hi Team,<br></br><br></br>and easy to do anywhere, even with Node.js with</div>",
+//       attachments: att,
+//     };
+//     await sgMail.send(msg);
+//     res.status(200).json({ data });
+//   } catch (error) {
+//     console.log(error);
+//   }
+ };
 
 module.exports = {
   getAllService,

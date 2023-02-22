@@ -207,7 +207,7 @@ const AllContracts = () => {
                           )
                         }
                       >
-                        Add
+                        Feedback
                       </button>
                     </td>
                   )}
