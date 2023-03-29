@@ -1,18 +1,14 @@
-
 # Contract QR
 
 Contract QR is a MERN web app used by Express Pesticides for pest control creating contracts & service cards. Once contract is created user gets automated “Welcome MAil” on their registered email ids. Each service card has unique QR code, which helps service operator to quickly & easily update the status after the service, and after updation client gets an email notifiction of service status.
 
-
 ## Demo
-
 
 Project in action: [CQR](https://cqr.sat9.in/)
 
-Video: [Youtube](https://youtu.be/zoFy8X6zV4E)
+Video: [Youtube](https://youtu.be/2OMce57A7sY)
 
 Documentation: [PDF](https://res.cloudinary.com/epcorn/image/upload/v1675857316/signature/Contract_QR_wm4giu.pdf)
-
 
 ## Tech Stack
 
@@ -26,14 +22,12 @@ Documentation: [PDF](https://res.cloudinary.com/epcorn/image/upload/v1675857316/
 
 **Hosteing:** Hostinger & Heroku
 
-
 ## Features
 
 - Creating pest control contracts & service cards.
 - Each service card with unqiue QR code to update real time work done/not done status.
 - Generation & export of all the records of each service.
 - Scheduling feedback mails with Sendgrid API.
-
 
 ## Screenshots
 
@@ -48,4 +42,3 @@ Dashboard
 
 Admin
 ![App Screenshot](https://res.cloudinary.com/epcorn/image/upload/v1675835191/signature/admin_aval7a.png)
-
