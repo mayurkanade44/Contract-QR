@@ -1,7 +1,7 @@
 import { useDataContext } from "../context/data_context";
 
 const Modal = () => {
-  const {closeModal, serviceReport} = useDataContext()
+  const { closeModal, serviceReport } = useDataContext();
   return (
     <div className="modal">
       <div className="modal-content">
@@ -23,5 +23,5 @@ const Modal = () => {
       </div>
     </div>
   );
-}
-export default Modal
+};
+export default Modal;
