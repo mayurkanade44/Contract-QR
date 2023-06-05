@@ -245,7 +245,7 @@ const AddCard = () => {
                     <td>{`${service},`}</td>
                     <td>{frequency}</td>
                     <td>
-                      {user === "mayur" && (
+                      {role === "Admin" && (
                         <button
                           className="btn btn-danger"
                           onClick={() => deleteService(_id)}
@@ -253,6 +253,7 @@ const AddCard = () => {
                           Delete
                         </button>
                       )}
+                      <span className="invisible">a</span>
                       <button
                         className="btn btn-primary"
                         onClick={() =>
