@@ -13,6 +13,7 @@ import {
   Documents,
   Cart,
   FeedbackStats,
+  ServiceIntimation,
 } from "./pages";
 
 function App() {
@@ -101,6 +102,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SingleCard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/service-intimation/:id"
+          element={
+            <ProtectedRoute>
+              <ServiceIntimation />
             </ProtectedRoute>
           }
         />

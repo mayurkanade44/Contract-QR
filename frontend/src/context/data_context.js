@@ -48,6 +48,8 @@ import {
   SCHEDULE_MAIL,
   FEEDBACK_STATS,
   SUBMIT_FEEDBACK,
+  SERVICE_INTIMATION,
+  SERVICE_INTIMATION_FAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -175,6 +177,7 @@ export const initialState = {
   allRatings: [],
   pestRating: [],
   feedbackFile: "",
+  serviceId: "",
 };
 
 export const DataProvider = ({ children }) => {
@@ -721,6 +724,10 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } });
   };
 
+  const setServiceId = ({ name, value }) => {
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
+  };
+
   const generateBusinessReport = async (name) => {
     dispatch({ type: LOADING });
     try {
@@ -836,6 +843,20 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const serviceIntimation = async (id) => {
+    dispatch({ type: LOADING });
+    const { serviceDate } = state;
+    try {
+      const res = await authFetch.post(`/service/intimation/${id}`, {
+        serviceDate,
+      });
+      dispatch({ type: SERVICE_INTIMATION, payload: res.data });
+    } catch (error) {
+      dispatch({ type: SERVICE_INTIMATION_FAIL });
+      console.log(error);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -880,6 +901,8 @@ export const DataProvider = ({ children }) => {
         scheduleMail,
         newFeedback,
         feedbackStats,
+        serviceIntimation,
+        setServiceId,
       }}
     >
       {children}

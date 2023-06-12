@@ -44,6 +44,8 @@ import {
   SCHEDULE_MAIL,
   FEEDBACK_STATS,
   SUBMIT_FEEDBACK,
+  SERVICE_INTIMATION,
+  SERVICE_INTIMATION_FAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -545,8 +547,7 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        alertText:
-          "Input Updated. Email Not Sent",
+        alertText: "Input Updated. Email Not Sent",
         alertType: "success",
         showAlert: true,
       };
@@ -679,6 +680,26 @@ const data_reducer = (state, action) => {
       return {
         ...state,
         feedbackSubmitted: true,
+      };
+    }
+
+    case SERVICE_INTIMATION: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Email Has Been Sent",
+        alertType: "success",
+        showAlert: true,
+      };
+    }
+
+    case SERVICE_INTIMATION_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Please try today/tomorrow after 4pm",
+        alertType: "danger",
+        showAlert: true,
       };
     }
 
