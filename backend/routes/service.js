@@ -18,6 +18,7 @@ const {
   getAllStats,
   serviceNotDoneReport,
   editService,
+  serviceIntimation,
 } = require("../controllers/service");
 
 router
@@ -37,6 +38,7 @@ router
   .route("/create/:id")
   .get(authorizeUser("Sales", "Admin", "Back Office"), createDoc)
   .patch(authorizeUser("Sales", "Admin"), editService);
+router.route("/intimation/:id").post(serviceIntimation);
 router
   .route("/:id")
   .get(authorizeUser("Operator", "Admin"), singleService)

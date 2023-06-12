@@ -997,6 +997,69 @@ const dailyReport = async (req, res) => {
   //   }
 };
 
+const serviceIntimation = async (req, res) => {
+  const {
+    params: { id: serviceId },
+    body: { serviceDate },
+  } = req;
+  try {
+    const service = await Service.findOne({ _id: serviceId }).populate({
+      path: "contract",
+      select:
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress",
+    });
+
+    if (!service)
+      return res.status(404).json({ msg: "Service Card Not Found" });
+
+    const temp = new Set();
+    if (service.contract.billToContact1.email)
+      temp.add(service.contract.billToContact1.email);
+    if (service.contract.billToContact2.email)
+      temp.add(service.contract.billToContact2.email);
+    if (service.contract.billToContact3.email)
+      temp.add(service.contract.billToContact3.email);
+    if (service.contract.shipToContact1.email)
+      temp.add(service.contract.shipToContact1.email);
+    if (service.contract.shipToContact2.email)
+      temp.add(service.contract.shipToContact2.email);
+    if (service.contract.shipToContact3.email)
+      temp.add(service.contract.shipToContact3.email);
+
+    if (temp.has("clientproxymail@gmail.com"))
+      temp.delete("clientproxymail@gmail.com");
+
+    const emails = [...temp];
+    const addre = service.contract.shipToAddress;
+    const shipAddress = `${addre.address1}, ${addre.address2}, ${addre.address3}, ${addre.address4}, ${addre.city}`;
+    const contractNo = service.contract.contractNo;
+    const serv = service.service.toString();
+    const link = `https://cqr.sat9.in/feedback/${serviceId}`;
+
+    if (emails.length > 0) {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+      const msg = {
+        to: emails,
+        from: { email: "noreply.epcorn@gmail.com", name: "Epcorn" },
+        dynamic_template_data: {
+          service: serv,
+          contractNo,
+          shipAddress,
+          link,
+        },
+        template_id: "d-8deb06e9be554fb682ddf1f2670c36d8",
+      };
+      await sgMail.send(msg);
+    }
+
+    return res.json({ msg: "Mail has been sent" });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -1012,4 +1075,5 @@ module.exports = {
   dailyReport,
   serviceNotDoneReport,
   editService,
+  serviceIntimation,
 };
