@@ -3,16 +3,14 @@ import { Alert } from "../components";
 import { useDataContext } from "../context/data_context";
 
 const Register = () => {
-
-  const { showAlert, loading, displayAlert, registerUser, } =
-    useDataContext();
+  const { showAlert, loading, displayAlert, registerUser } = useDataContext();
   const [values, setValues] = useState({
     name: "",
     password: "",
     role: "Sales",
   });
 
-  const roles = ["Sales", "Back Office", "Operator", "Admin"];
+  const roles = ["Sales", "Back Office", "Operator", "B2", "Admin"];
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -27,7 +25,6 @@ const Register = () => {
     }
     registerUser(values);
   };
-
 
   return (
     <div className="position-absolute top-50 start-50 translate-middle border border-info p-4 mt-4">
