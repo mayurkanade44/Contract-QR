@@ -6,7 +6,7 @@ import best from "../images/star.png";
 import feedback from "../images/feedback.jpg";
 import { useEffect, useState } from "react";
 import { useDataContext } from "../context/data_context";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const initialState = {
   efficiency: "",
@@ -23,14 +23,16 @@ const Feedback = () => {
   const [formValue, setFormValue] = useState(initialState);
   const [show, setShow] = useState(false);
   const [thanks, setThanks] = useState(false);
-  const { newFeedback } = useDataContext();
+  const { newFeedback, role, user, setServiceId } = useDataContext();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id.split("-").length > 1) setShow(true);
+    setServiceId({ name: "serviceId", value: id });
 
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   const {
     pestService,
@@ -105,6 +107,15 @@ const Feedback = () => {
     }, 1000);
   };
 
+  const handleRedirect = () => {
+    if (user) {
+      if (role === "B2") navigate(`/service-intimation/${id}`);
+      else if (role === "Operator") navigate(`/service/${id}`);
+    } else {
+      navigate(`/login`);
+    }
+  };
+
   return (
     <div className="container my-2">
       {!show && !thanks ? (
@@ -115,9 +126,9 @@ const Feedback = () => {
           >
             Customer Feedback
           </button>
-          <Link to={`/service/${id}`}>
-            <button className="btn btn-info">Service Card Report</button>
-          </Link>
+          <button className="btn btn-info" onClick={handleRedirect}>
+            Service Card Report
+          </button>
         </div>
       ) : show ? (
         <>

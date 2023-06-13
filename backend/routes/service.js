@@ -38,10 +38,12 @@ router
   .route("/create/:id")
   .get(authorizeUser("Sales", "Admin", "Back Office"), createDoc)
   .patch(authorizeUser("Sales", "Admin"), editService);
-router.route("/intimation/:id").post(serviceIntimation);
+router
+  .route("/intimation/:id")
+  .post(authorizeUser("Admin", "B2"), serviceIntimation);
 router
   .route("/:id")
-  .get(authorizeUser("Operator", "Admin"), singleService)
+  .get(authorizeUser("Operator", "Admin", "B2"), singleService)
   .patch(authorizeUser("Operator", "Admin"), updateCard)
   .delete(authorizeUser("Admin", "Sales"), deleteService);
 

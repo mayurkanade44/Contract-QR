@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { showAlert, loading, displayAlert, loginUser, user, serviceId } =
+  const { showAlert, loading, displayAlert, loginUser, user, serviceId, role } =
     useDataContext();
   const [values, setValues] = useState({
     name: "",
@@ -28,8 +28,8 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.role === "B2") navigate(`/service-intimation/${serviceId}`);
-      else if (user.role === "Operator") navigate(`/service/${serviceId}`);
+      if (role === "B2") navigate(`/service-intimation/${serviceId}`);
+      else if (role === "Operator") navigate(`/service/${serviceId}`);
       else navigate("/dashboard");
     }
     // eslint-disable-next-line
