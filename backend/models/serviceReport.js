@@ -1,5 +1,4 @@
 const moongoose = require("mongoose");
-const moment = require("moment");
 
 const ServiceReportSchema = new moongoose.Schema({
   contract: { type: String },
@@ -13,6 +12,7 @@ const ServiceReportSchema = new moongoose.Schema({
   behavior: { type: String },
   equipment: { type: String },
   extraServices: { type: String },
+  branch: { type: String },
   service: {
     type: moongoose.Types.ObjectId,
     ref: "Service",

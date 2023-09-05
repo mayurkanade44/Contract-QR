@@ -18,6 +18,7 @@ const axios = require("axios");
 const Admin = require("../models/admin");
 const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
+const exceljs = require("exceljs");
 
 const getAllService = async (req, res) => {
   try {
@@ -584,7 +585,7 @@ const updateCard = async (req, res) => {
     const service = await Service.findOne({ _id: serviceId }).populate({
       path: "contract",
       select:
-        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress ",
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress branch ",
     });
 
     if (!service)
@@ -595,6 +596,7 @@ const updateCard = async (req, res) => {
     await service.save();
 
     req.body.service = serviceId;
+    if (service.contract.branch) req.body.branch = service.contract.branch;
     await ServiceReport.create(req.body);
 
     if (service) {
@@ -1060,6 +1062,141 @@ const serviceIntimation = async (req, res) => {
   }
 };
 
+const branchReport = async (branch, searchED, searchSD) => {
+  const query = { branch };
+
+  if (searchED && searchSD) {
+    query.serviceDate = {
+      $gte: new Date(searchSD),
+      $lte: new Date(searchED),
+    };
+  }
+  try {
+    const reports = await ServiceReport.find(query);
+    if (!reports) return false;
+
+    if (reports.length) {
+      const workbook = new exceljs.Workbook();
+      let worksheet = workbook.addWorksheet("Sheet1");
+
+      worksheet.columns = [
+        { header: "Contract Number", key: "contractNo" },
+        { header: "Service Name", key: "serviceName" },
+        { header: "Service Status", key: "serviceStatus" },
+        { header: "Service Date", key: "serviceDate" },
+        { header: "Operator Comment", key: "serviceComment" },
+        { header: "Image 1", key: "image1" },
+        { header: "Image 2", key: "image2" },
+      ];
+
+      reports.map((item) => {
+        worksheet.addRow({
+          contractNo: item.contract,
+          serviceName: item.serviceName,
+          serviceStatus: item.completion,
+          serviceDate: item.serviceDate,
+          serviceComment: item.comments,
+          image1:
+            (item.image.length >= 1 && {
+              text: "Download",
+              hyperlink: item.image[0],
+            }) ||
+            "No Image",
+          image2:
+            (item.image.length >= 2 && {
+              text: "Download",
+              hyperlink: item.image[1],
+            }) ||
+            "No Image",
+        });
+      });
+
+      const filePath = `./tmp/${branch} Service Report.xlsx`;
+      await workbook.xlsx.writeFile(filePath);
+
+      const result = await cloudinary.uploader.upload(filePath, {
+        resource_type: "raw",
+        use_filename: true,
+        folder: "service-reports",
+      });
+
+      fs.unlinkSync(filePath);
+      return result.secure_url;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+const getBranchReport = async (req, res) => {
+  const { branch, searchSD, searchED } = req.body;
+  try {
+    if (!branch) return res.status(400).json({ msg: "Please select branch" });
+
+    const update = await Contract.updateMany(
+      {},
+      { $set: { branch: "MUM - 1" } }
+    );
+
+    const reportLink = await branchReport(branch, searchED, searchSD);
+
+    if (!reportLink)
+      return res.status(400).json({ msg: "No service report found" });
+
+    return res.status(200).json({ reportLink, msg: "Report generated" });
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+const autoBranchReport = async (req, res) => {
+  try {
+    const date = new Date();
+    const yesterday = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() - 1
+    ).setHours(5, 30, 0);
+
+    let branch = "BLR - 1";
+
+    const reportLink = await branchReport(branch, yesterday, yesterday);
+
+    if (!reportLink)
+      return res.status(400).json({ msg: "No service report found" });
+
+    const att = [];
+    const response = await axios.get(reportLink, {
+      responseType: "arraybuffer",
+    });
+    const base64File = Buffer.from(response.data, "binary").toString("base64");
+    const attachObj = {
+      content: base64File,
+      filename: `${branch}.xlsx`,
+      type: "application/xlsx",
+      disposition: "attachment",
+    };
+    att.push(attachObj);
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: "exteam.epcorn@gmail.com",
+      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+      subject: `Branch Reports of ${moment(yesterday).format("DD/MM/YYYY")}`,
+      html: "<div>Hi Team,<br></br><br></br>Please find the attachments of yesterday's branch wise service report</div>",
+      attachments: att,
+    };
+    await sgMail.send(msg);
+
+    return res.status(200).json({ msg: "Mail Send" });
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -1076,4 +1213,6 @@ module.exports = {
   serviceNotDoneReport,
   editService,
   serviceIntimation,
+  getBranchReport,
+  autoBranchReport,
 };

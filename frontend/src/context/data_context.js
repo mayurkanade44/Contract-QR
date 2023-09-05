@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import axios from "axios";
 import reducer from "./data_reducer";
+import { saveAs } from "file-saver";
 
 import {
   LOADING,
@@ -50,6 +51,7 @@ import {
   SUBMIT_FEEDBACK,
   SERVICE_INTIMATION,
   SERVICE_INTIMATION_FAIL,
+  BRANCH_REPORT,
 } from "./action";
 
 const DataContext = createContext();
@@ -178,6 +180,7 @@ export const initialState = {
   pestRating: [],
   feedbackFile: "",
   serviceId: "",
+  branch: "MUM - 1",
 };
 
 export const DataProvider = ({ children }) => {
@@ -492,6 +495,7 @@ export const DataProvider = ({ children }) => {
         specialInstruction,
         sales,
         company,
+        branch,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       const instructions = [];
@@ -517,6 +521,7 @@ export const DataProvider = ({ children }) => {
         billingFrequency,
         preferred,
         specialInstruction: instructions,
+        branch,
       });
       const contractId = res.data.contract._id;
       dispatch({
@@ -550,6 +555,7 @@ export const DataProvider = ({ children }) => {
       startDate,
       sales,
       company,
+      branch,
     } = state;
     try {
       const res = await authFetch.patch(`/contracts/${id}`, {
@@ -568,6 +574,7 @@ export const DataProvider = ({ children }) => {
         preferred,
         startDate,
         endDate,
+        branch
       });
       dispatch({ type: UPDATE_CONTRACT, payload: res.data });
     } catch (error) {
@@ -703,6 +710,7 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: LOADING });
     try {
       const res = await authFetch.get(`/service/report/${id}`);
+      // saveAs(res.data.msg, "Service Report");
       dispatch({ type: SERVICE_REPORT, payload: res.data.msg });
     } catch (error) {
       console.log(error);
@@ -850,9 +858,21 @@ export const DataProvider = ({ children }) => {
       const res = await authFetch.post(`/service/intimation/${id}`, {
         serviceDate,
       });
+
       dispatch({ type: SERVICE_INTIMATION, payload: res.data });
     } catch (error) {
       dispatch({ type: SERVICE_INTIMATION_FAIL });
+      console.log(error);
+    }
+  };
+
+  const branchReport = async (data) => {
+    dispatch({ type: LOADING });
+    try {
+      const res = await authFetch.post(`/service/branchReport`, data);
+      saveAs(res.data.reportLink, `${data.branch} Report`);
+      dispatch({ type: BRANCH_REPORT, payload: res.data });
+    } catch (error) {
       console.log(error);
     }
   };
@@ -903,6 +923,7 @@ export const DataProvider = ({ children }) => {
         feedbackStats,
         serviceIntimation,
         setServiceId,
+        branchReport,
       }}
     >
       {children}

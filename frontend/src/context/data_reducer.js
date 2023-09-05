@@ -46,6 +46,7 @@ import {
   SUBMIT_FEEDBACK,
   SERVICE_INTIMATION,
   SERVICE_INTIMATION_FAIL,
+  BRANCH_REPORT,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -372,6 +373,7 @@ const data_reducer = (state, action) => {
           day: state.singleContract.preferred.day,
           time: state.singleContract.preferred.time,
         },
+        branch: state.singleContract.branch,
         area: state.singleContract.area,
         billingFrequency: state.singleContract.billingFrequency,
         specialInstruction: state.singleContract.specialInstruction.toString(),
@@ -699,6 +701,16 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: "Please try today/tomorrow after 4pm",
         alertType: "danger",
+        showAlert: true,
+      };
+    }
+
+    case BRANCH_REPORT: {
+      return {
+        ...state,
+        loading: false,
+        alertText: "Report Generated",
+        alertType: "success",
         showAlert: true,
       };
     }

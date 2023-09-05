@@ -86,6 +86,7 @@ const ContractSchema = new mongoose.Schema(
       default: false,
     },
     document: [Object],
+    branch: { type: String },
     createdAt: {
       type: Date,
       default: Date.now(),

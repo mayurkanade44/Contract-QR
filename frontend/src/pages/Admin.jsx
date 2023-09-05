@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Alert, InputRow, Loading, Modal } from "../components";
 import { useDataContext } from "../context/data_context";
 
+
 const Admin = () => {
   const {
     fetchAllUsers,
@@ -24,6 +25,8 @@ const Admin = () => {
     searchED,
     allJobData,
     modal,
+    branchReport,
+    
   } = useDataContext();
 
   const { label, value, chemical } = serviceChemicals;
@@ -39,6 +42,9 @@ const Admin = () => {
   const [showService, setShowService] = useState(false);
   const [showBusiness, setShowBusiness] = useState(false);
   const [showJobFile, setShowJobFile] = useState(false);
+  const [showBranch, setShowBranch] = useState(false);
+
+  const [branch, setBranch] = useState("MUM - 1");
 
   const deleteUser = (id) => {
     removeUser(id);
@@ -48,6 +54,12 @@ const Admin = () => {
   const generateFile = (e) => {
     e.preventDefault();
     allJobData();
+  };
+
+  const branchFile = (e) => {
+    e.preventDefault();
+    const data = { branch, searchSD, searchED };
+    branchReport(data);
   };
 
   const saveValues = () => {
@@ -106,6 +118,12 @@ const Admin = () => {
         className="btn my-3 me-3 btn-info btn-lg"
       >
         All Job Report
+      </button>
+      <button
+        onClick={() => setShowBranch(!showBranch)}
+        className="btn my-3 me-3 btn-info btn-lg"
+      >
+        Branch Report
       </button>
       {showUser && (
         <table className="table">
@@ -216,6 +234,54 @@ const Admin = () => {
               name="searchED"
               value={searchED}
               width={200}
+            />
+          </div>
+          <div className="col-md-2">
+            <button className="btn btn-primary">Generate File</button>
+          </div>
+        </form>
+      )}
+      {showBranch && (
+        <form className="row" onSubmit={branchFile}>
+          <div className="col-md-3 d-flex">
+            <label htmlFor="" className="p-2">
+              <h4>Branch</h4>
+            </label>
+            <select
+              className="form-select"
+              style={{ height: 37, marginTop: 6 }}
+              aria-label="Default select example"
+              name="type"
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+            >
+              {["MUM - 1", "PUN - 1", "BLR - 1"].map((data) => {
+                return (
+                  <option value={data} key={data}>
+                    {data}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="col-md-4">
+            <InputRow
+              label="From :"
+              type="date"
+              name="searchSD"
+              value={searchSD}
+              width={200}
+              required={false}
+            />
+          </div>
+          <div className="col-md-3">
+            <InputRow
+              label="To :"
+              type="date"
+              name="searchED"
+              value={searchED}
+              width={200}
+              required={false}
             />
           </div>
           <div className="col-md-2">

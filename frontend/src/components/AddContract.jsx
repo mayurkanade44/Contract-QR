@@ -38,6 +38,7 @@ const AddContract = () => {
     updateContract,
     role,
     company,
+    branch,
   } = useDataContext();
   const { day, time } = preferred;
 
@@ -47,6 +48,8 @@ const AddContract = () => {
       (item) => item.sales !== undefined && representativeList.push(item.sales)
     );
   }
+
+  const branchList = ["MUM - 1", "PUN - 1", "BLR - 1"];
 
   const timeList = [
     "10 am - 12 pm",
@@ -59,6 +62,7 @@ const AddContract = () => {
     "Anytime",
     "To Confirm",
   ];
+
   const endDateList = [
     "1 Month (30 Days)",
     "2 Months (60 Days)",
@@ -184,10 +188,10 @@ const AddContract = () => {
               })}
             </select>
           </div>
-          <div className="col-md-2">
+          <div className="col-md-1">
             <select
               className="form-select"
-              style={{ marginTop: 6, width: 130 }}
+              style={{ marginTop: 6, width: 100 }}
               aria-label="Default select example"
               name="company"
               value={company}
@@ -202,14 +206,30 @@ const AddContract = () => {
               })}
             </select>
           </div>
-          <div className="col-md-5">
+          <div className="col-md-2 ps-4">
+            <select
+              className="form-select"
+              style={{ marginTop: 6, }}
+              aria-label="Default select example"
+              name="branch"
+              value={branch}
+              onChange={handleChange}
+            >
+              {branchList.map((data) => {
+                return (
+                  <option value={data} key={data}>
+                    {data}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="col-md-3">
             <InputSelect
-              label="Sales Person :"
+              label="Sales"
               name="sales"
               value={sales}
               data={representativeList}
-              width={150}
-              w
             />
           </div>
           <hr className="mt-3" />
@@ -221,9 +241,9 @@ const AddContract = () => {
               value={startDate}
             />
           </div>
-          <div className="col-md-5">
+          <div className="col-md-4">
             <InputSelect
-              label="End Date :"
+              label="End Date"
               name="endContract"
               value={endContract}
               data={endDateList}
