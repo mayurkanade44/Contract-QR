@@ -1134,11 +1134,6 @@ const getBranchReport = async (req, res) => {
   try {
     if (!branch) return res.status(400).json({ msg: "Please select branch" });
 
-    const update = await Contract.updateMany(
-      {},
-      { $set: { branch: "MUM - 1" } }
-    );
-
     const reportLink = await branchReport(branch, searchED, searchSD);
 
     if (!reportLink)

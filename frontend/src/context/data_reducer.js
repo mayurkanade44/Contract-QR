@@ -47,6 +47,7 @@ import {
   SERVICE_INTIMATION,
   SERVICE_INTIMATION_FAIL,
   BRANCH_REPORT,
+  BRANCH_REPORT_FAIL,
 } from "./action";
 
 import { initialState } from "./data_context";
@@ -711,6 +712,16 @@ const data_reducer = (state, action) => {
         loading: false,
         alertText: "Report Generated",
         alertType: "success",
+        showAlert: true,
+      };
+    }
+
+    case BRANCH_REPORT_FAIL: {
+      return {
+        ...state,
+        loading: false,
+        alertText: action.payload.msg,
+        alertType: "danger",
         showAlert: true,
       };
     }

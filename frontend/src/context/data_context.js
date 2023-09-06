@@ -52,6 +52,7 @@ import {
   SERVICE_INTIMATION,
   SERVICE_INTIMATION_FAIL,
   BRANCH_REPORT,
+  BRANCH_REPORT_FAIL,
 } from "./action";
 
 const DataContext = createContext();
@@ -574,7 +575,7 @@ export const DataProvider = ({ children }) => {
         preferred,
         startDate,
         endDate,
-        branch
+        branch,
       });
       dispatch({ type: UPDATE_CONTRACT, payload: res.data });
     } catch (error) {
@@ -873,7 +874,8 @@ export const DataProvider = ({ children }) => {
       saveAs(res.data.reportLink, `${data.branch} Report`);
       dispatch({ type: BRANCH_REPORT, payload: res.data });
     } catch (error) {
-      console.log(error);
+      dispatch({ type: BRANCH_REPORT_FAIL, payload: error.response.data });
+      console.log(error.response);
     }
   };
 
