@@ -861,11 +861,6 @@ const serviceNotDoneReport = async (req, res) => {
   const { start, end } = req.query;
 
   try {
-    // const date = new Date();
-    // const less = new Date(date.getFullYear(), date.getMonth(), 1);
-    // const more = new Date(date.getFullYear(), date.getMonth() - 1, 1);
-    // const serviceDue = moment(more).format("MMM YY");
-
     const serviceDue = moment(start).format("MMM YY");
 
     const services = await Service.find({ serviceDue })
@@ -901,7 +896,12 @@ const serviceNotDoneReport = async (req, res) => {
       { label: "Contract Number", value: "contract" },
       { label: "Service Name", value: "service" },
       { label: "Frequency", value: "frequency" },
-      { label: "Completed/Not Completed", value: "serviceReports.completion" },
+      {
+        label: "Completed/Not Completed",
+        value: "serviceReports.completion",
+        default: "No data/pending report",
+      },
+      { label: "Comments", value: "serviceReports.comments" },
     ];
 
     const transforms = [unwind({ paths: ["serviceReports"] })];
@@ -1155,32 +1155,41 @@ const autoBranchReport = async (req, res) => {
       date.getDate() - 1
     ).setHours(5, 30, 0);
 
-    let branch = "BLR - 1";
+    const branches = ["MUM - 1", "PUN - 1", "BLR - 1"];
+    const links = [];
 
-    const reportLink = await branchReport(branch, yesterday, yesterday);
+    for (let branch of branches) {
+      const reportLink = await branchReport(branch, yesterday, yesterday);
 
-    if (!reportLink)
+      if (reportLink) links.push({ reportLink, branch });
+    }
+
+    if (!links.length)
       return res.status(400).json({ msg: "No service report found" });
 
     const att = [];
-    const response = await axios.get(reportLink, {
-      responseType: "arraybuffer",
-    });
-    const base64File = Buffer.from(response.data, "binary").toString("base64");
-    const attachObj = {
-      content: base64File,
-      filename: `${branch}.xlsx`,
-      type: "application/xlsx",
-      disposition: "attachment",
-    };
-    att.push(attachObj);
+    for (let i = 0; i < links.length; i++) {
+      const response = await axios.get(links[i].reportLink, {
+        responseType: "arraybuffer",
+      });
+      const base64File = Buffer.from(response.data, "binary").toString(
+        "base64"
+      );
+      const attachObj = {
+        content: base64File,
+        filename: `${links[i].branch}.xlsx`,
+        type: "application/xlsx",
+        disposition: "attachment",
+      };
+      att.push(attachObj);
+    }
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
-      to: "exteam.epcorn@gmail.com",
+      to: ["stq@epcorn.com", "epcorn@yahoo.in"],
       from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
       subject: `Branch Reports of ${moment(yesterday).format("DD/MM/YYYY")}`,
-      html: "<div>Hi Team,<br></br><br></br>Please find the attachments of yesterday's branch wise service report</div>",
+      html: "<div>Hi Team,<br></br><br></br>Please find the attachments of yesterday's branch wise service done/not done report.</div>",
       attachments: att,
     };
     await sgMail.send(msg);
