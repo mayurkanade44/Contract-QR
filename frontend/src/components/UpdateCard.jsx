@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { InputSelect, Alert, InputRow } from ".";
+import { InputSelect, Alert, InputRow, Loading } from ".";
 import { useDataContext } from "../context/data_context";
 
 const UpdateCard = ({ id }) => {
@@ -14,6 +14,7 @@ const UpdateCard = ({ id }) => {
     adminList,
     allValues,
     serviceDate,
+    loading,
   } = useDataContext();
   const remarks = ["Completed", "Not Completed", "Partially Completed"];
 
@@ -34,6 +35,8 @@ const UpdateCard = ({ id }) => {
     updateCard(id);
     displayAlert();
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div>
@@ -74,7 +77,9 @@ const UpdateCard = ({ id }) => {
           </div>
           <div className="col-lg-1 my-1">
             <button
-              className="btn btn-dark"
+              className={`btn ${
+                image.length > 0 ? "btn-success" : "btn-dark"
+              } `}
               type="submit"
               onClick={handleSubmit}
               disabled={image.length > 0 ? false : true}

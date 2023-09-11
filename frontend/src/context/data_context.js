@@ -220,7 +220,7 @@ export const DataProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 3000);
+    }, 5000);
   };
 
   const addLocalStorage = ({ name, token, role }) => {
@@ -693,6 +693,7 @@ export const DataProvider = ({ children }) => {
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       dispatch({ type: UPDATE_CARD_FAIL });
+      dispatch({ type: CLEAR_VALUES });
       console.log(error);
     }
   };

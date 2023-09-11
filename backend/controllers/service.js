@@ -1197,7 +1197,7 @@ const autoBranchReport = async (req, res) => {
     return res.status(200).json({ msg: "Mail Send" });
   } catch (error) {
     console.log(error);
-    return false;
+    return res.status(200).json({ msg: "Mail Error" });
   }
 };
 

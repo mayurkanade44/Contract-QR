@@ -72,7 +72,7 @@ const data_reducer = (state, action) => {
     case DISPLAY_ALERT: {
       return {
         ...state,
-        loading: false,
+        loading: true,
         showAlert: true,
       };
     }
