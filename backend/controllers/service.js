@@ -19,6 +19,7 @@ const Admin = require("../models/admin");
 const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
 const exceljs = require("exceljs");
+var Brevo = require("@getbrevo/brevo");
 
 const getAllService = async (req, res) => {
   try {
@@ -585,7 +586,7 @@ const updateCard = async (req, res) => {
     const service = await Service.findOne({ _id: serviceId }).populate({
       path: "contract",
       select:
-        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress branch ",
+        "billToContact1 billToContact2 billToContact3 shipToContact1 shipToContact2 shipToContact3 contractNo shipToAddress branch",
     });
 
     if (!service)
@@ -596,7 +597,8 @@ const updateCard = async (req, res) => {
     await service.save();
 
     req.body.service = serviceId;
-    if (service.contract.branch) req.body.branch = service.contract.branch;
+    req.body.branch = service.contract.branch;
+
     await ServiceReport.create(req.body);
 
     if (service) {
@@ -1161,40 +1163,71 @@ const autoBranchReport = async (req, res) => {
     for (let branch of branches) {
       const reportLink = await branchReport(branch, yesterday, yesterday);
 
-      if (reportLink) links.push({ reportLink, branch });
+      if (reportLink) links.push({ url: reportLink, name: `${branch}.xlsx` });
     }
 
-    if (!links.length)
-      return res.status(400).json({ msg: "No service report found" });
+    // const att = [];
+    // for (let i = 0; i < links.length; i++) {
+    //   const response = await axios.get(links[i].reportLink, {
+    //     responseType: "arraybuffer",
+    //   });
+    //   const base64File = Buffer.from(response.data, "binary").toString(
+    //     "base64"
+    //   );
+    //   const attachObj = {
+    //     content: base64File,
+    //     filename: `${links[i].branch}.xlsx`,
+    //     type: "application/xlsx",
+    //     disposition: "attachment",
+    //   };
+    //   att.push(attachObj);
+    // }
 
-    const att = [];
-    for (let i = 0; i < links.length; i++) {
-      const response = await axios.get(links[i].reportLink, {
-        responseType: "arraybuffer",
-      });
-      const base64File = Buffer.from(response.data, "binary").toString(
-        "base64"
-      );
-      const attachObj = {
-        content: base64File,
-        filename: `${links[i].branch}.xlsx`,
-        type: "application/xlsx",
-        disposition: "attachment",
-      };
-      att.push(attachObj);
-    }
+    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    // const msg = {
+    //   to: ["stq@epcorn.com", "epcorn@yahoo.in"],
+    //   from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
+    //   subject: `Branch Reports of ${moment(yesterday).format("DD/MM/YYYY")}`,
+    //   html: "<div>Hi Team,<br></br><br></br>Please find the attachments of yesterday's branch wise service done/not done report.</div>",
+    //   attachments: att,
+    // };
+    // await sgMail.send(msg);
 
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-      to: ["stq@epcorn.com", "epcorn@yahoo.in"],
-      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-      subject: `Branch Reports of ${moment(yesterday).format("DD/MM/YYYY")}`,
-      html: "<div>Hi Team,<br></br><br></br>Please find the attachments of yesterday's branch wise service done/not done report.</div>",
-      attachments: att,
-    };
-    await sgMail.send(msg);
+    let defaultClient = Brevo.ApiClient.instance;
+    let apiKey = defaultClient.authentications["api-key"];
+    apiKey.apiKey = process.env.BREVO_KEY;
+    let apiInstance = new Brevo.TransactionalEmailsApi();
+    let sendSmtpEmail = new Brevo.SendSmtpEmail();
+
+    if (links.length > 0) sendSmtpEmail.attachment = links;
+    sendSmtpEmail.subject = `Auto Generated Branch Reports Of ${moment(
+      yesterday
+    ).format("DD/MM/YYYY")}`;
+    sendSmtpEmail.htmlContent =
+      "<html><body><div>Hi Team,<br><br>Please find the attachments of yesterday's branch wise service done/not done report.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>";
+    sendSmtpEmail.sender = { name: "EPCORN", email: "exteam.epcorn@gmail.com" };
+    sendSmtpEmail.to = [{ email: "stq@epcorn.com", email: "epcorn@yahoo.in" }];
+
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
 
     return res.status(200).json({ msg: "Mail Send" });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({ msg: "Mail Error" });
+  }
+};
+
+const getDayReports = async (req, res) => {
+  try {
+    console.log(new Date());
+    const reports = await ServiceReport.find({
+      createdDate: {
+        $gte: new Date("2023-09-26"),
+        $lte: new Date("2023-09-27"),
+      },
+    });
+
+    return res.json(reports);
   } catch (error) {
     console.log(error);
     return res.status(200).json({ msg: "Mail Error" });
@@ -1219,4 +1252,5 @@ module.exports = {
   serviceIntimation,
   getBranchReport,
   autoBranchReport,
+  getDayReports,
 };
