@@ -597,9 +597,10 @@ const updateCard = async (req, res) => {
     await service.save();
 
     req.body.service = serviceId;
-    req.body.branch = service.contract.branch;
+    const branch = service.contract.branch;
+    req.body.branch = branch || "MUM - 1";
 
-    await ServiceReport.create(req.body);
+    const serviceReport = await ServiceReport.create({ ...req.body });
 
     if (service) {
       const temails = new Set();
@@ -639,7 +640,7 @@ const updateCard = async (req, res) => {
       }
     }
 
-    res.status(200).json({ service });
+    res.status(200).json({ serviceReport });
   } catch (error) {
     res.status(400).json({ msg: "There is some error" });
     console.log(error);
@@ -1148,6 +1149,71 @@ const getBranchReport = async (req, res) => {
   }
 };
 
+const getDayReports = async (today, yesterday) => {
+  try {
+    const reports = await ServiceReport.find({
+      createdDate: {
+        $gte: new Date(yesterday),
+        $lte: new Date(today),
+      },
+    });
+
+    if (reports.length > 0) {
+      const workbook = new exceljs.Workbook();
+      let worksheet = workbook.addWorksheet("Sheet1");
+
+      worksheet.columns = [
+        { header: "Contract Number", key: "contractNo" },
+        { header: "Branch", key: "branch" },
+        { header: "Service Name", key: "serviceName" },
+        { header: "Service Status", key: "serviceStatus" },
+        { header: "Service Date", key: "serviceDate" },
+        { header: "Operator Comment", key: "serviceComment" },
+        { header: "Image 1", key: "image1" },
+        { header: "Image 2", key: "image2" },
+      ];
+
+      reports.map((item) => {
+        worksheet.addRow({
+          contractNo: item.contract,
+          branch: item.branch,
+          serviceName: item.serviceName,
+          serviceStatus: item.completion,
+          serviceDate: item.serviceDate,
+          serviceComment: item.comments,
+          image1:
+            (item.image.length >= 1 && {
+              text: "Download",
+              hyperlink: item.image[0],
+            }) ||
+            "No Image",
+          image2:
+            (item.image.length >= 2 && {
+              text: "Download",
+              hyperlink: item.image[1],
+            }) ||
+            "No Image",
+        });
+      });
+
+      const filePath = `./tmp/Daily Service Report.xlsx`;
+      await workbook.xlsx.writeFile(filePath);
+
+      const result = await cloudinary.uploader.upload(filePath, {
+        resource_type: "raw",
+        use_filename: true,
+        folder: "service-reports",
+      });
+
+      fs.unlinkSync(filePath);
+      return { link: result.secure_url, count: reports.length };
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
 const autoBranchReport = async (req, res) => {
   try {
     const date = new Date();
@@ -1164,6 +1230,16 @@ const autoBranchReport = async (req, res) => {
       const reportLink = await branchReport(branch, yesterday, yesterday);
 
       if (reportLink) links.push({ url: reportLink, name: `${branch}.xlsx` });
+    }
+
+    let dailyReportCount = 0;
+    const dailyReport = await getDayReports(date, yesterday);
+    if (dailyReport) {
+      links.push({
+        url: dailyReport.link,
+        name: "Daily Scanned QR Cards.xlsx",
+      });
+      dailyReportCount = dailyReport.count;
     }
 
     // const att = [];
@@ -1199,35 +1275,17 @@ const autoBranchReport = async (req, res) => {
     let apiInstance = new Brevo.TransactionalEmailsApi();
     let sendSmtpEmail = new Brevo.SendSmtpEmail();
 
-    if (links.length > 0) sendSmtpEmail.attachment = links;
     sendSmtpEmail.subject = `Auto Generated Branch Reports Of ${moment(
       yesterday
     ).format("DD/MM/YYYY")}`;
-    sendSmtpEmail.htmlContent =
-      "<html><body><div>Hi Team,<br><br>Please find the attachments of yesterday's branch wise service done/not done report.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>";
+    sendSmtpEmail.htmlContent = `<html><body><div>Hi Team,<br><br>Please find the attachments of yesterday's branch wise service done/not done report.<br>Today ${dailyReportCount} cards scanned & attached report file.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>`;
     sendSmtpEmail.sender = { name: "EPCORN", email: "exteam.epcorn@gmail.com" };
-    sendSmtpEmail.to = [{ email: "stq@epcorn.com", email: "epcorn@yahoo.in" }];
+    sendSmtpEmail.to = [{ email: "noreply.epcorn@gmail.com" }];
+    sendSmtpEmail.attachment = links;
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
 
     return res.status(200).json({ msg: "Mail Send" });
-  } catch (error) {
-    console.log(error);
-    return res.status(200).json({ msg: "Mail Error" });
-  }
-};
-
-const getDayReports = async (req, res) => {
-  try {
-    console.log(new Date());
-    const reports = await ServiceReport.find({
-      createdDate: {
-        $gte: new Date("2023-09-26"),
-        $lte: new Date("2023-09-27"),
-      },
-    });
-
-    return res.json(reports);
   } catch (error) {
     console.log(error);
     return res.status(200).json({ msg: "Mail Error" });
