@@ -1223,51 +1223,25 @@ const autoBranchReport = async (req, res) => {
       date.getDate() - 1
     ).setHours(5, 30, 0);
 
-    const branches = ["MUM - 1", "PUN - 1", "BLR - 1"];
+    const branches = ["MUM - 1", "PUN - 1", "BLR - 1", "All"];
     const links = [];
 
-    for (let branch of branches) {
-      const reportLink = await branchReport(branch, yesterday, yesterday);
-
-      if (reportLink) links.push({ url: reportLink, name: `${branch}.xlsx` });
-    }
-
     let dailyReportCount = 0;
-    const dailyReport = await getDayReports(date, yesterday);
-    if (dailyReport) {
-      links.push({
-        url: dailyReport.link,
-        name: "Daily Scanned QR Cards.xlsx",
-      });
-      dailyReportCount = dailyReport.count;
+    for (let branch of branches) {
+      if (branch === "All") {
+        const dailyReport = await getDayReports(date, yesterday);
+        if (dailyReport) {
+          links.push({
+            url: dailyReport.link,
+            name: "Daily Scanned QR Cards.xlsx",
+          });
+          dailyReportCount = dailyReport.count;
+        }
+      } else {
+        const reportLink = await branchReport(branch, yesterday, yesterday);
+        if (reportLink) links.push({ url: reportLink, name: `${branch}.xlsx` });
+      }
     }
-
-    // const att = [];
-    // for (let i = 0; i < links.length; i++) {
-    //   const response = await axios.get(links[i].reportLink, {
-    //     responseType: "arraybuffer",
-    //   });
-    //   const base64File = Buffer.from(response.data, "binary").toString(
-    //     "base64"
-    //   );
-    //   const attachObj = {
-    //     content: base64File,
-    //     filename: `${links[i].branch}.xlsx`,
-    //     type: "application/xlsx",
-    //     disposition: "attachment",
-    //   };
-    //   att.push(attachObj);
-    // }
-
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    // const msg = {
-    //   to: ["stq@epcorn.com", "epcorn@yahoo.in"],
-    //   from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-    //   subject: `Branch Reports of ${moment(yesterday).format("DD/MM/YYYY")}`,
-    //   html: "<div>Hi Team,<br></br><br></br>Please find the attachments of yesterday's branch wise service done/not done report.</div>",
-    //   attachments: att,
-    // };
-    // await sgMail.send(msg);
 
     let defaultClient = Brevo.ApiClient.instance;
     let apiKey = defaultClient.authentications["api-key"];
