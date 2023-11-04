@@ -32,7 +32,7 @@ const getAllContracts = async (req, res) => {
       renewalLink = await generateRenewalFile(contracts);
     }
 
-    contracts = contracts.slice(0, 300);
+    contracts = contracts.slice(0, 100);
 
     res.status(200).json({ contracts, len: contracts.length, renewalLink });
   } catch (error) {
