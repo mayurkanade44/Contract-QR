@@ -13,6 +13,7 @@ const ServiceReportSchema = new moongoose.Schema({
   equipment: { type: String },
   extraServices: { type: String },
   branch: { type: String },
+  email: { type: Boolean, default: true },
   service: {
     type: moongoose.Types.ObjectId,
     ref: "Service",

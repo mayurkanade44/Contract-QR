@@ -600,8 +600,6 @@ const updateCard = async (req, res) => {
     const branch = service.contract.branch;
     req.body.branch = branch || "MUM - 1";
 
-    const serviceReport = await ServiceReport.create({ ...req.body });
-
     if (service) {
       const temails = new Set();
       const first = service.contract.billToContact1.email;
@@ -636,10 +634,15 @@ const updateCard = async (req, res) => {
           treatmentLocation,
           serviceId
         );
-        if (!suc) return res.status(400).json({ msg: "There is some error" });
+        if (!suc) {
+          req.body.email = false;
+          await ServiceReport.create({ ...req.body });
+          return res.status(400).json({ msg: "There is some error" });
+        }
       }
     }
 
+    const serviceReport = await ServiceReport.create({ ...req.body });
     res.status(200).json({ serviceReport });
   } catch (error) {
     res.status(400).json({ msg: "There is some error" });
@@ -652,7 +655,7 @@ const generateReport = async (req, res) => {
   try {
     const data = await ServiceReport.find({ service: id });
     const contractNo = data[0].contract.replace(/\//g, "");
-    const filename = `Service Report Of ${contractNo}.csv`;
+    const filename = `Service Report Of ${contractNo}.xlsx`;
 
     const fields1 = [];
     for (let item of data) {
@@ -662,25 +665,52 @@ const generateReport = async (req, res) => {
           serviceName: item.serviceName,
           serviceDate: item.serviceDate,
           completion: item.completion,
+          email: item.email,
           comments: item.comments,
           image: item.image,
         });
       }
     }
 
-    const fields = [
-      { label: "Contract Number", value: "contract" },
-      { label: "Service Name", value: "serviceName" },
-      { label: "Service Done Date", value: "serviceDate" },
-      { label: "Done/Not Done", value: "completion" },
-      { label: "Comments By Operator", value: "comments" },
-      { label: "Service Card", value: "image" },
+    const workbook = new exceljs.Workbook();
+    let worksheet = workbook.addWorksheet("Sheet1");
+
+    worksheet.columns = [
+      { header: "Contract Number", key: "contract" },
+      { header: "Service Name", key: "serviceName" },
+      { header: "Service Done Date", key: "serviceDate" },
+      { header: "Done/Not Done", key: "completion" },
+      { header: "Email Sent", key: "email" },
+      { header: "Comments By Operator", key: "comments" },
+      { header: "Image 1", key: "image1" },
+      { header: "Image 2", key: "image2" },
     ];
 
-    const json2csvParser = new Parser({ fields });
-    const csv = json2csvParser.parse(fields1);
+    fields1.map((item) => {
+      worksheet.addRow({
+        contract: item.contract,
+        serviceName: item.serviceName,
+        serviceDate: item.serviceDate,
+        completion: item.completion,
+        email: item.email ? "Yes" : "No",
+        comments: item.comments,
+        image1:
+          (item.image.length >= 1 && {
+            text: "Download",
+            hyperlink: item.image[0],
+          }) ||
+          "No Image",
+        image2:
+          (item.image.length >= 2 && {
+            text: "Download",
+            hyperlink: item.image[1],
+          }) ||
+          "No Image",
+      });
+    });
 
-    fs.writeFileSync(path.resolve(__dirname, "../files/", filename), csv);
+    const filePath = `./files/${filename}`;
+    await workbook.xlsx.writeFile(filePath);
     const result = await cloudinary.uploader.upload(`files/${filename}`, {
       resource_type: "raw",
       use_filename: true,
