@@ -576,6 +576,35 @@ const sendFeedbackMail = async (emails) => {
   }
 };
 
+const sendBrevoEmail = async ({
+  attachment,
+  dynamicData,
+  emailList,
+  templateId,
+}) => {
+  try {
+    let defaultClient = Brevo.ApiClient.instance;
+    let apiKey = defaultClient.authentications["api-key"];
+    apiKey.apiKey = process.env.BREVO_KEY;
+    let apiInstance = new Brevo.TransactionalEmailsApi();
+    let sendSmtpEmail = new Brevo.SendSmtpEmail();
+
+    sendSmtpEmail.sender = {
+      name: "EPCORN",
+      email: "noreply.epcorn@gmail.com",
+    };
+    sendSmtpEmail.to = emailList;
+    sendSmtpEmail.params = dynamicData;
+    sendSmtpEmail.templateId = templateId;
+    if (attachment) sendSmtpEmail.attachment = attachment;
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
 const updateCard = async (req, res) => {
   const {
     params: { id: serviceId },
@@ -608,42 +637,59 @@ const updateCard = async (req, res) => {
       const six = service.contract.billToContact3.email;
       const third = service.contract.shipToContact2.email;
       const fourth = service.contract.shipToContact3.email;
-      if (first && first !== "clientproxymail@gmail.com") temails.add(first);
-      if (second && second !== "clientproxymail@gmail.com") temails.add(second);
-      if (third && third !== "clientproxymail@gmail.com") temails.add(third);
-      if (fourth && fourth !== "clientproxymail@gmail.com") temails.add(fourth);
-      if (fifth && fifth !== "clientproxymail@gmail.com") temails.add(fifth);
-      if (six && six !== "clientproxymail@gmail.com") temails.add(six);
+      if (first && first !== "clientproxymail@gmail.com")
+        temails.add({ email: first });
+      if (second && second !== "clientproxymail@gmail.com")
+        temails.add({ email: second });
+      if (third && third !== "clientproxymail@gmail.com")
+        temails.add({ email: third });
+      if (fourth && fourth !== "clientproxymail@gmail.com")
+        temails.add({ email: fourth });
+      if (fifth && fifth !== "clientproxymail@gmail.com")
+        temails.add({ email: fifth });
+      if (six && six !== "clientproxymail@gmail.com")
+        temails.add({ email: six });
 
-      const emails = [...temails];
       const addre = service.contract.shipToAddress;
-      const treatmentLocation = service.treatmentLocation;
-      const shipAddress = `${addre.address1}, ${addre.address2}, ${addre.address3}, ${addre.address4}, ${addre.city}`;
-      const emailSub = service.contract.contractNo;
-      const serv = service.service.toString();
-      if (emails.length > 0) {
-        const suc = await sendEmail(
-          emails,
-          image,
-          emailSub,
-          serv,
-          completion,
-          comments,
-          serviceDate,
-          shipAddress,
-          treatmentLocation,
-          serviceId
-        );
-        if (!suc) {
-          req.body.email = false;
-          await ServiceReport.create({ ...req.body });
-          return res.status(400).json({ msg: "There is some error" });
-        }
+
+      const attachment = [];
+      image.map((item, index) =>
+        attachment.push({ url: item, name: `image-${index + 1}.jpg` })
+      );
+
+      const emailList = [];
+      [...temails].map(
+        (item) =>
+          !emailList.some((i) => i.email === item.email) &&
+          emailList.push({ email: item.email })
+      );
+
+      const dynamicData = {
+        service: service.service.toString(),
+        completion,
+        comments,
+        serviceDate: moment(serviceDate).format("DD/MM/YYYY"),
+        shipAddress: `${addre.address1}, ${addre.address2}, ${addre.address3}, ${addre.address4}, ${addre.city}`,
+        treatmentLocation: service.treatmentLocation,
+        emailSub: service.contract.contractNo,
+        link: `https://cqr.sat9.in/feedback/${serviceId}`,
+      };
+
+      const mail = await sendBrevoEmail({
+        dynamicData,
+        templateId: 7,
+        emailList,
+        attachment,
+      });
+      if (!mail) {
+        req.body.email = false;
+        await ServiceReport.create({ ...req.body });
+        return res.status(400).json({ msg: "Email error" });
       }
+      await ServiceReport.create({ ...req.body });
     }
 
-    const serviceReport = await ServiceReport.create({ ...req.body });
-    res.status(200).json({ serviceReport });
+    res.status(200).json({ msg: "Email Sent" });
   } catch (error) {
     res.status(400).json({ msg: "There is some error" });
     console.log(error);
