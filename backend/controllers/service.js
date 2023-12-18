@@ -20,6 +20,7 @@ const Feedback = require("../models/feedback");
 const client = require("@sendgrid/client");
 const exceljs = require("exceljs");
 var Brevo = require("@getbrevo/brevo");
+const mongoose = require("mongoose");
 
 const getAllService = async (req, res) => {
   try {
@@ -1342,6 +1343,148 @@ const autoBranchReport = async (req, res) => {
   }
 };
 
+const monthlyBranchServiceDue = async (req, res) => {
+  const { id } = req.params;
+
+  let date = moment();
+  if (id === "next") date = moment().add(1, "month");
+
+  try {
+    const monthName = moment(date).format("MMM YY");
+
+    const services = await Contract.find({ branch: "BLR - 1" }).populate({
+      path: "services",
+      match: { serviceDue: { $in: monthName } },
+    });
+
+    const ser = [];
+    for (let service of services) {
+      if (service.services.length > 0) {
+        for (let serv of service.services) {
+          ser.push({
+            id: serv._id,
+            contractNo: service.contractNo,
+            name: service.shipToAddress.name,
+            address: `${service.shipToAddress.address1}, ${service.shipToAddress.address2}, ${service.shipToAddress.address3}, ${service.shipToAddress.address4}, ${service.shipToAddress.nearBy}, ${service.shipToAddress.pincode}`,
+            frequency: serv.frequency,
+            service: serv.service.join(", "),
+            period: `${moment(service.startDate).format("MMM-YY")} - ${moment(
+              service.endDate
+            ).format("MMM-YY")}`,
+          });
+        }
+      }
+    }
+
+    const reports = await ServiceReport.find({
+      serviceDate: {
+        $gte: moment(date).startOf("month"),
+        $lte: date,
+      },
+    }).select("service serviceDate image");
+
+    const allData = [];
+    for (let s of ser) {
+      let date = "";
+      let image = "";
+      for (let r of reports) {
+        if (r.service.toString() == s.id.toString()) {
+          date += `${moment(r.serviceDate).format("DD/MM/YY")}, `;
+          image = r.image[0];
+        }
+      }
+      allData.push({
+        contractNo: s.contractNo,
+        period: s.period,
+        name: s.name,
+        address: s.address,
+        service: s.service,
+        frequency: s.frequency,
+        serviceDates: date,
+        image: image,
+      });
+    }
+
+    if (allData.length > 0) {
+      const workbook = new exceljs.Workbook();
+      let worksheet = workbook.addWorksheet("Sheet1");
+
+      worksheet.columns = [
+        { header: "Contract Number", key: "contractNo" },
+        { header: "Contract Period", key: "period" },
+        { header: "Client Name", key: "name" },
+        { header: "Client Address", key: "address" },
+        { header: "Service Name", key: "service" },
+        { header: "Service Frequency", key: "frequency" },
+        { header: "Service Card", key: "image" },
+        { header: "Service Dates", key: "dates" },
+      ];
+
+      allData.map((item) => {
+        worksheet.addRow({
+          contractNo: item.contractNo,
+          period: item.period,
+          name: item.name,
+          address: item.address,
+          service: item.service,
+          frequency: item.frequency,
+          image: item.image.length
+            ? {
+                text: "Download",
+                hyperlink: item.image,
+              }
+            : "NA",
+          dates: item.serviceDates,
+        });
+      });
+
+      const filePath = `./tmp/Service Of ${monthName}.xlsx`;
+      await workbook.xlsx.writeFile(filePath);
+
+      const result = await cloudinary.uploader.upload(filePath, {
+        resource_type: "raw",
+        use_filename: true,
+        folder: "service-reports",
+      });
+
+      let defaultClient = Brevo.ApiClient.instance;
+      let apiKey = defaultClient.authentications["api-key"];
+      apiKey.apiKey = process.env.BREVO_KEY;
+      let apiInstance = new Brevo.TransactionalEmailsApi();
+      let sendSmtpEmail = new Brevo.SendSmtpEmail();
+
+      let subject = "Banglore Service Report";
+      if (id === "next") subject = "Banglore Service Due";
+
+      sendSmtpEmail.subject = `${subject} ${monthName}`;
+      sendSmtpEmail.htmlContent = `<html><body><div>Hi Team,<br><br>Please find the attachments of ${subject} of ${monthName}.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>`;
+      sendSmtpEmail.sender = {
+        name: "EPCORN",
+        email: "exteam.epcorn@gmail.com",
+      };
+      sendSmtpEmail.to = [
+        { email: "natco.epcorn@gmail.com" },
+        { email: "stq@epcorn.com" },
+        { email: "sales@epcorn.com" },
+        { email: "epcorn@yahoo.in" },
+      ];
+      sendSmtpEmail.attachment = [
+        {
+          url: result.secure_url,
+          name: `${subject} ${monthName}.xlsx`,
+        },
+      ];
+      fs.unlinkSync(filePath);
+      await apiInstance.sendTransacEmail(sendSmtpEmail);
+    }
+
+    res.json({ msg: "Report Generated" });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllService,
   createService,
@@ -1361,4 +1504,5 @@ module.exports = {
   getBranchReport,
   autoBranchReport,
   getDayReports,
+  monthlyBranchServiceDue,
 };

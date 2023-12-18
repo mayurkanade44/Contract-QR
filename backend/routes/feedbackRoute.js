@@ -7,13 +7,17 @@ const {
   getFeedback,
   sendMails,
 } = require("../controllers/feedbackController");
-const { autoBranchReport } = require("../controllers/service");
+const {
+  autoBranchReport,
+  monthlyBranchServiceDue,
+} = require("../controllers/service");
 
 router.route("/getFeedback").get(getFeedback);
 router.route("/addContacts").put(addContacts);
 router.route("/schedule").put(scheduleMail);
 router.route("/sendMails").put(sendMails);
-router.route("/:id").post(createFeedback);
 router.get("/autoBranchReport", autoBranchReport);
+router.get("/monthlyService/:id", monthlyBranchServiceDue);
+router.route("/:id").post(createFeedback);
 
 module.exports = router;
