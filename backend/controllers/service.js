@@ -561,22 +561,6 @@ const singleService = async (req, res) => {
   }
 };
 
-const sendFeedbackMail = async (emails) => {
-  try {
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-    const msg = {
-      to: "exteam.epcorn@gmail.com",
-      from: { email: "noreply.epcorn@gmail.com", name: "EPCORN Feedback" },
-      template_id: "d-fcb583cc5d554a2f894a6d2243d8490e",
-    };
-    await sgMail.send(msg);
-    console.log("Ok");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const sendBrevoEmail = async ({
   attachment,
   dynamicData,
@@ -815,40 +799,6 @@ const editService = async (req, res) => {
     console.log(error);
   }
 };
-
-// const feedback = async (req, res) => {
-//   const { id } = req.params;
-//   const { services } = req.body;
-//   try {
-//     const service = await Service.findOne({ _id: id }).populate({
-//       path: "contract",
-//       select: "contractNo billToContact1 shipToContact1",
-//     });
-
-//     if (!service) {
-//       return res.status(400).json({ msg: "No contract found" });
-//     }
-//     if (services) {
-//       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-//       const msg = {
-//         to: "epcorn@yahoo.in",
-//         from: { email: "noreply.epcorn@gmail.com", name: "EPCORN" },
-//         subject: `Request For Service - ${service.contract.contractNo}`,
-//         html: `<div>Dear Team,<br></br><br></br>Client has requested <b>${services}</b> service.<br></br>Contract No - ${service.contract.contractNo}<br></br>Bill to contact - ${service.contract.billToContact1}<br></br>Ship to contact - ${service.contract.shipToContact1}<br></br><br></br>Thanks And Regards,<br></br>EPCORN Team<br></br><br></br><b>Note - This is an auto-generated email, please DO NOT REPLY.</b></div>`,
-//       };
-//       await sgMail.send(msg);
-//     }
-//     req.body.contract = service.contract.contractNo;
-//     req.body.serviceName = service.service.toString();
-//     req.body.service = id;
-//     req.body.extraServices = services;
-//     await ServiceReport.create(req.body);
-//     res.status(200).json({ msg: "Thank You For Your Valuable Feedback" });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(400).json({ msg: "Some error try again later" });
-//   }
-// };
 
 const generateBusinessFile = async (req, res) => {
   const { name } = req.params;
@@ -1123,6 +1073,7 @@ const serviceIntimation = async (req, res) => {
 
       const msg = {
         to: emails,
+        cc: process.env.EPCORN_EMAIL,
         from: { email: "noreply.epcorn@gmail.com", name: "Epcorn" },
         dynamic_template_data: {
           service: serv,
@@ -1330,8 +1281,11 @@ const autoBranchReport = async (req, res) => {
       yesterday
     ).format("DD/MM/YYYY")}`;
     sendSmtpEmail.htmlContent = `<html><body><div>Hi Team,<br><br>Please find the attachments of yesterday's branch wise service done/not done report.<br>Today ${dailyReportCount} cards scanned & attached report file.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>`;
-    sendSmtpEmail.sender = { name: "EPCORN", email: "exteam.epcorn@gmail.com" };
-    sendSmtpEmail.to = [{ email: "noreply.epcorn@gmail.com" }];
+    sendSmtpEmail.sender = { name: "EPCORN", email: process.env.EXTEAM_EMAIL };
+    sendSmtpEmail.to = [
+      { email: process.env.STQ_EMAIL },
+      { email: process.env.EPCORN_EMAIL },
+    ];
     sendSmtpEmail.attachment = links;
 
     await apiInstance.sendTransacEmail(sendSmtpEmail);
@@ -1348,133 +1302,145 @@ const monthlyBranchServiceDue = async (req, res) => {
 
   let date = moment();
   if (id === "next") date = moment().add(1, "month");
+  if (id === "previous") date = moment().subtract(1, "month");
 
   try {
     const monthName = moment(date).format("MMM YY");
+    const branches = ["BLR - 1", "MUM - 1", "PUN - 1"];
+    const fileLinks = [];
 
-    const services = await Contract.find({ branch: "BLR - 1" }).populate({
-      path: "services",
-      match: { serviceDue: { $in: monthName } },
-    });
-
-    const ser = [];
-    for (let service of services) {
-      if (service.services.length > 0) {
-        for (let serv of service.services) {
-          ser.push({
-            id: serv._id,
-            contractNo: service.contractNo,
-            name: service.shipToAddress.name,
-            address: `${service.shipToAddress.address1}, ${service.shipToAddress.address2}, ${service.shipToAddress.address3}, ${service.shipToAddress.address4}, ${service.shipToAddress.nearBy}, ${service.shipToAddress.pincode}`,
-            frequency: serv.frequency,
-            service: serv.service.join(", "),
-            period: `${moment(service.startDate).format("MMM-YY")} - ${moment(
-              service.endDate
-            ).format("MMM-YY")}`,
-          });
-        }
-      }
-    }
-
-    const reports = await ServiceReport.find({
-      serviceDate: {
-        $gte: moment(date).startOf("month"),
-        $lte: date,
-      },
-    }).select("service serviceDate image");
-
-    const allData = [];
-    for (let s of ser) {
-      let date = "";
-      let image = "";
-      for (let r of reports) {
-        if (r.service.toString() == s.id.toString()) {
-          date += `${moment(r.serviceDate).format("DD/MM/YY")}, `;
-          image = r.image[0];
-        }
-      }
-      allData.push({
-        contractNo: s.contractNo,
-        period: s.period,
-        name: s.name,
-        address: s.address,
-        service: s.service,
-        frequency: s.frequency,
-        serviceDates: date,
-        image: image,
+    for (let branch of branches) {
+      const services = await Contract.find({ branch }).populate({
+        path: "services",
+        match: { serviceDue: { $in: monthName } },
       });
-    }
 
-    if (allData.length > 0) {
-      const workbook = new exceljs.Workbook();
-      let worksheet = workbook.addWorksheet("Sheet1");
+      const ser = [];
+      for (let service of services) {
+        if (service.services.length > 0) {
+          for (let serv of service.services) {
+            ser.push({
+              id: serv._id,
+              contractNo: service.contractNo,
+              name: service.shipToAddress.name,
+              address: `${service.shipToAddress.address1}, ${service.shipToAddress.address2}, ${service.shipToAddress.address3}, ${service.shipToAddress.address4}, ${service.shipToAddress.nearBy}, ${service.shipToAddress.pincode}`,
+              frequency: serv.frequency,
+              service: serv.service.join(", "),
+              period: `${moment(service.startDate).format("MMM-YY")} - ${moment(
+                service.endDate
+              ).format("MMM-YY")}`,
+            });
+          }
+        }
+      }
 
-      worksheet.columns = [
-        { header: "Contract Number", key: "contractNo" },
-        { header: "Contract Period", key: "period" },
-        { header: "Client Name", key: "name" },
-        { header: "Client Address", key: "address" },
-        { header: "Service Name", key: "service" },
-        { header: "Service Frequency", key: "frequency" },
-        { header: "Service Card", key: "image" },
-        { header: "Service Dates", key: "dates" },
-      ];
+      const reports = await ServiceReport.find({
+        serviceDate: {
+          $gte: moment(date).startOf("month"),
+          $lte: id === "previous" ? moment(date).endOf("month") : date,
+        },
+      }).select("service serviceDate image");
 
-      allData.map((item) => {
-        worksheet.addRow({
-          contractNo: item.contractNo,
-          period: item.period,
-          name: item.name,
-          address: item.address,
-          service: item.service,
-          frequency: item.frequency,
-          image: item.image.length
-            ? {
-                text: "Download",
-                hyperlink: item.image,
-              }
-            : "NA",
-          dates: item.serviceDates,
+      const allData = [];
+      for (let s of ser) {
+        let date = "";
+        let image = "";
+        for (let r of reports) {
+          if (r.service.toString() == s.id.toString()) {
+            date += `${moment(r.serviceDate).format("DD/MM/YY")}, `;
+            image = r.image[0];
+          }
+        }
+        allData.push({
+          contractNo: s.contractNo,
+          period: s.period,
+          name: s.name,
+          address: s.address,
+          service: s.service,
+          frequency: s.frequency,
+          serviceDates: date,
+          image: image,
         });
-      });
+      }
 
-      const filePath = `./tmp/Service Of ${monthName}.xlsx`;
-      await workbook.xlsx.writeFile(filePath);
+      if (allData.length > 0) {
+        const workbook = new exceljs.Workbook();
+        let worksheet = workbook.addWorksheet("Sheet1");
 
-      const result = await cloudinary.uploader.upload(filePath, {
-        resource_type: "raw",
-        use_filename: true,
-        folder: "service-reports",
-      });
+        worksheet.columns = [
+          { header: "Contract Number", key: "contractNo" },
+          { header: "Contract Period", key: "period" },
+          { header: "Client Name", key: "name" },
+          { header: "Client Address", key: "address" },
+          { header: "Service Name", key: "service" },
+          { header: "Service Frequency", key: "frequency" },
+          { header: "Service Card", key: "image" },
+          { header: "Service Dates", key: "dates" },
+        ];
 
+        allData.map((item) => {
+          worksheet.addRow({
+            contractNo: item.contractNo,
+            period: item.period,
+            name: item.name,
+            address: item.address,
+            service: item.service,
+            frequency: item.frequency,
+            image: item.image.length
+              ? {
+                  text: "Download",
+                  hyperlink: item.image,
+                }
+              : "NA",
+            dates: item.serviceDates,
+          });
+        });
+
+        let fileName = `${monthName} Service Report Of ${branch}.xlsx`;
+        if (id === "next") `${monthName} Service Due Of ${branch}.xlsx`;
+        const filePath = `./tmp/${fileName}`;
+
+        await workbook.xlsx.writeFile(filePath);
+
+        const result = await cloudinary.uploader.upload(filePath, {
+          resource_type: "raw",
+          use_filename: true,
+          folder: "service-reports",
+        });
+
+        fileLinks.push({
+          url: result.secure_url,
+          name: fileName,
+        });
+
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    if (fileLinks.length > 0) {
       let defaultClient = Brevo.ApiClient.instance;
       let apiKey = defaultClient.authentications["api-key"];
       apiKey.apiKey = process.env.BREVO_KEY;
       let apiInstance = new Brevo.TransactionalEmailsApi();
       let sendSmtpEmail = new Brevo.SendSmtpEmail();
 
-      let subject = "Banglore Service Report";
-      if (id === "next") subject = "Banglore Service Due";
+      let subject = "All Branches Service Report";
+      if (id === "next") subject = "All Branches Service Due";
 
-      sendSmtpEmail.subject = `${subject} ${monthName}`;
+      sendSmtpEmail.subject = `${subject} Of ${monthName}`;
       sendSmtpEmail.htmlContent = `<html><body><div>Hi Team,<br><br>Please find the attachments of ${subject} of ${monthName}.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>`;
       sendSmtpEmail.sender = {
         name: "EPCORN",
-        email: "exteam.epcorn@gmail.com",
+        email: process.env.EXTEAM_EMAIL,
       };
       sendSmtpEmail.to = [
-        { email: "natco.epcorn@gmail.com" },
-        { email: "stq@epcorn.com" },
-        { email: "sales@epcorn.com" },
-        { email: "epcorn@yahoo.in" },
+        { email: process.env.NATCO_EMAIL },
+        { email: process.env.SHWETA_EMAIL },
+        { email: process.env.STQ_EMAIL },
+        { email: process.env.SALES_EMAIL },
       ];
-      sendSmtpEmail.attachment = [
-        {
-          url: result.secure_url,
-          name: `${subject} ${monthName}.xlsx`,
-        },
-      ];
-      fs.unlinkSync(filePath);
+      sendSmtpEmail.attachment = fileLinks;
+
       await apiInstance.sendTransacEmail(sendSmtpEmail);
     }
 
