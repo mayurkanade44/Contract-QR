@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Alert, InputRow, Loading, Modal } from "../components";
 import { useDataContext } from "../context/data_context";
 
-
 const Admin = () => {
   const {
     fetchAllUsers,
@@ -19,6 +18,8 @@ const Admin = () => {
     addSales,
     addBusines,
     addBusiness,
+    addCode,
+    addContractCode,
     serviceChemicals,
     addServiceChemicals,
     searchSD,
@@ -26,7 +27,6 @@ const Admin = () => {
     allJobData,
     modal,
     branchReport,
-    
   } = useDataContext();
 
   const { label, value, chemical } = serviceChemicals;
@@ -43,8 +43,8 @@ const Admin = () => {
   const [showBusiness, setShowBusiness] = useState(false);
   const [showJobFile, setShowJobFile] = useState(false);
   const [showBranch, setShowBranch] = useState(false);
-
   const [branch, setBranch] = useState("MUM - 1");
+  const [showCode, setShowCode] = useState(false);
 
   const deleteUser = (id) => {
     removeUser(id);
@@ -69,9 +69,11 @@ const Admin = () => {
       addBusiness();
     } else if (addComment) {
       addComments();
+    } else if (addCode) {
+      addContractCode();
     } else if (serviceChemicals) {
       addServiceChemicals();
-    }
+    } 
     displayAlert();
   };
 
@@ -125,6 +127,12 @@ const Admin = () => {
       >
         Branch Report
       </button>
+      <button
+        onClick={() => setShowCode(!showCode)}
+        className="btn my-3 me-3 btn-info btn-lg"
+      >
+        Add Source Code
+      </button>
       {showUser && (
         <table className="table">
           <thead>
@@ -177,6 +185,11 @@ const Admin = () => {
             <InputRow label="Business" name="addBusines" value={addBusines} />
           </div>
         )}
+        {showCode && (
+          <div className="col-md-5">
+            <InputRow label="Contract Code" name="addCode" value={addCode} />
+          </div>
+        )}
         {showService && (
           <>
             <div className="col-md-4">
@@ -208,7 +221,11 @@ const Admin = () => {
             </div>
           </>
         )}
-        {(showComment || showSales || showService || showBusiness) && (
+        {(showComment ||
+          showSales ||
+          showService ||
+          showBusiness ||
+          showCode) && (
           <div className="col-md-1">
             <button onClick={saveValues} className="btn mt-1 btn-info ">
               Save

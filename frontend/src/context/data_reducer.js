@@ -589,6 +589,7 @@ const data_reducer = (state, action) => {
         addComment: "",
         addSale: "",
         addBusines: "",
+        addCode: "",
         serviceChemicals: {
           label: "",
           value: "",

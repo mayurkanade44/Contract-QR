@@ -162,6 +162,7 @@ export const initialState = {
   addComment: "",
   addSale: "",
   addBusines: "",
+  addCode: "",
   serviceChemicals: {
     label: "",
     value: "",
@@ -341,6 +342,18 @@ export const DataProvider = ({ children }) => {
       const { addBusines } = state;
       const res = await authFetch.post("/admin", {
         business: addBusines,
+      });
+      dispatch({ type: ADD_VALUE, payload: res.data.msg });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addContractCode = async () => {
+    try {
+      const { addCode } = state;
+      const res = await authFetch.post("/admin", {
+        contractCode: addCode,
       });
       dispatch({ type: ADD_VALUE, payload: res.data.msg });
     } catch (error) {
@@ -908,6 +921,7 @@ export const DataProvider = ({ children }) => {
         allValues,
         addSales,
         addBusiness,
+        addContractCode,
         addServiceChemicals,
         deleteService,
         updateContract,
@@ -927,6 +941,7 @@ export const DataProvider = ({ children }) => {
         serviceIntimation,
         setServiceId,
         branchReport,
+
       }}
     >
       {children}
