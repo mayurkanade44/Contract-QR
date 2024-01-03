@@ -375,6 +375,7 @@ const data_reducer = (state, action) => {
           time: state.singleContract.preferred.time,
         },
         branch: state.singleContract.branch,
+        contractCode: state.singleContract.contractCode,
         area: state.singleContract.area,
         billingFrequency: state.singleContract.billingFrequency,
         specialInstruction: state.singleContract.specialInstruction.toString(),
@@ -519,6 +520,8 @@ const data_reducer = (state, action) => {
         searchSD: "",
         searchED: "",
         del: false,
+        branch: "MUM - 1",
+        contractCode: "",
       };
     }
     case UPDATE_CONTRACT: {

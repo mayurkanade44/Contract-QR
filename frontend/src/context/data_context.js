@@ -491,6 +491,8 @@ export const DataProvider = ({ children }) => {
     dispatch({ type: SAME_DETAILS });
   };
 
+  
+
   const createContract = async (last) => {
     try {
       const {
@@ -596,6 +598,7 @@ export const DataProvider = ({ children }) => {
         contractCode,
       });
       dispatch({ type: UPDATE_CONTRACT, payload: res.data });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       console.log(error);
     }

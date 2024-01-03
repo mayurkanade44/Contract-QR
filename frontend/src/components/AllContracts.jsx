@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useDataContext } from "../context/data_context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { InputRow, Loading, Pagination } from ".";
 
 const AllContracts = () => {
@@ -22,6 +22,7 @@ const AllContracts = () => {
   const [toggle, setToggle] = useState(false);
   const [page, setPage] = useState(0);
   const [cont, setCont] = useState([]);
+  const navigate = useNavigate();
   // const [emails, setEmails] = useState([]);
 
   useEffect(() => {
@@ -43,6 +44,11 @@ const AllContracts = () => {
 
   const handleChnage = (index) => {
     setPage(index);
+  };
+
+  const handleCreateContract = () => {
+    clearValues();
+    navigate("/create");
   };
 
   const add = (first, second, third, fourth, fifth, six, id, contractNo) => {
@@ -77,11 +83,12 @@ const AllContracts = () => {
         {(role === "Sales" || role === "Admin") && (
           <>
             <div className="col-md-3 d-flex justify-content-center">
-              <Link to="/create">
-                <button className="btn btn-success btn-lg my-1">
-                  Create Contract
-                </button>
-              </Link>
+              <button
+                className="btn btn-success btn-lg my-1"
+                onClick={handleCreateContract}
+              >
+                Create Contract
+              </button>
             </div>
             {renewalFile && (
               <div className="col-md-3 d-flex justify-content-center">
