@@ -39,13 +39,20 @@ const AddContract = () => {
     role,
     company,
     branch,
+    contractCode,
   } = useDataContext();
   const { day, time } = preferred;
 
   const representativeList = [];
+  const contractCodesList = ["Select"];
+
   if (adminList) {
     adminList.map(
-      (item) => item.sales !== undefined && representativeList.push(item.sales)
+      (item) => (
+        item.sales !== undefined && representativeList.push(item.sales),
+        item.contractCode !== undefined &&
+          contractCodesList.push(item.contractCode)
+      )
     );
   }
 
@@ -209,7 +216,7 @@ const AddContract = () => {
           <div className="col-md-2 ps-4">
             <select
               className="form-select"
-              style={{ marginTop: 6, }}
+              style={{ marginTop: 6 }}
               aria-label="Default select example"
               name="branch"
               value={branch}
@@ -248,6 +255,14 @@ const AddContract = () => {
               value={endContract}
               data={endDateList}
               width={180}
+            />
+          </div>
+          <div className="col-md-4">
+            <InputSelect
+              label="Code"
+              name="contractCode"
+              value={contractCode}
+              data={contractCodesList}
             />
           </div>
           <hr className="mt-3" />

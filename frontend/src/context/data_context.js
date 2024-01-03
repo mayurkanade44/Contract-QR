@@ -183,6 +183,7 @@ export const initialState = {
   feedbackFile: "",
   serviceId: "",
   branch: "MUM - 1",
+  contractCode: "",
 };
 
 export const DataProvider = ({ children }) => {
@@ -510,6 +511,7 @@ export const DataProvider = ({ children }) => {
         sales,
         company,
         branch,
+        contractCode,
       } = state;
       const upper = contractNo[0].toUpperCase() + contractNo.slice(1);
       const instructions = [];
@@ -536,6 +538,7 @@ export const DataProvider = ({ children }) => {
         preferred,
         specialInstruction: instructions,
         branch,
+        contractCode,
       });
       const contractId = res.data.contract._id;
       dispatch({
@@ -570,6 +573,7 @@ export const DataProvider = ({ children }) => {
       sales,
       company,
       branch,
+      contractCode,
     } = state;
     try {
       const res = await authFetch.patch(`/contracts/${id}`, {
@@ -589,6 +593,7 @@ export const DataProvider = ({ children }) => {
         startDate,
         endDate,
         branch,
+        contractCode,
       });
       dispatch({ type: UPDATE_CONTRACT, payload: res.data });
     } catch (error) {
@@ -941,7 +946,6 @@ export const DataProvider = ({ children }) => {
         serviceIntimation,
         setServiceId,
         branchReport,
-
       }}
     >
       {children}
