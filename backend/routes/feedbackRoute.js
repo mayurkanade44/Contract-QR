@@ -10,6 +10,7 @@ const {
 const {
   autoBranchReport,
   monthlyBranchServiceDue,
+  contractCodeReport,
 } = require("../controllers/service");
 
 router.route("/getFeedback").get(getFeedback);
@@ -17,6 +18,7 @@ router.route("/addContacts").put(addContacts);
 router.route("/schedule").put(scheduleMail);
 router.route("/sendMails").put(sendMails);
 router.get("/autoBranchReport", autoBranchReport);
+router.get("/contractCodeReport", contractCodeReport);
 router.get("/monthlyService/:id", monthlyBranchServiceDue);
 router.route("/:id").post(createFeedback);
 
