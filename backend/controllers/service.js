@@ -1396,8 +1396,8 @@ const monthlyBranchServiceDue = async (req, res) => {
           });
         });
 
-        let fileName = `${monthName} Service Report Of ${branch}.xlsx`;
-        if (id === "next") `${monthName} Service Due Of ${branch}.xlsx`;
+        let fileName = `${branch} Service Report Of ${monthName}.xlsx`;
+        if (id === "next") `${branch} Service Due Of ${monthName}.xlsx`;
         const filePath = `./tmp/${fileName}`;
 
         await workbook.xlsx.writeFile(filePath);
@@ -1577,7 +1577,7 @@ const contractCodeReport = async (req, res) => {
       let sendSmtpEmail = new Brevo.SendSmtpEmail();
 
       let subject = "Contract Codes Service Report";
-      if (id === "next") subject = "All Branches Service Due";
+      // if (id === "next") subject = "All Branches Service Due";
 
       sendSmtpEmail.subject = `Auto Generated ${subject} Of ${monthName}`;
       sendSmtpEmail.htmlContent = `<html><body><div>Hi Team,<br><br>Please find the attachments of all ${subject} of ${monthName}.<br><br>Thanks & Regards<br>Epcorn Team</div></body></html>`;
